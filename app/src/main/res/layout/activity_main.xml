@@ -39,7 +39,7 @@
         android:layout_marginTop="@dimen/margin_large"
 
         app:endIconMode="clear_text"
-        app:startIconDrawable="@drawable/ic_launcher_foreground"
+        app:startIconDrawable="@drawable/baseline_festival_24"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,6 @@
     <!-- Add Event Type Text Input Field-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_event_type"
-        android:hint="@string/event_location"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
 
         android:layout_width="0dp"
@@ -97,6 +96,9 @@
         android:layout_marginEnd="@dimen/margin_medium"
         android:layout_marginStart="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_standard"
+
+
+        app:startIconDrawable="@drawable/baseline_dehaze_24"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -27,7 +27,7 @@
     />
 
 
-<!-- Add Event Name Text Input Field-->
+<!-- Add Event Name Input Field-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_event_name"
         android:hint="@string/event_name"
@@ -56,7 +56,7 @@
 
 
 
-<!-- Add Event Location Text Input Field-->
+<!-- Add Event Location Input Field-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_event_location"
         android:hint="@string/event_location"
@@ -86,7 +86,7 @@
 
 
 
-    <!-- Add Event Type Text Input Field-->
+    <!-- Add Event Type Input Field-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_event_type"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -113,6 +113,40 @@
             android:inputType="none"
         />
     </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+    <!-- Add Event Description Input Field-->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_field_event_description"
+        android:hint="@string/event_description"
+
+        android:layout_width="0dp"
+        android:layout_height="3000dp"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_field_event_type"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_event_description"
+            android:inputType="text"
+
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="top|start"
+        />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+
 
 
     <!-- Add Event Date Text Input Field-->

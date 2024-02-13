@@ -171,59 +171,17 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_event_button"
+        android:contentDescription="Add Event"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+
+        app:srcCompat="@drawable/baseline_add_24"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_field_event_description"
     />
-
-
-    <!-- Add Event Date Text Input Field-->
-<!--    <com.google.android.material.datepicker-->
-<!--        android:hint="@string/event_date"-->
-
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginEnd="@dimen/margin_medium"-->
-<!--        android:layout_marginStart="@dimen/margin_medium"-->
-<!--        android:layout_marginTop="@dimen/margin_standard"-->
-
-<!--        app:endIconMode="clear_text"-->
-<!--        app:startIconDrawable="@drawable/baseline_add_location_alt_24"-->
-
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/text_field_event_location">-->
-
-<!--        <com.google.android.material.datepicker-->
-<!--            android:id="@+id/edit_text_event_date"-->
-<!--            android:layout_width="match_parent"-->
-
-<!--            android:layout_height="wrap_content"-->
-<!--            android:inputType="text"-->
-<!--            />-->
-<!--    </com.google.android.material.datepicker>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

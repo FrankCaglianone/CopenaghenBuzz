@@ -5,9 +5,9 @@ import android.util.Log
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.AutoCompleteTextView
-import android.widget.Button
 import android.widget.EditText
 import androidx.core.view.WindowCompat
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityMainBinding
 
 
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var eventDate : EditText
     private lateinit var eventType : AutoCompleteTextView
     private lateinit var eventDescription : EditText
-    private lateinit var addEventButton: Button
+    private lateinit var addEventButton: FloatingActionButton
 
 
     // A set of private constants used in this class .

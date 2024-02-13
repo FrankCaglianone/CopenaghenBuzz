@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
 
 
 // An instance of the ‘Event' class.
-//    private val event : Event = Event("", "", "", "", "")
+    private val event : Event = Event("", "", "", "", "")
 
 
 
@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity() {
         addEventButton = binding.addEventButton
 
         createDropdownEventType()
-        Log.d(TAG, "Ciao!")
         okok()
     }
 
@@ -78,24 +77,26 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun okok() {
-//        addEventButton.setOnClickListener {
-//            if (eventLocation.text.toString().isNotEmpty() && eventName.text.toString().isNotEmpty()) {
-//                event.setEventName(
-//                    eventName.text.toString().trim()
-//                )
+        addEventButton.setOnClickListener {
+            if (eventLocation.text.toString().isNotEmpty() && eventName.text.toString().isNotEmpty()) {
+                event.eventName = eventName.text.toString().trim()
+                event.eventLocation = eventLocation.text.toString().trim()
+                event.eventDate = eventDate.text.toString().trim()
+                event.eventType = eventType.text.toString().trim()
+                event.eventDescription = eventDescription.text.toString().trim()
 
                 // Write in the ‘Logcat‘ system
-//                showMessage()
-//            }
-//        }
+                showMessage()
+            }
+        }
     }
 
 
 
 
-//    private fun showMessage() {
-//        Log.d(TAG, event.toString())
-//    }
+    private fun showMessage() {
+        Log.d(TAG, event.toString())
+    }
 
 
 

@@ -3,4 +3,5 @@
     <dimen name="margin_medium">25dp</dimen>
     <dimen name="margin_large">25dp</dimen>
     <dimen name="margin_standard">5dp</dimen>
+    <dimen name="ten_dp">10dp</dimen>
 </resources>

@@ -6,6 +6,8 @@
     <string name="event_type">Event Type</string>
     <string name="event_description">Event Description</string>
     <string name="add_event">Add Event</string>
+    <string name="login">Login</string>
+    <string name="create_user">Create User</string>
 
     <string-array name="event_types">
         <item>Item1</item>

@@ -2,12 +2,14 @@ package dk.itu.moapd.copenhagenbuzz.fcag
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import androidx.core.view.WindowCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityMainBinding
 
 
@@ -31,13 +33,11 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-// An instance of the ‘Event' class.
+    // An instance of the ‘Event' class.
     private val event : Event = Event("", "", "", "", "")
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
         // Sets whether the decor view should fit root-level content views for `WindowInsetsCompat`.
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -53,8 +53,11 @@ class MainActivity : AppCompatActivity() {
         eventDescription = binding.editTextEventDescription
         addEventButton = binding.addEventButton
 
+        // Creating the dropdown for the Event Types
         createDropdownEventType()
-        okok()
+
+        // Adding the Event Listener to Create a new Event
+        addEventListener()
     }
 
 
@@ -70,15 +73,19 @@ class MainActivity : AppCompatActivity() {
     private fun createDropdownEventType() {
         val eventTypes = resources.getStringArray(R.array.event_types)
         val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item_layout, eventTypes)
-        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.auto_complete_text_view_event_type)
-        autoCompleteTextView.setAdapter(arrayAdapter)
+        eventType.setAdapter(arrayAdapter)
     }
 
 
-
-    private fun okok() {
+    /**
+     * This function creates the Event Listener to "Add an Event",
+     * it takes the inputs
+     */
+    private fun addEventListener() {
         addEventButton.setOnClickListener {
             if (eventLocation.text.toString().isNotEmpty() && eventName.text.toString().isNotEmpty()) {
+
+                // Getting all variables inputs
                 event.eventName = eventName.text.toString().trim()
                 event.eventLocation = eventLocation.text.toString().trim()
                 event.eventDate = eventDate.text.toString().trim()
@@ -86,27 +93,15 @@ class MainActivity : AppCompatActivity() {
                 event.eventDescription = eventDescription.text.toString().trim()
 
                 // Write in the ‘Logcat‘ system
-                showMessage()
+                showMessage(it)
             }
         }
     }
 
 
-
-
-    private fun showMessage() {
+    private fun showMessage(view: View) {
         Log.d(TAG, event.toString())
+        Snackbar.make(view, event.toString(), Snackbar.LENGTH_SHORT).show()
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

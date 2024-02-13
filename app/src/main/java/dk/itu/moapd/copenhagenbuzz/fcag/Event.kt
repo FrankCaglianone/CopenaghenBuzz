@@ -1,6 +1,5 @@
 package dk.itu.moapd.copenhagenbuzz.fcag
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 data class Event(var eventName: String,
                  var eventLocation: String,

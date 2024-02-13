@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.view.WindowCompat
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityMainBinding
 
 
@@ -31,11 +32,15 @@ class MainActivity : AppCompatActivity() {
 
 
 // An instance of the ‘Event' class.
-//    private val event : Event = Event("", "")
+//    private val event : Event = Event("", "", "", "", "")
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        // Sets whether the decor view should fit root-level content views for `WindowInsetsCompat`.
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -49,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         addEventButton = binding.addEventButton
 
         createDropdownEventType()
-
+        Log.d(TAG, "Ciao!")
         okok()
     }
 

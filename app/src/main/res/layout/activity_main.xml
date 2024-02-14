@@ -11,20 +11,14 @@
     tools:context=".MainActivity"
 >
 
-<!--    CopenhagenBuzz Logo-->
-    <TextView
-        android:id="@+id/text_view_app_name"
-        android:text="@string/app_name"
-        style="?textAppearanceHeadlineSmall"
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-    />
+<!-- ToolBar -->
+    <include
+        layout="@layout/toolbar_layout"
+        android:id="@+id/toolbar"
+        >
+    </include>
 
 
 <!-- Add Event Name Input Field-->
@@ -43,7 +37,7 @@
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_view_app_name">
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_event_name"
@@ -150,41 +144,41 @@
     <!-- Add Event Description Input Field-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_event_description"
-        android:hint="@string/event_description"
+        android:layout_width="356dp"
 
-        android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_height="210dp"
         android:layout_marginStart="@dimen/margin_medium"
-        android:layout_marginEnd="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_standard"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:hint="@string/event_description"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_field_event_type"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/text_field_event_type">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edit_text_event_description"
-            android:inputType="text"
-
             android:layout_width="match_parent"
+
             android:layout_height="200dp"
             android:gravity="top|start"
-        />
+            android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
+
+<!-- Add Event Button-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_event_button"
-        android:contentDescription="@string/add_event"
-
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
 
-        app:srcCompat="@drawable/baseline_add_24"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+
+        android:contentDescription="@string/add_event"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_field_event_description"
-    />
+        app:srcCompat="@drawable/baseline_add_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

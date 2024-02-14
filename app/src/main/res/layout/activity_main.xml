@@ -16,8 +16,7 @@
 <!-- ToolBar -->
     <include
         layout="@layout/toolbar_layout"
-        android:id="@+id/toolbar"
-        >
+        android:id="@+id/toolbar">
     </include>
 
 
@@ -91,7 +90,7 @@
         android:layout_marginTop="@dimen/margin_standard"
 
         app:endIconMode="clear_text"
-        app:startIconDrawable="@drawable/baseline_festival_24"
+        app:startIconDrawable="@drawable/baseline_date_range_24"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -143,8 +143,7 @@
     <!-- Add Event Description Input Field-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_field_event_description"
-        android:layout_width="356dp"
-
+        android:layout_width="match_parent"
         android:layout_height="210dp"
         android:layout_marginStart="@dimen/margin_medium"
         android:layout_marginTop="@dimen/margin_standard"

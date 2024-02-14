@@ -28,9 +28,25 @@ class LoginActivity : AppCompatActivity() {
 
         with(binding) {
             loginButton.setOnClickListener {
-                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
+                    putExtra("isLoggedIn", true)
+                }
                 startActivity(intent)
+                finish() // Finish the LoginActivity so the user can't go back to it
             }
         }
     }
-}
+
+// TO SUBSTITUTE LATER WHEN MAKING ACTUAL LOGIN VALIDATION
+//    private fun navigateToMainActivity(isLoggedIn: Boolean) {
+//        val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
+//            putExtra("isLoggedIn", isLoggedIn)
+//        }
+//        startActivity(intent)
+//        finish() // Finish the LoginActivity so the user can't go back to it
+//    }
+
+
+
+
+} // Ending LoginActivity

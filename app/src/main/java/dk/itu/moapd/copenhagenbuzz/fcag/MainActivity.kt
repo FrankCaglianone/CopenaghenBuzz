@@ -17,16 +17,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-
-    // GUI Variables
-    private lateinit var eventName : EditText
-    private lateinit var eventLocation : EditText
-    private lateinit var eventDate : EditText
-    private lateinit var eventType : AutoCompleteTextView
-    private lateinit var eventDescription : EditText
-    private lateinit var addEventButton: FloatingActionButton
-
-
     // A set of private constants used in this class .
     companion object {
         private val TAG = MainActivity::class.qualifiedName
@@ -45,35 +35,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Variables
-        eventName = binding.editTextEventName
-        eventLocation = binding.editTextEventLocation
-        eventDate = binding.editTextEventDate
-        eventType = binding.autoCompleteTextViewEventType
-        eventDescription = binding.editTextEventDescription
-        addEventButton = binding.addEventButton
-
-        // Creating the dropdown for the Event Types
-        createDropdownEventType()
-
         // Adding the Event Listener to Create a new Event
         addEventListener()
-    }
-
-
-    /**
-     *
-     * DropDown Item for the Event Type.
-     *
-     * val eventTypes is the string array of options in res/values/strings.xml "event_types"
-     * val arrayAdapter is
-     * val autoCompleteTextView is
-     *
-     */
-    private fun createDropdownEventType() {
-        val eventTypes = resources.getStringArray(R.array.event_types)
-        val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item_layout, eventTypes)
-        eventType.setAdapter(arrayAdapter)
     }
 
 
@@ -82,20 +45,32 @@ class MainActivity : AppCompatActivity() {
      * it takes the inputs
      */
     private fun addEventListener() {
-        addEventButton.setOnClickListener {
-            if (eventLocation.text.toString().isNotEmpty() && eventName.text.toString().isNotEmpty()) {
 
-                // Getting all variables inputs
-                event.eventName = eventName.text.toString().trim()
-                event.eventLocation = eventLocation.text.toString().trim()
-                event.eventDate = eventDate.text.toString().trim()
-                event.eventType = eventType.text.toString().trim()
-                event.eventDescription = eventDescription.text.toString().trim()
+        with(binding) {
+            addEventButton.setOnClickListener {
+                if (editTextEventLocation.text.toString().isNotEmpty() && editTextEventName.text.toString()
+                        .isNotEmpty()
+                ) {
 
-                // Write in the ‘Logcat‘ system
-                showMessage(it)
+                    // Getting all variables inputs
+                    event.eventName = editTextEventName.text.toString().trim()
+                    event.eventLocation = editTextEventLocation.text.toString().trim()
+                    event.eventDate = editTextEventDate.text.toString().trim()
+                    event.eventType = autoCompleteTextViewEventType.text.toString().trim()
+                    event.eventDescription = editTextEventDescription.text.toString().trim()
+
+                    // Write in the ‘Logcat‘ system
+                    showMessage(it)
+                }
             }
         }
+    }
+
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        // Restore the state of the dropdown or any other relevant information
+        binding.autoCompleteTextViewEventType.setText(savedInstanceState.getString("eventType", ""))
     }
 
 

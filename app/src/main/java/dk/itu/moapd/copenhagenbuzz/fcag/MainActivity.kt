@@ -61,17 +61,17 @@ class MainActivity : AppCompatActivity() {
     private fun addEventListener() {
 
         with(binding) {
-            addEventButton.setOnClickListener {
-                if (editTextEventLocation.text.toString().isNotEmpty() && editTextEventName.text.toString()
+            contentMain.addEventButton.setOnClickListener {
+                if (contentMain.editTextEventLocation.text.toString().isNotEmpty() && contentMain.editTextEventName.text.toString()
                         .isNotEmpty()
                 ) {
 
                     // Getting all variables inputs
-                    event.eventName = editTextEventName.text.toString().trim()
-                    event.eventLocation = editTextEventLocation.text.toString().trim()
-                    event.eventDate = editTextEventDate.text.toString().trim()
-                    event.eventType = autoCompleteTextViewEventType.text.toString().trim()
-                    event.eventDescription = editTextEventDescription.text.toString().trim()
+                    event.eventName = contentMain.editTextEventName.text.toString().trim()
+                    event.eventLocation = contentMain.editTextEventLocation.text.toString().trim()
+                    event.eventDate = contentMain.editTextEventDate.text.toString().trim()
+                    event.eventType = contentMain.autoCompleteTextViewEventType.text.toString().trim()
+                    event.eventDescription = contentMain.editTextEventDescription.text.toString().trim()
 
                     // Write in the ‘Logcat‘ system
                     showMessage(it)
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         // Restore the state of the dropdown or any other relevant information
-        binding.autoCompleteTextViewEventType.setText(savedInstanceState.getString("eventType", ""))
+        binding.contentMain.autoCompleteTextViewEventType.setText(savedInstanceState.getString("eventType", ""))
     }
 
 

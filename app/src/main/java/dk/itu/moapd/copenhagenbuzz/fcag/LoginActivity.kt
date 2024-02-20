@@ -4,9 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.widget.Button
-import android.widget.EditText
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -45,8 +42,6 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
         finish() // Finish the LoginActivity so the user can't go back to it
     }
-
-
 
 
 } // Ending LoginActivity

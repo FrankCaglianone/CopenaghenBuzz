@@ -4,12 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.View
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
-import android.widget.AutoCompleteTextView
-import android.widget.EditText
 import androidx.core.view.WindowCompat
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityMainBinding
 
@@ -37,13 +33,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Adding the Event Listener to Create a new Event
-        addEventListener()
+        createEventListener()
     }
 
 
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-
         Log.d(TAG, "WTF")
 
         menu.findItem(R.id.login).isVisible =
@@ -58,7 +53,7 @@ class MainActivity : AppCompatActivity() {
      * This function creates the Event Listener to "Add an Event",
      * it takes the inputs
      */
-    private fun addEventListener() {
+    private fun createEventListener() {
 
         with(binding) {
             contentMain.addEventButton.setOnClickListener {

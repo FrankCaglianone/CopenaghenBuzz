@@ -37,6 +37,16 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+
+
+//    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+//        menu.findItem(R.id.login).isVisible = \
+//        !intent.getBooleanExtra("isLoggedIn", false)
+//        menu.findItem(R.id.logout).isVisible = \
+//        intent.getBooleanExtra("isLoggedIn", false)
+//        return true
+//    }
+
 // TO SUBSTITUTE LATER WHEN MAKING ACTUAL LOGIN VALIDATION
 //    private fun navigateToMainActivity(isLoggedIn: Boolean) {
 //        val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {

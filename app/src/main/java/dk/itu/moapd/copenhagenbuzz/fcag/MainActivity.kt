@@ -2,6 +2,7 @@ package dk.itu.moapd.copenhagenbuzz.fcag
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +38,19 @@ class MainActivity : AppCompatActivity() {
 
         // Adding the Event Listener to Create a new Event
         addEventListener()
+    }
+
+
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+
+        Log.d(TAG, "WTF")
+
+        menu.findItem(R.id.login).isVisible =
+            !intent.getBooleanExtra("isLoggedIn", false)
+        menu.findItem(R.id.logout).isVisible =
+            intent.getBooleanExtra("isLoggedIn", false)
+        return true
     }
 
 

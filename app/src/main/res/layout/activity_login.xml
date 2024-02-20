@@ -45,7 +45,7 @@
         />
 
         <Button
-            android:id="@+id/user_button"
+            android:id="@+id/guest_button"
             android:text="@string/create_user"
             style="@style/Base.Theme.CopenhagenBuzz"
 

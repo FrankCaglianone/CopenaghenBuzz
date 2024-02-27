@@ -1,24 +1,30 @@
 <resources>
+<!-- Logo String -->
     <string name="app_name">CopenhagenBuzz</string>
+
+<!-- Adding Event Input Strings   -->
     <string name="event_name">Event Name</string>
     <string name="event_location">Event Location</string>
     <string name="event_date">Event Date</string>
     <string name="event_type">Event Type</string>
     <string name="event_description">Event Description</string>
     <string name="add_event">Add Event</string>
-    <string name="login">Login</string>
-    <string name="logout">Logout</string>
-    <string name="create_user">Create User</string>
-    <string name="favorites_fragment">Favorites</string>
-    <string name="maps_fragment">Maps</string>
-    <string name="timeline_fragment">Timeline</string>
 
-
+    <!-- Event Types Input Array -->
     <string-array name="event_types">
         <item>Item1</item>
         <item>Item2</item>
         <item>Item3</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+<!-- Login & Logout Strings   -->
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="create_user">Create User</string>
+
+<!-- Fragments Strings -->
+    <string name="favorites_fragment">Favorites</string>
+    <string name="maps_fragment">Maps</string>
+    <string name="timeline_fragment">Timeline</string>
+
 </resources>

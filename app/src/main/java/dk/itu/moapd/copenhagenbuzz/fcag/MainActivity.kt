@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Adding the Event Listener to Create a new Event
-        createEventListener()
+//        createEventListener()
     }
 
 
@@ -101,27 +101,27 @@ class MainActivity : AppCompatActivity() {
      * proceeding to create an event and displays a message upon successful creation calling
      * showMessage().
      */
-    private fun createEventListener() {
-
-        with(binding) {
-            contentMain.addEventButton.setOnClickListener {
-                if (contentMain.editTextEventLocation.text.toString().isNotEmpty() && contentMain.editTextEventName.text.toString()
-                        .isNotEmpty()
-                ) {
-
-                    // Getting all variables inputs
-                    event.eventName = contentMain.editTextEventName.text.toString().trim()
-                    event.eventLocation = contentMain.editTextEventLocation.text.toString().trim()
-                    event.eventDate = contentMain.editTextEventDate.text.toString().trim()
-                    event.eventType = contentMain.autoCompleteTextViewEventType.text.toString().trim()
-                    event.eventDescription = contentMain.editTextEventDescription.text.toString().trim()
-
-                    // Write in the ‘Logcat‘ system and SnackBar
-                    showMessage(it)
-                }
-            }
-        }
-    }
+//    private fun createEventListener() {
+//
+//        with(binding) {
+//            contentMain.addEventButton.setOnClickListener {
+//                if (contentMain.editTextEventLocation.text.toString().isNotEmpty() && contentMain.editTextEventName.text.toString()
+//                        .isNotEmpty()
+//                ) {
+//
+//                    // Getting all variables inputs
+//                    event.eventName = contentMain.editTextEventName.text.toString().trim()
+//                    event.eventLocation = contentMain.editTextEventLocation.text.toString().trim()
+//                    event.eventDate = contentMain.editTextEventDate.text.toString().trim()
+//                    event.eventType = contentMain.autoCompleteTextViewEventType.text.toString().trim()
+//                    event.eventDescription = contentMain.editTextEventDescription.text.toString().trim()
+//
+//                    // Write in the ‘Logcat‘ system and SnackBar
+//                    showMessage(it)
+//                }
+//            }
+//        }
+//    }
 
 
 
@@ -149,11 +149,11 @@ class MainActivity : AppCompatActivity() {
      *
      * @param savedInstanceState The Bundle containing the data most recently supplied in onSaveInstanceState.
      */
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        // Restore the state of the dropdown or any other relevant information
-        binding.contentMain.autoCompleteTextViewEventType.setText(savedInstanceState.getString("eventType", ""))
-    }
+//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+//        super.onRestoreInstanceState(savedInstanceState)
+//        // Restore the state of the dropdown or any other relevant information
+//        binding.contentMain.autoCompleteTextViewEventType.setText(savedInstanceState.getString("eventType", ""))
+//    }
 
 
 

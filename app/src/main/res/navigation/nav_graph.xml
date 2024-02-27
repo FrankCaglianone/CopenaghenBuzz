@@ -3,37 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainActivity2">
-    <activity
-        android:id="@+id/mainActivity2"
-        android:name="dk.itu.moapd.copenhagenbuzz.fcag.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+    app:startDestination="@id/createEventFragment2">
+    <fragment
+        android:id="@+id/createEventFragment2"
+        android:name="dk.itu.moapd.copenhagenbuzz.fcag.CreateEventFragment"
+        android:label="fragment_create_event"
+        tools:layout="@layout/fragment_create_event" >
+        <action
+            android:id="@+id/action_createEventFragment2_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_createEventFragment2_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_createEventFragment2_to_timelineFragment"
+            app:destination="@id/item_timeline" />
+    </fragment>
     <fragment
         android:id="@+id/item_timeline"
         android:name="dk.itu.moapd.copenhagenbuzz.fcag.TimelineFragment"
         android:label="fragment_timeline"
-        tools:layout="@layout/fragment_timeline" >
-        <action
-            android:id="@+id/action_item_timeline_to_mainActivity2"
-            app:destination="@id/mainActivity2" />
-    </fragment>
+        tools:layout="@layout/fragment_timeline" />
     <fragment
         android:id="@+id/mapsFragment"
         android:name="dk.itu.moapd.copenhagenbuzz.fcag.MapsFragment"
         android:label="fragment_maps"
-        tools:layout="@layout/fragment_maps" >
-        <action
-            android:id="@+id/action_mapsFragment_to_mainActivity2"
-            app:destination="@id/mainActivity2" />
-    </fragment>
+        tools:layout="@layout/fragment_maps" />
     <fragment
-        android:id="@+id/favoritesFragment2"
+        android:id="@+id/favoritesFragment"
         android:name="dk.itu.moapd.copenhagenbuzz.fcag.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" >
-        <action
-            android:id="@+id/action_favoritesFragment2_to_mainActivity2"
-            app:destination="@id/mainActivity2" />
-    </fragment>
+        tools:layout="@layout/fragment_favorites" />
 </navigation>

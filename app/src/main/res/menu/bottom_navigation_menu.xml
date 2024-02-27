@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-<!--    <item-->
-<!--        android:id="@+id/item_home"-->
-<!--        android:enabled="true"-->
-<!--        android:icon="@drawable/baseline_add_24"-->
-<!--        android:title="CIAO!"/>-->
     <item
-        android:id="@+id/item_timeline"
+        android:id="@+id/fragment_create_event"
+        android:enabled="true"
+        android:icon="@drawable/baseline_add_24"
+        android:title="CIAO!"/>
+    <item
+        android:id="@+id/fragment_timeline"
         android:enabled="true"
         android:icon="@drawable/baseline_timeline"
         android:title="@string/timeline_fragment"/>
     <item
-        android:id="@+id/item_favorites"
+        android:id="@+id/fragment_favorites"
         android:enabled="true"
         android:icon="@drawable/baseline_favorite"
         android:title="@string/favorites_fragment"/>
     <item
-        android:id="@+id/item_maps"
+        android:id="@+id/fragment_maps"
         android:enabled="true"
         android:icon="@drawable/baseline_map"
         android:title="@string/maps_fragment"/>

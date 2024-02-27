@@ -6,10 +6,10 @@ import android.view.Menu
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.snackbar.Snackbar
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityMainBinding
-
-
 
 
 /**
@@ -56,6 +56,12 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             setSupportActionBar(topAppBar)
         }
+
+        // Search the view hierarchy and fragment for the `NavController` and return it to you.
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragment_container_view) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNavigation.setupWithNavController(navController)
     }
 
 

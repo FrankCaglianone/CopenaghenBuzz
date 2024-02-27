@@ -9,6 +9,15 @@ import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityLoginBinding
 
 
 
+/**
+ * LoginActivity is responsible for handling user login actions within the Copenhagen Buzz application.
+ *
+ * This activity presents the user with options to log in or continue as a guest. Depending on the user's choice,
+ * it navigates to the MainActivity with the login state passed as an Intent extra. The activity uses view binding
+ * to interact with the layout components efficiently.
+ *
+ * @property binding An instance of [ActivityLoginBinding] for accessing the views in the activity's layout.
+ */
 class LoginActivity : AppCompatActivity() {
 
     // Binding variable

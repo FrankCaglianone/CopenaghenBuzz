@@ -10,6 +10,18 @@ import com.google.android.material.snackbar.Snackbar
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityMainBinding
 
 
+
+
+/**
+ * Main Activity class for the Copenhagen Buzz application.
+ *
+ * This activity is responsible for initializing the application's UI and handling user interactions
+ * to create new events. It sets up the content view using view binding and configures the system
+ * window to fit the system windows for immersive content display.
+ *
+ * @property binding An instance of [ActivityMainBinding] for accessing the views in the activity's layout.
+ * @property event An instance of [Event] class used to store the details of a new event.
+ */
 class MainActivity : AppCompatActivity() {
 
     // Binding variable

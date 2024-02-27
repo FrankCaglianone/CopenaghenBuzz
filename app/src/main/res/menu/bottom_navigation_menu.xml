@@ -4,7 +4,7 @@
         android:id="@+id/fragment_create_event"
         android:enabled="true"
         android:icon="@drawable/baseline_add_24"
-        android:title="CIAO!"/>
+        android:title="@string/create_event"/>
     <item
         android:id="@+id/fragment_timeline"
         android:enabled="true"

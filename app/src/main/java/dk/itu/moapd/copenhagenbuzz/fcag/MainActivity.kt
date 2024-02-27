@@ -1,14 +1,11 @@
 package dk.itu.moapd.copenhagenbuzz.fcag
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.snackbar.Snackbar
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityMainBinding
 
 
@@ -57,12 +54,13 @@ class MainActivity : AppCompatActivity() {
             setSupportActionBar(topAppBar)
         }
 
-        // Search the view hierarchy and fragment for the `NavController` and return it to you.
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.fragment_container_view) as NavHostFragment
-        val navController = navHostFragment.navController
-        binding.bottomNavigation.setupWithNavController(navController)
+        // Create the NavController for the Fragments
+        instantiateNavController()
+
     }
+
+
+
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -86,6 +84,19 @@ class MainActivity : AppCompatActivity() {
             intent.getBooleanExtra("isLoggedIn", false)
         return true
     }
+
+
+
+
+
+    private fun instantiateNavController() {
+        // Search the view hierarchy and fragment for the `NavController` and return it to you.
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.fragment_container_view) as NavHostFragment
+        val navController = navHostFragment.navController
+        binding.bottomNavigation.setupWithNavController(navController)
+    }
+
 
 
 

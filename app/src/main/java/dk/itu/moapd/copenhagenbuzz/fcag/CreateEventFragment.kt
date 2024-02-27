@@ -103,28 +103,10 @@ class CreateEventFragment : Fragment() {
 
 
 
-    /**
-     * Restores the activity's state during the creation process. This function is called after onStart(),
-     * when the activity is being re-initialized from a previously saved state.
-     *
-     * @param savedInstanceState The Bundle containing the data most recently supplied in onSaveInstanceState.
-     */
-//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-//        super.onRestoreInstanceState(savedInstanceState)
-//        // Restore the state of the dropdown or any other relevant information
-//        binding.contentMain.autoCompleteTextViewEventType.setText(savedInstanceState.getString("eventType", ""))
-//    }
-
-
-
-
-
-
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 
 }

@@ -13,6 +13,7 @@
 
 
 
+    
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"
         android:layout_width="0dp"

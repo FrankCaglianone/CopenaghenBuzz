@@ -96,54 +96,6 @@ class MainActivity : AppCompatActivity() {
 
 
     /**
-     * Creates an event listener that responds to clicks on the "Add Event" button by collecting
-     * input from the user and creating a new event instance. It validates the user input before
-     * proceeding to create an event and displays a message upon successful creation calling
-     * showMessage().
-     */
-//    private fun createEventListener() {
-//
-//        with(binding) {
-//            contentMain.addEventButton.setOnClickListener {
-//                if (contentMain.editTextEventLocation.text.toString().isNotEmpty() && contentMain.editTextEventName.text.toString()
-//                        .isNotEmpty()
-//                ) {
-//
-//                    // Getting all variables inputs
-//                    event.eventName = contentMain.editTextEventName.text.toString().trim()
-//                    event.eventLocation = contentMain.editTextEventLocation.text.toString().trim()
-//                    event.eventDate = contentMain.editTextEventDate.text.toString().trim()
-//                    event.eventType = contentMain.autoCompleteTextViewEventType.text.toString().trim()
-//                    event.eventDescription = contentMain.editTextEventDescription.text.toString().trim()
-//
-//                    // Write in the ‘Logcat‘ system and SnackBar
-//                    showMessage(it)
-//                }
-//            }
-//        }
-//    }
-
-
-
-
-
-    /**
-     * This function logs the event details and shows a Snackbar with the event information.
-     *
-     * @param view The view to show.
-     */
-    private fun showMessage(view: View) {
-        Log.d(TAG, event.toString())
-        Snackbar.make(view, event.toString(), Snackbar.LENGTH_SHORT).show()
-    }
-
-
-
-
-
-
-
-    /**
      * Restores the activity's state during the creation process. This function is called after onStart(),
      * when the activity is being re-initialized from a previously saved state.
      *

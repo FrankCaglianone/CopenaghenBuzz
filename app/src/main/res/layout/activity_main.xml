@@ -9,20 +9,7 @@
     tools:context=".MainActivity">
 
 
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <include
-            android:id="@+id/content_main"
-            layout="@layout/content_main" />
-
-    </androidx.core.widget.NestedScrollView>
-
-
+    <!-- TOP APP BAR-->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +33,22 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
+    <!-- NESTED SCROLL VIEW FOR CONTENT MAIN   -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <include
+            android:id="@+id/content_main"
+            layout="@layout/content_main" />
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+    <!-- BOTTOM NAVIGATION BAR   -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

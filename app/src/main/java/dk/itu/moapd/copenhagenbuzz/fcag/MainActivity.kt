@@ -34,10 +34,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    // An instance of the ‘Event' class.
-    private val event : Event = Event("", "", "", "", "")
-
-
 
     /**
      * Initializes the activity. This includes:
@@ -60,9 +56,6 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             setSupportActionBar(topAppBar)
         }
-
-        // Adding the Event Listener to Create a new Event
-//        createEventListener()
     }
 
 
@@ -81,8 +74,6 @@ class MainActivity : AppCompatActivity() {
      * @return You must return true for the menu to be displayed; if you return false it will not be shown.
      */
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        Log.d(TAG, "WTF")
-
         menu.findItem(R.id.login).isVisible =
             !intent.getBooleanExtra("isLoggedIn", false)
         menu.findItem(R.id.logout).isVisible =

@@ -57,12 +57,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        with(binding) {
+            setSupportActionBar(topAppBar)
+        }
+
         // Adding the Event Listener to Create a new Event
         createEventListener()
     }
 
 
-
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.top_app_bar, menu)
+        return true
+    }
 
 
 

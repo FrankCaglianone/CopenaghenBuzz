@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +15,6 @@
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -128,13 +128,12 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/auto_complete_text_view_event_type"
-                    android:inputType="none"
-                    android:hint="@string/event_type"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:simpleItems="@array/event_types"
-                    />
+
+                    android:hint="@string/event_type"
+                    android:inputType="none"
+                    app:simpleItems="@array/event_types" />
             </com.google.android.material.textfield.TextInputLayout>
 
 

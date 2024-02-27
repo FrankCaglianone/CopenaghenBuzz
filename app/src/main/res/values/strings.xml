@@ -9,6 +9,10 @@
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="create_user">Create User</string>
+    <string name="favorites_fragment">Favorites Fragment</string>
+    <string name="maps_fragment">Maps Fragment</string>
+    <string name="timeline_fragment">Timeline Fragment</string>
+
 
     <string-array name="event_types">
         <item>Item1</item>

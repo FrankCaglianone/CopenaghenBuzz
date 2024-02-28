@@ -9,7 +9,8 @@
     android:id="@+id/event_material_card"
     app:cardBackgroundColor="@color/dirty_white"
     app:cardCornerRadius="16dp"
-    app:cardElevation="6dp">
+    app:cardElevation="6dp"
+    android:padding="@dimen/ten_dp">
 
     <!-- CONSTRAINT LAYOUT -->
     <androidx.constraintlayout.widget.ConstraintLayout

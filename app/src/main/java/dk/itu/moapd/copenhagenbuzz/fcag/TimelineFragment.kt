@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentTimelineBinding
 
 
@@ -17,6 +18,11 @@ class TimelineFragment : Fragment() {
         get() = requireNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
+
+
+
+    private val eventListViewModel: DataViewModel by viewModels()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,5 +46,4 @@ class TimelineFragment : Fragment() {
         _binding = null
     }
 
-   //
 }

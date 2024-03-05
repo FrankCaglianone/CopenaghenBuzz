@@ -10,14 +10,14 @@
     app:cardBackgroundColor="@color/dirty_white"
     app:cardCornerRadius="16dp"
     app:cardElevation="6dp"
-    android:padding="@dimen/ten_dp"
-    android:layout_margin="@dimen/ten_dp">
+    android:padding="@dimen/ten_dp">
 
     <!-- CONSTRAINT LAYOUT -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="@dimen/ten_dp"
+        android:layout_margin="@dimen/ten_dp">
 
         <!-- EVENT NAME -->
         <TextView
@@ -25,7 +25,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/ten_dp"
-            android:text="Copenhagen Light Festival"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/user_image"
@@ -57,7 +56,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ten_dp"
-            android:text="Festival"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +79,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ten_dp"
-            android:text="Copenhagen Downtown"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +89,6 @@
             android:id="@+id/event_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Fri, Feb 02 2024 - Sun, Feb 25 2024"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -105,7 +101,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/ten_dp"
             android:maxLines="2"
-            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

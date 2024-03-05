@@ -61,10 +61,10 @@ class EventAdapter(private val context: Context, private val events: List<Event>
     private fun populateViewHolder(viewHolder: ViewHolder, dummy: Event) {
         with(viewHolder) {
             eventName.text = dummy.eventName
-//            userImage.
-//            favouriteButton
+            userImage.setImageResource(R.drawable.baseline_person)
+            favouriteButton.setImageResource(R.drawable.baseline_favorite)
             eventType.text = dummy.eventType
-//            eventImage:
+            eventImage.setImageResource(R.drawable.ic_launcher_foreground)
             eventLocation.text = dummy.eventLocation
             eventDate.text = dummy.eventDate
             eventDescription.text = dummy.eventDescription

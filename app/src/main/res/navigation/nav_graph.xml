@@ -6,7 +6,7 @@
     app:startDestination="@id/fragment_create_event">
     <fragment
         android:id="@+id/fragment_create_event"
-        android:name="dk.itu.moapd.copenhagenbuzz.fcag.CreateEventFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.fcag.fragments.CreateEventFragment"
         android:label="fragment_create_event"
         tools:layout="@layout/fragment_create_event" >
         <action
@@ -21,17 +21,17 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_timeline"
-        android:name="dk.itu.moapd.copenhagenbuzz.fcag.TimelineFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.fcag.fragments.TimelineFragment"
         android:label="fragment_timeline"
         tools:layout="@layout/fragment_timeline" />
     <fragment
         android:id="@+id/fragment_maps"
-        android:name="dk.itu.moapd.copenhagenbuzz.fcag.MapsFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.fcag.fragments.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps" />
     <fragment
         android:id="@+id/fragment_favorites"
-        android:name="dk.itu.moapd.copenhagenbuzz.fcag.FavoritesFragment"
+        android:name="dk.itu.moapd.copenhagenbuzz.fcag.fragments.FavoritesFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
 </navigation>

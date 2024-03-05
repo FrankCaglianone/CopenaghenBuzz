@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.fcag
+package dk.itu.moapd.copenhagenbuzz.fcag.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

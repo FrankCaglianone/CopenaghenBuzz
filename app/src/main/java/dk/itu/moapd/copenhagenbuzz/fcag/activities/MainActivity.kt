@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.fcag
+package dk.itu.moapd.copenhagenbuzz.fcag.activities
 
 import android.os.Bundle
 import android.view.Menu
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityMainBinding
 
 

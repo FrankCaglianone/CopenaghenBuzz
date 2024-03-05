@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.fcag
+package dk.itu.moapd.copenhagenbuzz.fcag.fragments
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.snackbar.Snackbar
+import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentCreateEventBinding
 
 

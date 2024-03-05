@@ -1,16 +1,17 @@
-package dk.itu.moapd.copenhagenbuzz.fcag
+package dk.itu.moapd.copenhagenbuzz.fcag.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentFavoritesBinding
+import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentMapsBinding
 
 
-class FavoritesFragment : Fragment() {
+class MapsFragment : Fragment() {
 
-    private var _binding: FragmentFavoritesBinding? = null
+
+    private var _binding: FragmentMapsBinding? = null
 
     private val binding
         get() = requireNotNull(_binding) {
@@ -22,11 +23,11 @@ class FavoritesFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = FragmentFavoritesBinding.inflate(inflater, container, false).also {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View = FragmentMapsBinding.inflate(inflater, container, false).also {
         _binding = it
     }.root
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,5 +38,6 @@ class FavoritesFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 
 }

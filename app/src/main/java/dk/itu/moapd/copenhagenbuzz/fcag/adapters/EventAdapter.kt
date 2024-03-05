@@ -1,7 +1,6 @@
-package dk.itu.moapd.copenhagenbuzz.fcag
+package dk.itu.moapd.copenhagenbuzz.fcag.adapters
 
 import android.content.Context
-import android.media.Image
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,8 @@ import android.widget.BaseAdapter
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import dk.itu.moapd.copenhagenbuzz.fcag.databinding.EventRowItemBinding
+import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
+import dk.itu.moapd.copenhagenbuzz.fcag.R
 
 class EventAdapter(private val context: Context, private val events: List<Event>) : BaseAdapter() {
 

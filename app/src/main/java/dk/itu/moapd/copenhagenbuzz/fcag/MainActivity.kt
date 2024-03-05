@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         // Support Action for the Top App Bar
         setSupportActionBar(binding.topAppBar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         // Create the NavController for the Fragments
         instantiateNavController()

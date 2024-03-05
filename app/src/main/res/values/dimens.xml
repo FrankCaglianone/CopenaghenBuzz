@@ -4,4 +4,6 @@
     <dimen name="margin_large">25dp</dimen>
     <dimen name="margin_standard">5dp</dimen>
     <dimen name="ten_dp">10dp</dimen>
+    <dimen name="fifty_dp">50dp</dimen>
+    <dimen name="seventy_dp">70dp</dimen>
 </resources>

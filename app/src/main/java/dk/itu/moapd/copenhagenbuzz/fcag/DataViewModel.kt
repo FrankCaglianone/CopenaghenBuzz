@@ -25,7 +25,7 @@ class DataViewModel : ViewModel() {
 
 
     // Call this method to fetch events asynchronously
-    fun fetchEventsAsync() {
+    private fun fetchEventsAsync() {
         viewModelScope.launch {
             val events = generateEvents()
             // Update the private MutableLiveData which in turn updates the exposed LiveData

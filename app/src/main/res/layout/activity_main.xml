@@ -37,7 +37,8 @@
         <include
             android:id="@+id/content_main"
             layout="@layout/content_main"
-            android:layout_marginTop="@dimen/seventy_dp"
+            android:layout_marginTop="@dimen/fifty_five_dp"
+            android:layout_marginBottom="@dimen/fifty_five_dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

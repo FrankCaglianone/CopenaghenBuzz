@@ -11,4 +11,5 @@
     <dimen name="zero_dp">0dp</dimen>
     <dimen name="two_hundred_dp">220dp</dimen>
     <dimen name="thirty_dp">30dp</dimen>
+    <dimen name="fifty_five_dp">55dp</dimen>
 </resources>

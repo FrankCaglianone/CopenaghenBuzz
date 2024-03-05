@@ -38,8 +38,15 @@ class TimelineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.apply { }
+        binding.apply {
+            eventListViewModel.events.observe(viewLifecycleOwner) {tmp ->
+                // Define the list view adapter.
+                val adapter = EventAdapter(requireContext(), tmp)
+                listView.adapter = adapter
+            }
+        }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

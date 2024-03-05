@@ -2,6 +2,7 @@ package dk.itu.moapd.copenhagenbuzz.fcag
 
 import android.content.Context
 import android.media.Image
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +19,6 @@ class EventAdapter(private val context: Context, private val events: List<Event>
     }
 
 
-    private lateinit var binding : EventRowItemBinding
-
 
     class ViewHolder(val view: View) {
         val eventName: TextView = view.findViewById(R.id.event_name)
@@ -34,7 +33,7 @@ class EventAdapter(private val context: Context, private val events: List<Event>
 
 
     override fun getCount(): Int { return events.size }
-    override fun getItem(position: Int): Any { return events[position] }
+    override fun getItem(position: Int): Event { return events[position] }
     override fun getItemId(position: Int): Long { return position.toLong() }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -42,13 +41,14 @@ class EventAdapter(private val context: Context, private val events: List<Event>
         // If convertView == null -> inflate, else reuse the old view
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.event_row_item, parent, false)
 
+        //
         val viewHolder = (view.tag as? ViewHolder) ?: ViewHolder(view)
 
         // Populate the view holder with the selected `Dummy` data.
-//        Log.d(TAG, "Populate an item at position: $position")
-//        getItem(position)?.let { dummy ->
-//            populateViewHolder(viewHolder)
-//        }
+        Log.d(TAG, "Populate an item at position: $position")
+        getItem(position).let { event ->
+            populateViewHolder(viewHolder, event)
+        }
 
         // Set the new view holder and return the view object.
         view.tag = viewHolder
@@ -58,18 +58,19 @@ class EventAdapter(private val context: Context, private val events: List<Event>
 
 
 
-    private fun populateViewHolder(view: View) {
+    private fun populateViewHolder(viewHolder: ViewHolder, dummy: Event) {
+        with(viewHolder) {
+            eventName.text = dummy.eventName
+//            userImage.
+//            favouriteButton
+            eventType.text = dummy.eventType
+//            eventImage:
+            eventLocation.text = dummy.eventLocation
+            eventDate.text = dummy.eventDate
+            eventDescription.text = dummy.eventDescription
+        }
 
-        // Link the UI components
-//        val textViewTitle: TextView = view.findViewById(R.id.text_view_title)
-//        val textViewSubtitle: TextView = view.findViewById(R.id.text_view_subtitle)
-//        val textViewDescription: TextView = view.findViewById(R.id.text_view_description)
-//        // Fill out the Material Design card.
-//        textViewTitle.text = dummy.cityName
-//        textViewSubtitle.text = context.getString(
-//            R.string.secondary_text, dummy.country, dummy.zipCode
-//        )
-//        textViewDescription.text = dummy.description
+
     }
 
 }

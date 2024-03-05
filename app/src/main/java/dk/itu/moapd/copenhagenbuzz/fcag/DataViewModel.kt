@@ -18,6 +18,9 @@ class DataViewModel : ViewModel() {
 
     // Public LiveData, exposed for observation
     val events: LiveData<List<Event>> = _events
+    init {
+        fetchEventsAsync()
+    }
 
 
 

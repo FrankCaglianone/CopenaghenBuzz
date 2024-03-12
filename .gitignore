@@ -1,6 +1,14 @@
 # Created by https://www.toptal.com/developers/gitignore/api/androidstudio,android,kotlin,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio,android,kotlin,macos
 
+
+
+# GOOGLE SERVICES (eg. APIs or Firebase)
+google-services.json
+
+
+
+
 ### Android ###
 # Gradle files
 .gradle/

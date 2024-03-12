@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dk.itu.moapd.copenhagenbuzz.fcag.R
@@ -21,18 +22,17 @@ class FavoriteAdapter(private val favoriteEvents: List<Event>) : RecyclerView.Ad
 
     // Custom ViewHolder
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private lateinit var binding: FavoriteRowItemBinding
 
         private var favoriteName: TextView = view.findViewById(R.id.favorite_event_name)
         private val favoriteType: TextView = view.findViewById(R.id.favorite_event_type)
-//        private val favoriteImage: ImageView = binding.favoriteEventImage
-//        private val userImage: ImageView = binding.favoriteUserImage
+        private val favoriteImage: ImageView = view.findViewById(R.id.favorite_event_image)
+        private val userImage: ImageView = view.findViewById(R.id.favorite_user_image)
 
         fun bind(event: Event) {
             favoriteName.text = event.eventName
             favoriteType.text = event.eventDescription
-//            favoriteImage.imageAlpha = event.
-//            userImage.imageAlpha = event.
+            favoriteImage.setImageResource(R.drawable.ic_launcher_foreground)
+            userImage.setImageResource(R.drawable.baseline_person)
         }
     }
 

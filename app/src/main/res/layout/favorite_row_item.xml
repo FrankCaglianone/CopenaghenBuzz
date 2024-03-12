@@ -41,9 +41,9 @@
             android:layout_width="@dimen/fifty_dp"
             android:layout_height="@dimen/fifty_dp"
             android:layout_marginStart="@dimen/eight_dp"
-            android:layout_marginTop="@dimen/twenty_four_dp"
+            app:layout_constraintBottom_toBottomOf="@+id/favorite_event_type"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/favorite_event_name"
             tools:srcCompat="@tools:sample/avatars" />
 
 
@@ -66,7 +66,9 @@
             android:layout_width="@dimen/zero_dp"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
 

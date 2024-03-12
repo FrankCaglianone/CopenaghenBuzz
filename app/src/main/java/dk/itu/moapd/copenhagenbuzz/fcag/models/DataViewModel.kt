@@ -17,14 +17,17 @@ class DataViewModel : ViewModel() {
 
 
     // Public LiveData, exposed for observation
+    // -- Events
     val events: LiveData<List<Event>> = _events
     init {
         fetchEventsAsync()
     }
-
-
-    // Public LiveData for favorites
+    // -- Favorites
     val favorites: LiveData<List<Event>> = _favorites
+    init {
+        fetchFavoritesAsync()
+    }
+
 
 
 
@@ -36,6 +39,15 @@ class DataViewModel : ViewModel() {
             val events = generateEvents()
             // Update the private MutableLiveData which in turn updates the exposed LiveData
             _events.value = events
+        }
+    }
+
+
+
+    private fun fetchFavoritesAsync() {
+        viewModelScope.launch {
+            val favorites = generateFavorites()
+            _favorites.value = favorites
         }
     }
 
@@ -56,6 +68,24 @@ class DataViewModel : ViewModel() {
         }
         events // Return the generated list of events
     }
+
+
+
+    private suspend fun generateFavorites(): List<Event> = withContext(Dispatchers.Default) {
+        val favorites = mutableListOf<Event>()
+        for (i in 0 until 10) {
+            val event = Event(
+                eventName = "Event Name #$i",
+                eventLocation = "Event Location #$i",
+                eventDate = "Event Date #$i",
+                eventType = "Event Type #$i",
+                eventDescription = "Event Description #$i"
+            )
+            favorites.add(event)
+        }
+        favorites
+    }
+
 
 
 } // end of class

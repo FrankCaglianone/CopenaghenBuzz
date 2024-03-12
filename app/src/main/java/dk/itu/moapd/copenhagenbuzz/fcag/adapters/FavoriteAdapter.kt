@@ -23,8 +23,8 @@ class FavoriteAdapter(private val favoriteEvents: List<Event>) : RecyclerView.Ad
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private lateinit var binding: FavoriteRowItemBinding
 
-        private val favoriteName: TextView = binding.favoriteEventName
-        private val favoriteType: TextView = binding.favoriteEventType
+        private var favoriteName: TextView = view.findViewById(R.id.favorite_event_name)
+        private val favoriteType: TextView = view.findViewById(R.id.favorite_event_type)
 //        private val favoriteImage: ImageView = binding.favoriteEventImage
 //        private val userImage: ImageView = binding.favoriteUserImage
 
@@ -54,6 +54,5 @@ class FavoriteAdapter(private val favoriteEvents: List<Event>) : RecyclerView.Ad
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = favoriteEvents.size
-
 
 }

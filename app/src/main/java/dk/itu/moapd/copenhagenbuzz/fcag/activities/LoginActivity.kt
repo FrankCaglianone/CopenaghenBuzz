@@ -5,6 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.core.view.WindowCompat
+import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
+import com.google.firebase.auth.FirebaseAuth
+import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityLoginBinding
 
 
@@ -32,6 +37,74 @@ class LoginActivity : AppCompatActivity() {
 
 
 
+    private val signInLauncher =
+        registerForActivityResult(FirebaseAuthUIActivityResultContract())
+        { result -> onSignInResult(result) }
+
+
+
+    private fun createSignInIntent() {
+        // Choose authentication providers.
+        val providers = arrayListOf(
+            AuthUI.IdpConfig.EmailBuilder().build(),
+//            AuthUI.IdpConfig.PhoneBuilder().build(),
+//            AuthUI.IdpConfig.GoogleBuilder().build()
+        )
+        // Create and launch sign-in intent.
+        val signInIntent = AuthUI.getInstance()
+            .createSignInIntentBuilder()
+            .setAvailableProviders(providers)
+            .setIsSmartLockEnabled(false)
+            .setLogo(R.drawable.ic_launcher_foreground)
+            .setTheme(R.style.Theme_CopenhagenBuzz)
+            .apply {
+                setTosAndPrivacyPolicyUrls(
+                    "https://firebase.google.com/terms/",
+                    "https://firebase.google.com/policies/…"
+                )
+            }
+            .build()
+        signInLauncher.launch(signInIntent)
+    }
+
+    private fun onSignInResult(
+        result: FirebaseAuthUIAuthenticationResult
+    ) {
+        when (result.resultCode) {
+            RESULT_OK -> {
+                // Successfully signed in.
+//                showSnackBar("User logged in the app.")
+                startMainActivity()
+            }
+            else -> {
+                // Sign in failed.
+//                showSnackBar("Authentication failed.")
+            }
+        }
+    }
+    private fun startMainActivity() {
+        Intent(this, MainActivity::class.java).apply {
+            startActivity(this)
+            finish()
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Initializes the activity. This includes:
@@ -46,22 +119,8 @@ class LoginActivity : AppCompatActivity() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-
-        with(binding) {
-            loginButton.setOnClickListener {
-                navigateToMainActivity(true)
-                Log.d(TAG, "isLoggedIn = true")
-            }
-            guestButton.setOnClickListener {
-                navigateToMainActivity(false)
-                Log.d(TAG, "isLoggedIn = false")
-            }
-        }
+        createSignInIntent()
     }
 
 

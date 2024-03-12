@@ -1,11 +1,13 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.auth.FirebaseAuth
 import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityMainBinding
 
@@ -33,6 +35,39 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+
+
+
+    private lateinit var auth: FirebaseAuth
+
+    override fun onStart() {
+        super.onStart()
+        // Redirect the user to the LoginActivity if they are not logged in.
+        auth.currentUser ?: startLoginActivity()
+    }
+    private fun startLoginActivity() {
+        Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }.let(::startActivity)
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Initializes the activity. This includes:
      * - Setting up the system window to fit system windows
@@ -50,6 +85,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize Firebase Auth.
+        auth = FirebaseAuth.getInstance()
 
         // Support Action for the Top App Bar
         setSupportActionBar(binding.topAppBar)

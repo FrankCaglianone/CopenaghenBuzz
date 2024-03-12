@@ -13,6 +13,7 @@ class DataViewModel : ViewModel() {
     // Define a LiveData object to hold a list of Event objects.
     // Use MutableLiveData to allow for updates to the data.
     private val _events = MutableLiveData<List<Event>>()
+    private val _favorites = MutableLiveData<List<Event>>()
 
 
     // Public LiveData, exposed for observation
@@ -20,6 +21,12 @@ class DataViewModel : ViewModel() {
     init {
         fetchEventsAsync()
     }
+
+
+    // Public LiveData for favorites
+    val favorites: LiveData<List<Event>> = _favorites
+
+
 
 
 

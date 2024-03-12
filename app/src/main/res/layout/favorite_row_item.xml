@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/favorite_event_material_card"
+    app:cardBackgroundColor="@color/dirty_white"
+    app:cardCornerRadius="@dimen/sixteen_dp"
+    app:cardElevation="@dimen/six_dp"
+    android:padding="@dimen/ten_dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <!-- EVENT NAME -->
+        <TextView
+            android:id="@+id/favorite_event_name"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            android:layout_marginEnd="@dimen/eight_dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/favorite_event_image"
+            app:layout_constraintStart_toEndOf="@+id/favorite_user_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <!-- USER IMAGE -->
+        <ImageView
+            android:id="@+id/favorite_user_image"
+            android:layout_width="@dimen/fifty_dp"
+            android:layout_height="@dimen/fifty_dp"
+            android:layout_marginStart="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/twenty_four_dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+
+        <!-- EVENT TYPE -->
+        <TextView
+            android:id="@+id/favorite_event_type"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/eight_dp"
+            android:layout_marginTop="@dimen/eight_dp"
+            android:layout_marginEnd="@dimen/eight_dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@+id/favorite_event_image"
+            app:layout_constraintStart_toEndOf="@+id/favorite_user_image"
+            app:layout_constraintTop_toBottomOf="@+id/favorite_event_name" />
+
+        <!-- EVENT IMAGE -->
+        <ImageView
+            android:id="@+id/favorite_event_image"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

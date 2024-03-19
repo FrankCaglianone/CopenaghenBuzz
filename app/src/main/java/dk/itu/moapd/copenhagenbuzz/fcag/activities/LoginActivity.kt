@@ -35,8 +35,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
-
-
     private val signInLauncher =
         registerForActivityResult(FirebaseAuthUIActivityResultContract())
         { result -> onSignInResult(result) }
@@ -66,6 +64,7 @@ class LoginActivity : AppCompatActivity() {
         signInLauncher.launch(signInIntent)
     }
 
+
     private fun onSignInResult(
         result: FirebaseAuthUIAuthenticationResult
     ) {
@@ -81,27 +80,14 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
+
     private fun startMainActivity() {
         Intent(this, MainActivity::class.java).apply {
             startActivity(this)
             finish()
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -120,26 +106,6 @@ class LoginActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
         createSignInIntent()
-    }
-
-
-
-
-
-    /**
-     * Navigates to the [MainActivity] and passes the login status as an extra in the intent.
-     * This method also finishes the current activity to prevent the user from returning to the
-     * login screen.
-     *
-     * @param isLoggedIn A boolean indicating whether the user has logged in (true) or is
-     * continuing as a guest (false).
-     */
-    private fun navigateToMainActivity(isLoggedIn: Boolean) {
-        val intent = Intent(this@LoginActivity, MainActivity::class.java).apply {
-            putExtra("isLoggedIn", isLoggedIn)
-        }
-        startActivity(intent)
-        finish() // Finish the LoginActivity so the user can't go back to it
     }
 
 

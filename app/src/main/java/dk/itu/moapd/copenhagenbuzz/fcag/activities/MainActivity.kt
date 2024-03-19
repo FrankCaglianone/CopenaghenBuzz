@@ -37,36 +37,24 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
-
-
-
-
+    // Firebase variable
     private lateinit var auth: FirebaseAuth
 
+
+
+    /**
+     * Called when the activity is starting. This method is part of the Activity lifecycle in Android development.
+     * It performs a check on the user's authentication status and redirects the user to the LoginActivity
+     * if they are not currently logged in. This ensures that only authenticated users can access the activity.
+     *
+     * Overrides:
+     * onStart in class Activity
+     */
     override fun onStart() {
         super.onStart()
         // Redirect the user to the LoginActivity if they are not logged in.
         auth.currentUser ?: startLoginActivity()
     }
-    private fun startLoginActivity() {
-        Intent(this, LoginActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK
-        }.let(::startActivity)
-    }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -102,21 +90,31 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    // Start the login activity using firebase
+    private fun startLoginActivity() {
+        Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }.let(::startActivity)
+    }
 
 
 
+
+    /**
+     * Handles the selection of an item in the options menu. This method is triggered whenever an item
+     * in the options menu is selected. Specifically, it handles the action for the log out menu item
+     * by signing the user out and redirecting them to the LoginActivity.
+     *
+     * @param item The menu item that was selected.
+     * @return Boolean Returns true if the item selection was handled by this method; returns the result of the
+     *         superclass onOptionsItemSelected method otherwise. This ensures that menu selections not
+     *         explicitly handled by this method are still processed according to Android's default behavior.
+     *
+     * Overrides:
+     * onOptionsItemSelected in class Activity
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        // Handle top app bar menu item clicks.
-//        R.id.action_user_info -> {
-//            UserInfoDialogFragment().apply {
-//                isCancelable = false
-//            }.also { dialogFragment ->
-//                dialogFragment.show(supportFragmentManager,
-//                    "UserInfoDialogFragment")
-//            }
-//            true
-//        }
-
         // Log Out Button
         R.id.action_logout -> {
             auth.signOut()
@@ -160,7 +158,6 @@ class MainActivity : AppCompatActivity() {
 
 
 
-
     /**
      * Sets up the Navigation Controller for managing fragment navigation within the app.
      * It finds the navigation host fragment in the current view hierarchy and links it with
@@ -173,9 +170,6 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
     }
-
-
-
 
 
 

@@ -48,7 +48,6 @@ class LoginActivity : AppCompatActivity() {
         val providers = arrayListOf(
             AuthUI.IdpConfig.EmailBuilder().build(),
             AuthUI.IdpConfig.GoogleBuilder().build(),
-//            AuthUI.IdpConfig.FacebookBuilder().build()
         )
         // Create and launch sign-in intent.
         val signInIntent = AuthUI.getInstance()

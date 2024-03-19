@@ -28,4 +28,9 @@
     <string name="timeline_fragment">Timeline</string>
     <string name="create_event">Create Event</string>
 
+
+    <!-- Top App Bar -->
+    <string name="user_info">User Info</string>
+    <string name="action_logout">Logout</string>
+
 </resources>

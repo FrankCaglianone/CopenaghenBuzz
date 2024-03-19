@@ -1,12 +1,15 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.activities
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityMainBinding
@@ -97,6 +100,31 @@ class MainActivity : AppCompatActivity() {
         instantiateNavController()
     }
 
+
+
+
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        // Handle top app bar menu item clicks.
+//        R.id.action_user_info -> {
+//            UserInfoDialogFragment().apply {
+//                isCancelable = false
+//            }.also { dialogFragment ->
+//                dialogFragment.show(supportFragmentManager,
+//                    "UserInfoDialogFragment")
+//            }
+//            true
+//        }
+
+        // Log Out Button
+        R.id.action_logout -> {
+            auth.signOut()
+            startLoginActivity()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
 
 
 

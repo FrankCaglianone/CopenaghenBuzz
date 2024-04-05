@@ -17,7 +17,7 @@ import java.util.UUID
  */
 data class Event(var eventName: String? = null,
                  var eventLocation: String? = null,
-                 var eventDate: Long? = null,
+                 var eventDate: String? = null,
                  var eventType: String? = null,
                  var eventDescription: String? = null,
                  var eventId: String? = null,

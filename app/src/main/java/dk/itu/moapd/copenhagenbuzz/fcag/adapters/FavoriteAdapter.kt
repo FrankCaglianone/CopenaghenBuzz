@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FavoriteRowItemBinding
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
+import com.firebase.ui.database.FirebaseRecyclerAdapter
+import com.firebase.ui.database.FirebaseRecyclerOptions
 
-class FavoriteAdapter(private val favoriteEvents: List<Event>) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
+class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecyclerAdapter<Event, FavoriteAdapter.ViewHolder>(options) {
 
     companion object {
         private var TAG = "FavoriteAdapter.kt"
@@ -45,14 +47,18 @@ class FavoriteAdapter(private val favoriteEvents: List<Event>) : RecyclerView.Ad
 
 
     // Replace the contents of a view (invoked by the layout manager)
-    override fun onBindViewHolder(holder: FavoriteAdapter.ViewHolder, position: Int) {
-        Log.d(TAG, "Populate an item at position: $position")
-        val favoriteEvent = favoriteEvents[position]
-        holder.bind(favoriteEvent)
+//    override fun onBindViewHolder(holder: FavoriteAdapter.ViewHolder, position: Int) {
+//        Log.d(TAG, "Populate an item at position: $position")
+//        val favoriteEvent = favoriteEvents[position]
+//        holder.bind(favoriteEvent)
+//    }
+
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Event) {
+        holder.bind(model)
     }
 
-
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = favoriteEvents.size
+//    override fun getItemCount() = favoriteEvents.size
 
 }

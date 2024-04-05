@@ -7,11 +7,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentCreateEventBinding
+import io.github.cdimascio.dotenv.dotenv
 
 
 class CreateEventFragment : Fragment() {
+
+
+
+
+    private val dotenv = dotenv {
+        directory = "/assets"
+        filename = "env"
+    }
+
+    private val DATABASE_URL = dotenv["DATABASE_URL"]
 
 
     // Binding
@@ -81,9 +96,33 @@ class CreateEventFragment : Fragment() {
                     event.eventDescription = binding.editTextEventDescription.text.toString().trim()
 
                     // Write in the ‘Logcat‘ system and SnackBar
-                    showMessage(it)
+//                    showMessage(it)
+
+                    addEventToFirebase(event)
                 }
             }
+        }
+    }
+
+
+
+    private fun addEventToFirebase(event: Event) {
+        val databaseReference = Firebase.database(DATABASE_URL).reference
+        val key = databaseReference.push().key // Generate a unique key for the event
+
+        event.eventId = key // Assign the generated key as the event's ID
+        event.userId = FirebaseAuth.getInstance().currentUser?.uid
+
+        key?.let {
+            databaseReference.child(it).setValue(event)
+                .addOnSuccessListener {
+                    Log.d(TAG, "Event added successfully")
+                    Snackbar.make(binding.root, "Event added successfully", Snackbar.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Log.e(TAG, "Failed to add event", e)
+                    Snackbar.make(binding.root, "Failed to add event", Snackbar.LENGTH_SHORT).show()
+                }
         }
     }
 

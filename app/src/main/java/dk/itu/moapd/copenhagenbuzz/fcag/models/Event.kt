@@ -1,6 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.models
 
-
+import java.util.UUID
 
 
 /**
@@ -15,9 +15,11 @@ package dk.itu.moapd.copenhagenbuzz.fcag.models
  * @property eventType The type of the event.
  * @property eventDescription A detailed description of what the event is about.
  */
-data class Event(var eventName: String,
-                 var eventLocation: String,
-                 var eventDate: String,
-                 var eventType: String,
-                 var eventDescription: String,
+data class Event(var eventName: String? = null,
+                 var eventLocation: String? = null,
+                 var eventDate: Long? = null,
+                 var eventType: String? = null,
+                 var eventDescription: String? = null,
+                 var eventId: String? = null,
+                 var userId: String? = null
 )

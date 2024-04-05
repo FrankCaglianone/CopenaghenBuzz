@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
@@ -17,16 +16,6 @@ import io.github.cdimascio.dotenv.dotenv
 
 
 class CreateEventFragment : Fragment() {
-
-
-
-
-    private val dotenv = dotenv {
-        directory = "/assets"
-        filename = "env"
-    }
-
-    private val DATABASE_URL = dotenv["DATABASE_URL"]
 
 
     // Binding
@@ -49,9 +38,20 @@ class CreateEventFragment : Fragment() {
     private val event : Event = Event("", "", "", "", "")
 
 
+    // Environment Variables
+    private val dotenv = dotenv {
+        directory = "/assets"
+        filename = "env"
+    }
+    private val DATABASE_URL = dotenv["DATABASE_URL"]
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
+
 
 
     override fun onCreateView(
@@ -62,13 +62,11 @@ class CreateEventFragment : Fragment() {
     }.root
 
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // Adding the Event Listener to Create a new Event
         createEventListener()
-
-        //  binding.apply { }
     }
 
 
@@ -84,20 +82,19 @@ class CreateEventFragment : Fragment() {
     private fun createEventListener() {
         with(binding) {
             binding.addEventButton.setOnClickListener {
-                if (binding.editTextEventLocation.text.toString().isNotEmpty() && binding.editTextEventName.text.toString()
-                        .isNotEmpty()
-                ) {
+                if (validateInputs()) {
 
-                    // Getting all variables inputs
+                    // Collect inputs
                     event.eventName = binding.editTextEventName.text.toString().trim()
                     event.eventLocation = binding.editTextEventLocation.text.toString().trim()
                     event.eventDate = binding.editTextEventDate.text.toString().trim()
                     event.eventType = binding.autoCompleteTextViewEventType.text.toString().trim()
                     event.eventDescription = binding.editTextEventDescription.text.toString().trim()
+                    // Fetching userID from Firebase Auth
+                    event.userId = FirebaseAuth.getInstance().currentUser?.uid
 
-                    // Write in the ‘Logcat‘ system and SnackBar
-//                    showMessage(it)
 
+                    // Add the event to the firebase realtime database
                     addEventToFirebase(event)
                 }
             }
@@ -106,6 +103,19 @@ class CreateEventFragment : Fragment() {
 
 
 
+
+    // validate the inputs provided
+    private fun validateInputs(): Boolean {
+        // Simple validation for example purposes
+        return binding.editTextEventLocation.text.toString().isNotEmpty() &&
+                binding.editTextEventName.text.toString().isNotEmpty()
+    }
+
+
+
+
+
+    // Add the event to the firebase realtime database and display message upon success or failure
     private fun addEventToFirebase(event: Event) {
         val databaseReference = Firebase.database(DATABASE_URL).reference
         val key = databaseReference.push().key // Generate a unique key for the event

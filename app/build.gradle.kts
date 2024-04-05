@@ -56,5 +56,14 @@ dependencies {
     implementation("com.firebaseui:firebase-ui-auth:8.0.0")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-auth-ktx")
+    // dotenv
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+    // Import Real Time Database
+    implementation(platform("com.google.firebase:firebase-bom:32.7.2"))
+    implementation("com.firebaseui:firebase-ui-auth:8.0.0")
+    implementation("com.firebaseui:firebase-ui-database:8.0.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-database-ktx")
 
 }

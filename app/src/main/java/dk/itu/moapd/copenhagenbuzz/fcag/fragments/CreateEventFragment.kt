@@ -118,20 +118,39 @@ class CreateEventFragment : Fragment() {
     // Add the event to the firebase realtime database and display message upon success or failure
     private fun addEventToFirebase(event: Event) {
         val databaseReference = Firebase.database(DATABASE_URL).reference
-        val key = databaseReference.push().key // Generate a unique key for the event
+
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        event.userId = userId   // Assign user ID to the event
+
+
+        val key = userId?.let {
+            databaseReference.child("events")
+                .child(it)
+                .push()
+                .key
+        } // Generate a unique key for the event
+
 
         event.eventId = key // Assign the generated key as the event's ID
-        event.userId = FirebaseAuth.getInstance().currentUser?.uid
 
-        key?.let {
-            databaseReference.child(it).setValue(event)
+
+        if (key != null) {
+            databaseReference.child("events").child(userId).child(key).setValue(event)
                 .addOnSuccessListener {
                     Log.d(TAG, "Event added successfully")
-                    Snackbar.make(binding.root, "Event added successfully", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        binding.root,
+                        "Event added successfully",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
                 .addOnFailureListener { e ->
                     Log.e(TAG, "Failed to add event", e)
-                    Snackbar.make(binding.root, "Failed to add event", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        binding.root,
+                        "Failed to add event",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
         }
     }

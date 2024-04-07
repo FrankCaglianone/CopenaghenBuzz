@@ -11,6 +11,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dk.itu.moapd.copenhagenbuzz.fcag.OnItemClickListener
 import dk.itu.moapd.copenhagenbuzz.fcag.adapters.FavoriteAdapter
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentFavoritesBinding
 import dk.itu.moapd.copenhagenbuzz.fcag.models.DataViewModel
@@ -18,7 +19,7 @@ import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import io.github.cdimascio.dotenv.dotenv
 
 
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : Fragment(), OnItemClickListener {
 
     // Binding
     private var _binding: FragmentFavoritesBinding? = null
@@ -37,6 +38,12 @@ class FavoritesFragment : Fragment() {
     }
     private val DATABASE_URL = dotenv["DATABASE_URL"]
 
+
+    private val listener = object : OnItemClickListener {
+        override fun onItemClick(position: Int) {
+            println("Clicked mf $position")
+        }
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,7 +83,7 @@ class FavoritesFragment : Fragment() {
                 .build()
 
             // Initialize your FirebaseRecyclerAdapter with the options
-            val adapter = FavoriteAdapter(options)
+            val adapter = FavoriteAdapter(options, listener)
 
             binding.favoritesRecycleView.layoutManager = LinearLayoutManager(context)
             binding.favoritesRecycleView.adapter = adapter
@@ -84,6 +91,10 @@ class FavoritesFragment : Fragment() {
             // Important: Start listening for database changes
             adapter.startListening()
         }
+    }
+
+    override fun onItemClick(position: Int) {
+        println("Clicked mf $position")
     }
 
 

@@ -11,8 +11,9 @@ import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import dk.itu.moapd.copenhagenbuzz.fcag.OnItemClickListener
 
-class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecyclerAdapter<Event, FavoriteAdapter.ViewHolder>(options) {
+class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>, private val listener: OnItemClickListener) : FirebaseRecyclerAdapter<Event, FavoriteAdapter.ViewHolder>(options) {
 
     companion object {
         private var TAG = "FavoriteAdapter.kt"
@@ -46,6 +47,9 @@ class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecycle
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Event) {
         holder.bind(model)
+        holder.itemView.setOnClickListener {
+            listener.onItemClick(position)
+        }
     }
 
 

@@ -1,7 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.adapters
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dk.itu.moapd.copenhagenbuzz.fcag.R
-import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FavoriteRowItemBinding
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions

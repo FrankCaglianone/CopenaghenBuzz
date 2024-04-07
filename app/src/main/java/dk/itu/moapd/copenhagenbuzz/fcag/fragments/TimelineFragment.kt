@@ -5,18 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.database.FirebaseListOptions
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dk.itu.moapd.copenhagenbuzz.fcag.R
-import dk.itu.moapd.copenhagenbuzz.fcag.models.DataViewModel
 import dk.itu.moapd.copenhagenbuzz.fcag.adapters.EventAdapter
-import dk.itu.moapd.copenhagenbuzz.fcag.adapters.FavoriteAdapter
-import dk.itu.moapd.copenhagenbuzz.fcag.databinding.EventRowItemBinding
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentTimelineBinding
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import io.github.cdimascio.dotenv.dotenv
@@ -34,8 +28,6 @@ class TimelineFragment : Fragment() {
 
 
 
-//    private lateinit var row_item_binding : EventRowItemBinding
-
 
     private val dotenv = dotenv {
         directory = "/assets"
@@ -45,7 +37,7 @@ class TimelineFragment : Fragment() {
 
 
 
-//    private val eventListViewModel: DataViewModel by viewModels()
+
 
 
 
@@ -86,28 +78,11 @@ class TimelineFragment : Fragment() {
 
 
 
-//    fun favoriteEventListener() {
-//        val favoriteButton = row_item_binding.favouriteButton
-//        favoriteButton.setOnClickListener {
-//            println("Added to favs")
-//            // You could also use Log.d("TAG", "Added to favs") if you want to see the output in Logcat.
-//        }
-//    }
-
-
-
 
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        binding.apply {
-//            eventListViewModel.events.observe(viewLifecycleOwner) {tmp ->
-//                // Define the list view adapter.
-//                val adapter = EventAdapter(requireContext(), tmp)
-//                listView.adapter = adapter
-//            }
-//        }
     }
 
 

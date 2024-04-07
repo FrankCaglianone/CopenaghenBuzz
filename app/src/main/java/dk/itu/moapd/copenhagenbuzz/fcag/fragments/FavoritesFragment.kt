@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dk.itu.moapd.copenhagenbuzz.fcag.adapters.FavoriteAdapter
@@ -21,6 +20,7 @@ import io.github.cdimascio.dotenv.dotenv
 
 class FavoritesFragment : Fragment() {
 
+    // Binding
     private var _binding: FragmentFavoritesBinding? = null
 
     private val binding
@@ -29,15 +29,14 @@ class FavoritesFragment : Fragment() {
         }
 
 
-    private val favoritesListViewModel: DataViewModel by viewModels()
 
-
+    // Enviroment Variables
     private val dotenv = dotenv {
         directory = "/assets"
         filename = "env"
     }
-
     private val DATABASE_URL = dotenv["DATABASE_URL"]
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,20 +48,29 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = FragmentFavoritesBinding.inflate(inflater, container, false).also {
         _binding = it
+
         binding.favoritesRecycleView.layoutManager = LinearLayoutManager(context)
 
-//        favoritesListViewModel.favorites.observe(viewLifecycleOwner) { favorites ->
-//            // favorites is now List<Event> and not LiveData
-//            val adapter = FavoriteAdapter(favorites)
-//            binding.favoritesRecycleView.adapter = adapter
-//        }
+        initializeFavouritesList()
+    }.root
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 
+
+    private fun initializeFavouritesList() {
         FirebaseAuth.getInstance().currentUser?.let { user ->
             val query = Firebase.database(DATABASE_URL).reference
                 .child("events")
                 .child(user.uid)
-//                .orderByChild("createdAt")
+                // .orderByChild("createdAt")
 
             val options = FirebaseRecyclerOptions.Builder<Event>()
                 .setQuery(query, Event::class.java)
@@ -78,20 +86,7 @@ class FavoritesFragment : Fragment() {
             // Important: Start listening for database changes
             adapter.startListening()
         }
-
-    }.root
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.apply { }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
 
-
-//    dummy
 }

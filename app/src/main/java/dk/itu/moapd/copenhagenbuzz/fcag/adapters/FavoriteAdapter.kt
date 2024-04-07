@@ -19,7 +19,6 @@ class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecycle
     }
 
 
-
     // Custom ViewHolder
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -44,19 +43,11 @@ class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecycle
     }
 
 
-    // Replace the contents of a view (invoked by the layout manager)
-//    override fun onBindViewHolder(holder: FavoriteAdapter.ViewHolder, position: Int) {
-//        Log.d(TAG, "Populate an item at position: $position")
-//        val favoriteEvent = favoriteEvents[position]
-//        holder.bind(favoriteEvent)
-//    }
-
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, model: Event) {
         holder.bind(model)
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-//    override fun getItemCount() = favoriteEvents.size
+
 
 }

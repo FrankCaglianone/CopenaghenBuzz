@@ -19,6 +19,7 @@ import io.github.cdimascio.dotenv.dotenv
 class TimelineFragment : Fragment() {
 
 
+    // Bindings
     private var _binding: FragmentTimelineBinding? = null
 
     private val binding
@@ -28,7 +29,7 @@ class TimelineFragment : Fragment() {
 
 
 
-
+    // Enviroment Variables
     private val dotenv = dotenv {
         directory = "/assets"
         filename = "env"
@@ -38,44 +39,18 @@ class TimelineFragment : Fragment() {
 
 
 
-
-
-
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
      }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View = FragmentTimelineBinding.inflate(inflater, container, false).also {
+
         _binding = it
 
-
-        FirebaseAuth.getInstance().currentUser?.let { user ->
-            val query = Firebase.database(DATABASE_URL).reference
-                .child("events")
-                .child(user.uid)
-//                .orderByChild("createdAt")
-
-            val options = FirebaseListOptions.Builder<Event>()
-                .setLayout(R.layout.event_row_item)
-                .setQuery(query, Event::class.java)
-                .setLifecycleOwner(this)
-                .build()
-
-            // Initialize your FirebaseRecyclerAdapter with the options
-            val adapter = EventAdapter(options)
-
-            binding.listView.adapter = adapter
-
-            // Important: Start listening for database changes
-            adapter.startListening()
-        }
-
+        initializeEventList()
     }.root
-
-
 
 
 
@@ -90,5 +65,31 @@ class TimelineFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
+
+    private fun initializeEventList() {
+        FirebaseAuth.getInstance().currentUser?.let { user ->
+            val query = Firebase.database(DATABASE_URL).reference
+                .child("events")
+                .child(user.uid)
+                // .orderByChild("createdAt")
+
+            val options = FirebaseListOptions.Builder<Event>()
+                .setLayout(R.layout.event_row_item)
+                .setQuery(query, Event::class.java)
+                .setLifecycleOwner(this)
+                .build()
+
+            // Initialize FirebaseRecyclerAdapter with the options
+            val adapter = EventAdapter(options)
+
+            binding.listView.adapter = adapter
+
+            // Important: Start listening for database changes
+            adapter.startListening()
+        }
+    }
+
 
 }

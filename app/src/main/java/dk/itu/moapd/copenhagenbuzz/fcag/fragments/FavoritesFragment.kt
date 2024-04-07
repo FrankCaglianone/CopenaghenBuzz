@@ -5,16 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import dk.itu.moapd.copenhagenbuzz.fcag.OnItemClickListener
+import dk.itu.moapd.copenhagenbuzz.fcag.interfaces.OnItemClickListener
 import dk.itu.moapd.copenhagenbuzz.fcag.adapters.FavoriteAdapter
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentFavoritesBinding
-import dk.itu.moapd.copenhagenbuzz.fcag.models.DataViewModel
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import io.github.cdimascio.dotenv.dotenv
 

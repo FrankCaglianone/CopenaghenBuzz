@@ -11,7 +11,7 @@ import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import dk.itu.moapd.copenhagenbuzz.fcag.OnItemClickListener
+import dk.itu.moapd.copenhagenbuzz.fcag.interfaces.OnItemClickListener
 
 class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>, private val listener: OnItemClickListener) : FirebaseRecyclerAdapter<Event, FavoriteAdapter.ViewHolder>(options) {
 

@@ -1,6 +1,5 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.activities
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -9,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityMainBinding
@@ -170,23 +168,6 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
     }
-
-
-
-
-    /**
-     * Restores the activity's state during the creation process. This function is called after onStart(),
-     * when the activity is being re-initialized from a previously saved state.
-     *
-     * @param savedInstanceState The Bundle containing the data most recently supplied in onSaveInstanceState.
-     */
-//    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-//        super.onRestoreInstanceState(savedInstanceState)
-//        // Restore the state of the dropdown or any other relevant information
-//        binding.contentMain.autoCompleteTextViewEventType.setText(savedInstanceState.getString("eventType", ""))
-//    }
-
-
 
 
 }

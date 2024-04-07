@@ -68,7 +68,7 @@ class FavoritesFragment : Fragment() {
     private fun initializeFavouritesList() {
         FirebaseAuth.getInstance().currentUser?.let { user ->
             val query = Firebase.database(DATABASE_URL).reference
-                .child("events")
+                .child("favorites")
                 .child(user.uid)
                 // .orderByChild("createdAt")
 

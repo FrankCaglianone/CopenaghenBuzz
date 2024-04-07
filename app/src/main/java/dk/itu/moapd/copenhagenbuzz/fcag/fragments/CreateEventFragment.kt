@@ -72,6 +72,14 @@ class CreateEventFragment : Fragment() {
 
 
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+
+
+
 
     /**
      * Creates an event listener that responds to clicks on the "Add Event" button by collecting
@@ -90,8 +98,6 @@ class CreateEventFragment : Fragment() {
                     event.eventDate = binding.editTextEventDate.text.toString().trim()
                     event.eventType = binding.autoCompleteTextViewEventType.text.toString().trim()
                     event.eventDescription = binding.editTextEventDescription.text.toString().trim()
-                    // Fetching userID from Firebase Auth
-                    event.userId = FirebaseAuth.getInstance().currentUser?.uid
 
 
                     // Add the event to the firebase realtime database
@@ -155,27 +161,5 @@ class CreateEventFragment : Fragment() {
         }
     }
 
-
-
-
-
-    /**
-     * This function logs the event details and shows a Snack bar with the event information.
-     *
-     * @param view The view to show.
-     */
-    private fun showMessage(view: View) {
-        Log.d(TAG, event.toString())
-        Snackbar.make(view, event.toString(), Snackbar.LENGTH_SHORT).show()
-    }
-
-
-
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
 }

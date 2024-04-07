@@ -16,6 +16,7 @@ import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.models.DataViewModel
 import dk.itu.moapd.copenhagenbuzz.fcag.adapters.EventAdapter
 import dk.itu.moapd.copenhagenbuzz.fcag.adapters.FavoriteAdapter
+import dk.itu.moapd.copenhagenbuzz.fcag.databinding.EventRowItemBinding
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentTimelineBinding
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import io.github.cdimascio.dotenv.dotenv
@@ -30,6 +31,10 @@ class TimelineFragment : Fragment() {
         get() = requireNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
+
+
+
+//    private lateinit var row_item_binding : EventRowItemBinding
 
 
     private val dotenv = dotenv {
@@ -77,6 +82,22 @@ class TimelineFragment : Fragment() {
         }
 
     }.root
+
+
+
+
+//    fun favoriteEventListener() {
+//        val favoriteButton = row_item_binding.favouriteButton
+//        favoriteButton.setOnClickListener {
+//            println("Added to favs")
+//            // You could also use Log.d("TAG", "Added to favs") if you want to see the output in Logcat.
+//        }
+//    }
+
+
+
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

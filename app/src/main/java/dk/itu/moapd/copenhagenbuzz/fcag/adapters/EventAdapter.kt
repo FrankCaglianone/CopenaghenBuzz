@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,12 +13,15 @@ import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.R
+import dk.itu.moapd.copenhagenbuzz.fcag.databinding.EventRowItemBinding
 
 class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Event>(options) {
 
     companion object {
         private var TAG = "EventAdapter.kt"
     }
+
+    private lateinit var row_item_binding : EventRowItemBinding
 
 
 
@@ -95,6 +99,16 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         eventLocation.text = dummy.eventLocation
         eventDate.text = dummy.eventDate
         eventDescription.text = dummy.eventDescription
+
+        favoriteEventListener(favouriteButton)
+    }
+
+
+    private fun favoriteEventListener(favoriteButton: ImageButton) {
+        favoriteButton.setOnClickListener {
+            println("Added to favs")
+            // You could also use Log.d("TAG", "Added to favs") if you want to see the output in Logcat.
+        }
     }
 
 }

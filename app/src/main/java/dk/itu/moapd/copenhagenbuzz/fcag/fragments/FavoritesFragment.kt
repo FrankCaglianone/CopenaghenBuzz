@@ -17,7 +17,7 @@ import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import io.github.cdimascio.dotenv.dotenv
 
 
-class FavoritesFragment : Fragment(), OnItemClickListener {
+class FavoritesFragment : Fragment() {
 
     // Binding
     private var _binding: FragmentFavoritesBinding? = null
@@ -37,6 +37,7 @@ class FavoritesFragment : Fragment(), OnItemClickListener {
     private val DATABASE_URL = dotenv["DATABASE_URL"]
 
 
+    // listener object from the OnItemClickListener Interface with function overriding
     private val listener = object : OnItemClickListener {
         override fun onItemClick(position: Int) {
             println("Clicked mf $position")
@@ -89,10 +90,6 @@ class FavoritesFragment : Fragment(), OnItemClickListener {
             // Important: Start listening for database changes
             adapter.startListening()
         }
-    }
-
-    override fun onItemClick(position: Int) {
-        println("Clicked mf $position")
     }
 
 

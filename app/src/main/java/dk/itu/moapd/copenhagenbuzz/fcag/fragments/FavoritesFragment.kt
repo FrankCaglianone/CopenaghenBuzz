@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
@@ -37,10 +38,25 @@ class FavoritesFragment : Fragment() {
     private val DATABASE_URL = dotenv["DATABASE_URL"]
 
 
+    // TODO: Fix the ERROR
+    // lateinit var adapter: FavoriteAdapter
+
+
     // listener object from the OnItemClickListener Interface with function overriding
     private val listener = object : OnItemClickListener {
         override fun onItemClick(position: Int) {
-            println("Clicked mf $position")
+            println("Clicked $position")
+            context?.let {
+                AlertDialog.Builder(it)
+                    .setTitle("Delete Event")
+                    .setMessage("Are you sure you want to delete this event?")
+                    .setPositiveButton("Yes") { dialog, which ->
+                        // TODO: Fix the ERROR
+                        // adapter.deleteItem(position)
+                    }
+                    .setNegativeButton("No", null)
+                    .show()
+            }
         }
     }
 

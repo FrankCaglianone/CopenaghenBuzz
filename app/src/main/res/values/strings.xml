@@ -33,4 +33,11 @@
     <string name="user_info">User Info</string>
     <string name="action_logout">Logout</string>
 
+
+
+    <!-- Event Row Item Buttons -->
+    <string name="Edit">Edit</string>
+    <string name="Delete">Delete</string>
+
+
 </resources>

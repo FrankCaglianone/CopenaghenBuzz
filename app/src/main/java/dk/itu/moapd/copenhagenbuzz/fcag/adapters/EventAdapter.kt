@@ -3,9 +3,11 @@ package dk.itu.moapd.copenhagenbuzz.fcag.adapters
 
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
 import com.google.android.material.snackbar.Snackbar
@@ -43,6 +45,9 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         val eventLocation: TextView = view.findViewById(R.id.event_location)
         val eventDate: TextView = view.findViewById(R.id.event_date)
         val eventDescription: TextView = view.findViewById(R.id.event_description)
+        val editButton: Button = view.findViewById(R.id.edit_button)
+        val deleteButton: Button = view.findViewById(R.id.delete_button)
+
 
 
         // Populate the data into the template view using the data object
@@ -55,7 +60,9 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         eventDate.text = dummy.eventDate
         eventDescription.text = dummy.eventDescription
 
+
         favoriteEventListener(favouriteButton, dummy)
+        deleteEventListener(view, deleteButton, dummy)
     }
 
 
@@ -96,5 +103,46 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
             }
         }
     }
+
+
+
+
+    private fun deleteEventListener(view: View, button: Button, event: Event) {
+        button.setOnClickListener {
+            AlertDialog.Builder(view.context)
+                .setTitle("Delete Event")
+                .setMessage("Are you sure you want to delete this event?")
+                .setPositiveButton("Yes") { dialog, which ->
+                    deleteEvent(event)
+                }
+                .setNegativeButton("No", null)
+                .show()
+        }
+    }
+
+
+
+
+    private fun deleteEvent(event: Event) {
+        val key = event.eventId
+
+        key?.let {
+            FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+                Firebase.database(DATABASE_URL).reference
+                    .child("events")
+                    .child(userId)
+                    .child(it)
+                    .removeValue()
+                    .addOnSuccessListener {
+                        Log.d(TAG, "Event successfully deleted.")
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Failed to delete event.", e)
+                    }
+            }
+        }
+    }
+
+
 
 }

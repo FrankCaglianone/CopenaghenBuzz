@@ -72,34 +72,38 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
 
             val databaseReference = Firebase.database(DATABASE_URL).reference
             val userId = FirebaseAuth.getInstance().currentUser?.uid
+            val key = event.eventId
 
-            val key = userId?.let {
+            userId?.let {
                 databaseReference.child("favorites")
                     .child(it)
                     .push()
-                    .key
+
             } // Generate a unique key for the event
-            event.eventId = key // Assign the generated key as the event's ID
+//            event.eventId = key // Assign the generated key as the event's ID
+
 
 
             if (key != null) {
-                databaseReference.child("favorites").child(userId).child(key).setValue(event)
-                    .addOnSuccessListener { tmp ->
-                        Log.d(TAG, "Added to favorites")
-                        Snackbar.make(
-                            it,
-                            "Added to favorites",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e(TAG, "Failed to add to favorites", e)
-                        Snackbar.make(
-                            it,
-                            "Failed to add to favorites",
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                    }
+                if (userId != null) {
+                    databaseReference.child("favorites").child(userId).child(key).setValue(event)
+                        .addOnSuccessListener { tmp ->
+                            Log.d(TAG, "Added to favorites")
+                            Snackbar.make(
+                                it,
+                                "Added to favorites",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e(TAG, "Failed to add to favorites", e)
+                            Snackbar.make(
+                                it,
+                                "Failed to add to favorites",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                }
             }
         }
     }
@@ -113,7 +117,7 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
                 .setTitle("Delete Event")
                 .setMessage("Are you sure you want to delete this event?")
                 .setPositiveButton("Yes") { dialog, which ->
-                    deleteEvent(event)
+                    deleteEvent(event, it)
                 }
                 .setNegativeButton("No", null)
                 .show()
@@ -123,22 +127,43 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
 
 
 
-    private fun deleteEvent(event: Event) {
+    private fun deleteEvent(event: Event, view: View) {
         val key = event.eventId
+        var deleted_from_events = false
 
         key?.let {
             FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+                // Delete from events
                 Firebase.database(DATABASE_URL).reference
                     .child("events")
                     .child(userId)
                     .child(it)
                     .removeValue()
                     .addOnSuccessListener {
-                        Log.d(TAG, "Event successfully deleted.")
+                        Log.d(TAG, "Successfully deleted from events")
+                        deleted_from_events = true
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Failed to delete from events", e)
+                    }
+
+                // Delete from favorites
+                Firebase.database(DATABASE_URL).reference
+                    .child("favorites")
+                    .child(userId)
+                    .child(it)
+                    .removeValue()
+                    .addOnSuccessListener {tmp ->
+                        if (deleted_from_events) {
+                            Log.d(TAG, "Event successfully deleted")
+                            Snackbar.make(view, "Event successfully deleted", Snackbar.LENGTH_SHORT).show()
+                        }
                     }
                     .addOnFailureListener { e ->
                         Log.w(TAG, "Failed to delete event.", e)
                     }
+
+
             }
         }
     }

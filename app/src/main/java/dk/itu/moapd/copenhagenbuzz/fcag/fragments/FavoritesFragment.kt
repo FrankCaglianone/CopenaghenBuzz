@@ -5,18 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dk.itu.moapd.copenhagenbuzz.fcag.SwipeToDeleteCallback
-import dk.itu.moapd.copenhagenbuzz.fcag.interfaces.OnItemClickListener
 import dk.itu.moapd.copenhagenbuzz.fcag.adapters.FavoriteAdapter
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentFavoritesBinding
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
@@ -43,27 +40,6 @@ class FavoritesFragment : Fragment() {
     private val DATABASE_URL = dotenv["DATABASE_URL"]
 
 
-    // TODO: Fix the ERROR
-    // lateinit var adapter: FavoriteAdapter
-
-
-    // listener object from the OnItemClickListener Interface with function overriding
-    private val listener = object : OnItemClickListener {
-        override fun onItemClick(position: Int) {
-            println("Clicked $position")
-            context?.let {
-                AlertDialog.Builder(it)
-                    .setTitle("Delete Event")
-                    .setMessage("Are you sure you want to delete this event?")
-                    .setPositiveButton("Yes") { dialog, which ->
-                        // TODO: Fix the ERROR
-                        // adapter.deleteItem(position)
-                    }
-                    .setNegativeButton("No", null)
-                    .show()
-            }
-        }
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,7 +79,7 @@ class FavoritesFragment : Fragment() {
                 .build()
 
             // Initialize your FirebaseRecyclerAdapter with the options
-            val adapter = FavoriteAdapter(options, listener)
+            val adapter = FavoriteAdapter(options)
 
             binding.favoritesRecycleView.layoutManager = LinearLayoutManager(context)
             binding.favoritesRecycleView.adapter = adapter

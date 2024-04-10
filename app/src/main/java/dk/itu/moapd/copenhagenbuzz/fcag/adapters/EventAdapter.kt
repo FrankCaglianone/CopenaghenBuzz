@@ -1,7 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.adapters
 
 
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -10,14 +9,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.R
-import dk.itu.moapd.copenhagenbuzz.fcag.fragments.CreateEventFragment
-import io.github.cdimascio.dotenv.dotenv
 
 
 class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Event>(options) {
@@ -26,13 +20,8 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         private var TAG = "EventAdapter.kt"
     }
 
-
-    // Environment Variables
-    private val dotenv = dotenv {
-        directory = "/assets"
-        filename = "env"
-    }
-    private val DATABASE_URL = dotenv["DATABASE_URL"]
+    // Declaring an instance of the CrudOperations class.
+    private lateinit var crud: CrudOperations
 
 
     override fun populateView(view: View, dummy: Event, position: Int) {
@@ -61,52 +50,20 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         eventDescription.text = dummy.eventDescription
 
 
-        favoriteEventListener(favouriteButton, dummy)
+        // Creating an instance of the CrudOperations class.
+        crud = CrudOperations()
+
+
+        // Add to favorites button listener
+        favouriteButton.setOnClickListener {
+            crud.addFavoriteToFirebase(dummy, it)
+        }
+
+        // Delete event button listener
         deleteEventListener(view, deleteButton, dummy)
     }
 
 
-
-    private fun favoriteEventListener(favoriteButton: ImageButton, event: Event) {
-        favoriteButton.setOnClickListener {
-
-            val databaseReference = Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
-            val userId = FirebaseAuth.getInstance().currentUser?.uid
-            val key = event.eventId
-
-            userId?.let {
-                databaseReference.child("favorites")
-                    .child(it)
-                    .push()
-
-            } // Generate a unique key for the event
-//            event.eventId = key // Assign the generated key as the event's ID
-
-
-
-            if (key != null) {
-                if (userId != null) {
-                    databaseReference.child("favorites").child(userId).child(key).setValue(event)
-                        .addOnSuccessListener { tmp ->
-                            Log.d(TAG, "Added to favorites")
-                            Snackbar.make(
-                                it,
-                                "Added to favorites",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e(TAG, "Failed to add to favorites", e)
-                            Snackbar.make(
-                                it,
-                                "Failed to add to favorites",
-                                Snackbar.LENGTH_SHORT
-                            ).show()
-                        }
-                }
-            }
-        }
-    }
 
 
 
@@ -117,56 +74,13 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
                 .setTitle("Delete Event")
                 .setMessage("Are you sure you want to delete this event?")
                 .setPositiveButton("Yes") { dialog, which ->
-                    deleteEvent(event, it)
+                    crud.deleteFromFirebase(event, view)
                 }
                 .setNegativeButton("No", null)
                 .show()
         }
     }
 
-
-
-
-    private fun deleteEvent(event: Event, view: View) {
-        val key = event.eventId
-        var deleted_from_events = false
-
-        key?.let {
-            FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
-                // Delete from events
-                Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
-                    .child("events")
-                    .child(userId)
-                    .child(it)
-                    .removeValue()
-                    .addOnSuccessListener {
-                        Log.d(TAG, "Successfully deleted from events")
-                        deleted_from_events = true
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(TAG, "Failed to delete from events", e)
-                    }
-
-                // Delete from favorites
-                Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
-                    .child("favorites")
-                    .child(userId)
-                    .child(it)
-                    .removeValue()
-                    .addOnSuccessListener {tmp ->
-                        if (deleted_from_events) {
-                            Log.d(TAG, "Event successfully deleted")
-                            Snackbar.make(view, "Event successfully deleted", Snackbar.LENGTH_SHORT).show()
-                        }
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(TAG, "Failed to delete event.", e)
-                    }
-
-
-            }
-        }
-    }
 
 
 

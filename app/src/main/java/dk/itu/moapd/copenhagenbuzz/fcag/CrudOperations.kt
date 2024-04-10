@@ -6,7 +6,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import dk.itu.moapd.copenhagenbuzz.fcag.fragments.CreateEventFragment
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import io.github.cdimascio.dotenv.dotenv
 
@@ -70,4 +69,93 @@ class CrudOperations {
                 }
         }
     }
+
+
+
+
+
+
+    fun addFavoriteToFirebase(event: Event, view: View) {
+        val databaseReference = Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        val key = event.eventId
+
+        userId?.let {
+            databaseReference.child("favorites")
+                .child(it)
+                .push()
+
+        } // Generate a unique key for the event
+
+
+        if (key != null) {
+            if (userId != null) {
+                databaseReference.child("favorites").child(userId).child(key).setValue(event)
+                    .addOnSuccessListener { tmp ->
+                        Log.d(TAG, "Added to favorites")
+                        Snackbar.make(
+                            view,
+                            "Added to favorites",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e(TAG, "Failed to add to favorites", e)
+                        Snackbar.make(
+                            view,
+                            "Failed to add to favorites",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                    }
+            }
+        }
+    }
+
+
+
+
+
+
+    fun deleteFromFirebase(event: Event, view: View) {
+        val key = event.eventId
+        var deleted_from_events = false
+
+        key?.let {
+            FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
+                // Delete from events
+                Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
+                    .child("events")
+                    .child(userId)
+                    .child(it)
+                    .removeValue()
+                    .addOnSuccessListener {
+                        Log.d(TAG, "Successfully deleted from events")
+                        deleted_from_events = true
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Failed to delete from events", e)
+                    }
+
+                // Delete from favorites
+                Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
+                    .child("favorites")
+                    .child(userId)
+                    .child(it)
+                    .removeValue()
+                    .addOnSuccessListener {tmp ->
+                        if (deleted_from_events) {
+                            Log.d(TAG, "Event successfully deleted")
+                            Snackbar.make(view, "Event successfully deleted", Snackbar.LENGTH_SHORT).show()
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.w(TAG, "Failed to delete event.", e)
+                    }
+
+
+            }
+        }
+    }
+
+
 }

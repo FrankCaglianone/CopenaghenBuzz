@@ -123,18 +123,18 @@ class CreateEventFragment : Fragment() {
 
     // Add the event to the firebase realtime database and display message upon success or failure
     private fun addEventToFirebase(event: Event) {
-        val databaseReference = Firebase.database(DATABASE_URL).reference
+        val databaseReference = Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
 
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         event.userId = userId   // Assign user ID to the event
 
-
+        // Generate a unique key for the event under the 'events' child of 'copenhagen_buzz'
         val key = userId?.let {
             databaseReference.child("events")
                 .child(it)
                 .push()
                 .key
-        } // Generate a unique key for the event
+        }
 
 
         event.eventId = key // Assign the generated key as the event's ID

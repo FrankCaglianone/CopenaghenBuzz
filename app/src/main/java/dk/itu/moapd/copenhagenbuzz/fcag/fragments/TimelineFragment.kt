@@ -70,7 +70,7 @@ class TimelineFragment : Fragment() {
 
     private fun initializeEventList() {
         FirebaseAuth.getInstance().currentUser?.let { user ->
-            val query = Firebase.database(DATABASE_URL).reference
+            val query = Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
                 .child("events")
                 .child(user.uid)
                 // .orderByChild("createdAt")

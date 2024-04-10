@@ -70,7 +70,7 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
     private fun favoriteEventListener(favoriteButton: ImageButton, event: Event) {
         favoriteButton.setOnClickListener {
 
-            val databaseReference = Firebase.database(DATABASE_URL).reference
+            val databaseReference = Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
             val userId = FirebaseAuth.getInstance().currentUser?.uid
             val key = event.eventId
 
@@ -134,7 +134,7 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         key?.let {
             FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
                 // Delete from events
-                Firebase.database(DATABASE_URL).reference
+                Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
                     .child("events")
                     .child(userId)
                     .child(it)
@@ -148,7 +148,7 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
                     }
 
                 // Delete from favorites
-                Firebase.database(DATABASE_URL).reference
+                Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
                     .child("favorites")
                     .child(userId)
                     .child(it)

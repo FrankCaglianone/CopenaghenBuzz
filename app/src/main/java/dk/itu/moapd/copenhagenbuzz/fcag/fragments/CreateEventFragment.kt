@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentCreateEventBinding
 import io.github.cdimascio.dotenv.dotenv
@@ -38,18 +39,17 @@ class CreateEventFragment : Fragment() {
     private val event : Event = Event("", "", "", "", "")
 
 
-    // Environment Variables
-    private val dotenv = dotenv {
-        directory = "/assets"
-        filename = "env"
-    }
-    private val DATABASE_URL = dotenv["DATABASE_URL"]
+
+    // Declaring an instance of the CrudOperations class.
+    private lateinit var crud: CrudOperations
 
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Creating an instance of the CrudOperations class.
+        crud = CrudOperations()
     }
 
 
@@ -101,7 +101,7 @@ class CreateEventFragment : Fragment() {
 
 
                     // Add the event to the firebase realtime database
-                    addEventToFirebase(event)
+                    crud.addEventToFirebase(event, it)
                 }
             }
         }
@@ -116,50 +116,5 @@ class CreateEventFragment : Fragment() {
         return binding.editTextEventLocation.text.toString().isNotEmpty() &&
                 binding.editTextEventName.text.toString().isNotEmpty()
     }
-
-
-
-
-
-    // Add the event to the firebase realtime database and display message upon success or failure
-    private fun addEventToFirebase(event: Event) {
-        val databaseReference = Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
-
-        val userId = FirebaseAuth.getInstance().currentUser?.uid
-        event.userId = userId   // Assign user ID to the event
-
-        // Generate a unique key for the event under the 'events' child of 'copenhagen_buzz'
-        val key = userId?.let {
-            databaseReference.child("events")
-                .child(it)
-                .push()
-                .key
-        }
-
-
-        event.eventId = key // Assign the generated key as the event's ID
-
-
-        if (key != null) {
-            databaseReference.child("events").child(userId).child(key).setValue(event)
-                .addOnSuccessListener {
-                    Log.d(TAG, "Event added successfully")
-                    Snackbar.make(
-                        binding.root,
-                        "Event added successfully",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-                .addOnFailureListener { e ->
-                    Log.e(TAG, "Failed to add event", e)
-                    Snackbar.make(
-                        binding.root,
-                        "Failed to add event",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-        }
-    }
-
 
 }

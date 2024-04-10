@@ -6,11 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dk.itu.moapd.copenhagenbuzz.fcag.SwipeToDeleteCallback
 import dk.itu.moapd.copenhagenbuzz.fcag.interfaces.OnItemClickListener
 import dk.itu.moapd.copenhagenbuzz.fcag.adapters.FavoriteAdapter
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentFavoritesBinding
@@ -103,8 +108,41 @@ class FavoritesFragment : Fragment() {
             binding.favoritesRecycleView.layoutManager = LinearLayoutManager(context)
             binding.favoritesRecycleView.adapter = adapter
 
+
+            // Setup the RecyclerView.
+            setupRecyclerView(adapter)
+
             // Important: Start listening for database changes
             adapter.startListening()
+        }
+    }
+
+
+
+
+
+
+    private fun setupRecyclerView(adapter: FavoriteAdapter) {
+        binding.favoritesRecycleView.apply {
+
+            // Set the layout manager for the RecyclerView to be a LinearLayoutManager.
+            layoutManager = LinearLayoutManager(requireContext())
+            itemAnimator = null
+            addItemDecoration(
+                DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+            )
+
+            // Set the adapter for the RecyclerView to be the CustomAdapter.
+            this.adapter = adapter
+
+            // Adding the swipe option.
+            val swipeHandler = object : SwipeToDeleteCallback() {
+                override  fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    super.onSwiped(viewHolder, direction)
+                    adapter.getRef(viewHolder.absoluteAdapterPosition).removeValue()
+                }
+            }
+            ItemTouchHelper(swipeHandler).attachToRecyclerView(this)
         }
     }
 

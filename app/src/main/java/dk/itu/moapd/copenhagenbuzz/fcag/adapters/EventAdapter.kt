@@ -1,7 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.adapters
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AutoCompleteTextView
@@ -16,7 +15,6 @@ import com.firebase.ui.database.FirebaseListOptions
 import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.R
-import java.security.AuthProvider
 
 
 class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Event>(options) {
@@ -92,11 +90,8 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
 
     private fun editEventListener(view: View, button: Button, event: Event) {
         button.setOnClickListener {
-
             val inflater = LayoutInflater.from(view.context)
             val dialogView = inflater.inflate(R.layout.fragment_create_event, null)
-            val id = event.eventId
-
 
             AlertDialog.Builder(view.context)
                 .setTitle("Edit Event")

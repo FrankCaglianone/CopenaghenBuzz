@@ -1,8 +1,12 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.adapters
 
 
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,6 +16,7 @@ import com.firebase.ui.database.FirebaseListOptions
 import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.R
+import java.security.AuthProvider
 
 
 class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Event>(options) {
@@ -61,6 +66,9 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
 
         // Delete event button listener
         deleteEventListener(view, deleteButton, dummy)
+
+        // Edit event listener
+        editEventListener(view, editButton, dummy)
     }
 
 
@@ -82,6 +90,40 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
     }
 
 
+    private fun editEventListener(view: View, button: Button, event: Event) {
+        button.setOnClickListener {
+
+            val inflater = LayoutInflater.from(view.context)
+            val dialogView = inflater.inflate(R.layout.fragment_create_event, null)
+            val id = event.eventId
+
+
+            AlertDialog.Builder(view.context)
+                .setTitle("Edit Event")
+                .setView(dialogView) // Set the inflated layout as view
+
+                .setPositiveButton("Yes") { dialog, which ->
+
+                    var name = dialogView.findViewById<EditText>(R.id.edit_text_event_name).text.toString().trim()
+                    var location = dialogView.findViewById<EditText>(R.id.edit_text_event_location).text.toString().trim()
+                    var date = dialogView.findViewById<EditText>(R.id.edit_text_event_date).text.toString().trim()
+                    var type = dialogView.findViewById<AutoCompleteTextView>(R.id.auto_complete_text_view_event_type).text.toString().trim()
+                    var description = dialogView.findViewById<EditText>(R.id.edit_text_event_description).text.toString().trim()
+
+                    when {
+                        name.isEmpty() -> name = event.eventName.toString()
+                        location.isEmpty() -> location = event.eventLocation.toString()
+                        date.isEmpty() -> date = event.eventDate.toString()
+                        type.isEmpty() -> type = event.eventType.toString()
+                        description.isEmpty() -> description = event.eventDescription.toString()
+                    }
+
+                    crud.updateEventInFirebase(event, view, name, location, date, type, description)
+                }
+                .setNegativeButton("No", null)
+                .show()
+        }
+    }
 
 
 }

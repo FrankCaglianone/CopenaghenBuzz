@@ -163,6 +163,7 @@ class CrudOperations {
 
      fun updateEventInFirebase(event: Event, view: View, newName: String, newLocation: String, newDate: String, newType: String, newDescription: String,) {
          val key = event.eventId
+         var updated = false
 
          key?.let {
              FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
@@ -183,9 +184,24 @@ class CrudOperations {
                      .child(it)
                      .updateChildren(updateValues)
 
+                     .addOnSuccessListener {
+                         updated = true
+                     }
+                     .addOnFailureListener {
+                         Snackbar.make(view, "Failed to update event", Snackbar.LENGTH_SHORT).show()
+                     }
+
+
+                 Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
+                     .child("favorites")
+                     .child(userId)
+                     .child(it)
+                     .updateChildren(updateValues)
 
                      .addOnSuccessListener {
-                         Snackbar.make(view, "Event updated successfully", Snackbar.LENGTH_SHORT).show()
+                         if(updated) {
+                             Snackbar.make(view, "Event updated successfully", Snackbar.LENGTH_SHORT).show()
+                         }
                      }
                      .addOnFailureListener {
                          Snackbar.make(view, "Failed to update event", Snackbar.LENGTH_SHORT).show()

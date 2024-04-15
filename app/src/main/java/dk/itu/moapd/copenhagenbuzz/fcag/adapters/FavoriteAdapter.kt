@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import dk.itu.moapd.copenhagenbuzz.fcag.R
-import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
+import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 

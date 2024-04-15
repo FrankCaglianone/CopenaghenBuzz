@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
-import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
+import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentCreateEventBinding
 
 

@@ -6,7 +6,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
+import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import io.github.cdimascio.dotenv.dotenv
 
 class CrudOperations {

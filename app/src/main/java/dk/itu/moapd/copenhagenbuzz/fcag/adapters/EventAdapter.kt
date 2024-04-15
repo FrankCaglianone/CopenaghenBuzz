@@ -13,7 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
 import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
-import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
+import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.R
 
 

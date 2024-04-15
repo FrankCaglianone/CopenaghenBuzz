@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.fcag.models
+package dk.itu.moapd.copenhagenbuzz.fcag.data
 
 import java.util.UUID
 

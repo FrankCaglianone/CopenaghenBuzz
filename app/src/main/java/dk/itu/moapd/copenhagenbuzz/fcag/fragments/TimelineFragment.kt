@@ -12,7 +12,7 @@ import com.google.firebase.ktx.Firebase
 import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.adapters.EventAdapter
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentTimelineBinding
-import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
+import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import io.github.cdimascio.dotenv.dotenv
 
 

@@ -16,7 +16,7 @@ import com.google.firebase.ktx.Firebase
 import dk.itu.moapd.copenhagenbuzz.fcag.SwipeToDeleteCallback
 import dk.itu.moapd.copenhagenbuzz.fcag.adapters.FavoriteAdapter
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentFavoritesBinding
-import dk.itu.moapd.copenhagenbuzz.fcag.models.Event
+import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import io.github.cdimascio.dotenv.dotenv
 
 

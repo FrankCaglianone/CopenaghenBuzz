@@ -110,29 +110,16 @@ class CreateEventFragment : Fragment() {
             binding.addEventButton.setOnClickListener {
                 if (validateInputs()) {
 
-
                     MainScope().launch {
 
                         val locationString = binding.editTextEventLocation.text.toString().trim()
-                        val tmp = getLocationCoordinates(locationString)
-                        event.eventLocation = tmp
-
-                        Log.d(TAG, "Printed this $tmp")
-
+                        event.eventLocation = getLocationCoordinates(locationString)
 
                         // Collect inputs
                         event.eventName = binding.editTextEventName.text.toString().trim()
                         event.eventDate = binding.editTextEventDate.text.toString().trim()
                         event.eventType = binding.autoCompleteTextViewEventType.text.toString().trim()
                         event.eventDescription = binding.editTextEventDescription.text.toString().trim()
-
-
-//
-//                        location.latitude = 0.0
-//                        location.longitude = 0.0
-//                        location.address = locationString
-
-
 
                         // Add the event to the firebase realtime database
                         crud.addEventToFirebase(event, it)

@@ -2,6 +2,7 @@ package dk.itu.moapd.copenhagenbuzz.fcag.fragments
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,17 @@ import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.data.EventLocation
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentCreateEventBinding
+import io.github.cdimascio.dotenv.dotenv
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
+import java.net.URLEncoder
 
 
 class CreateEventFragment : Fragment() {
@@ -23,6 +35,15 @@ class CreateEventFragment : Fragment() {
         get() = requireNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
+
+
+    private val dotenv = dotenv {
+        directory = "/assets"
+        filename = "env"
+    }
+
+
+    private val apiKey = dotenv["GEOCODING_API_KEY"]
 
 
     // A set of private constants used in this class.
@@ -89,27 +110,33 @@ class CreateEventFragment : Fragment() {
             binding.addEventButton.setOnClickListener {
                 if (validateInputs()) {
 
-                    // Collect inputs
-                    event.eventName = binding.editTextEventName.text.toString().trim()
-                    event.eventDate = binding.editTextEventDate.text.toString().trim()
-                    event.eventType = binding.autoCompleteTextViewEventType.text.toString().trim()
-                    event.eventDescription = binding.editTextEventDescription.text.toString().trim()
 
-                    val locationString = binding.editTextEventLocation.text.toString().trim()
-//                    val latLng = context?.let { it1 -> getAddressLocation(it1, locationString) }
+                    MainScope().launch {
 
-//                    if (latLng != null) {
-//                        eventLocation.latitude = latLng.first!!
-//                        eventLocation.longitude = latLng.second!!
-//                    }
-                    location.latitude = 0.0
-                    location.longitude = 0.0
-                    location.address = locationString
-                    event.eventLocation = location
+                        val locationString = binding.editTextEventLocation.text.toString().trim()
+                        val tmp = getLocationCoordinates(locationString)
+                        event.eventLocation = tmp
+
+                        Log.d(TAG, "Printed this $tmp")
 
 
-                    // Add the event to the firebase realtime database
-                    crud.addEventToFirebase(event, it)
+                        // Collect inputs
+                        event.eventName = binding.editTextEventName.text.toString().trim()
+                        event.eventDate = binding.editTextEventDate.text.toString().trim()
+                        event.eventType = binding.autoCompleteTextViewEventType.text.toString().trim()
+                        event.eventDescription = binding.editTextEventDescription.text.toString().trim()
+
+
+//
+//                        location.latitude = 0.0
+//                        location.longitude = 0.0
+//                        location.address = locationString
+
+
+
+                        // Add the event to the firebase realtime database
+                        crud.addEventToFirebase(event, it)
+                    }
                 }
             }
         }
@@ -128,23 +155,50 @@ class CreateEventFragment : Fragment() {
 
 
 
-//    private fun getAddressLocation(context: Context, addressString: String): Pair<Double?, Double?> {
-//        val geocoder = Geocoder(context)
-//        try {
-//            val addresses = geocoder.getFromLocationName(addressString, 1)
-//            if (addresses != null) {
-//                if (addresses.isNotEmpty()) {
-//                    val address = addresses[0]
-//                    if (address != null) {
-//                        return Pair(address.latitude, address.longitude)
-//                    }
-//                }
-//            }
-//        } catch (e: Exception) {
-//            Log.e("GeocoderError", "Failed to get location from address", e)
-//        }
-//        return Pair(null, null)
-//    }
+    private suspend fun getLocationCoordinates(location: String): EventLocation {
+        val baseUrl = "https://geocode.maps.co/search"
+        val encodedLocation = URLEncoder.encode(location, "UTF-8")
+        val urlString = "$baseUrl?q=$encodedLocation&api_key=$apiKey"
+
+        return withContext(Dispatchers.IO) {
+            try {
+                val url = URL(urlString)
+                val connection = url.openConnection() as HttpURLConnection
+                connection.requestMethod = "GET"
+                connection.setRequestProperty("Content-type", "application/json")
+                connection.setRequestProperty("Accept", "application/json")
+                connection.connectTimeout = 10000
+                connection.readTimeout = 10000
+
+                val reader = InputStreamReader(connection.inputStream)
+                val response = StringBuilder()
+                val bufferedReader = BufferedReader(reader)
+
+                bufferedReader.useLines { lines ->
+                    lines.forEach { line ->
+                        response.append(line.trim())
+                    }
+                }
+
+                val jsonArray = JSONArray(response.toString())
+
+                if (jsonArray.length() > 0) {
+                    val firstLocation = jsonArray.getJSONObject(0)
+                    val latitude = firstLocation.optString("lat")
+                    val longitude = firstLocation.optString("lon")
+                    Log.d(TAG, "IT WORKS lat:$latitude long:$longitude")
+                    EventLocation(latitude.toDouble(), longitude.toDouble(), location)
+                } else {
+                    EventLocation(null, null, "No location found")
+                }
+            } catch (e: Exception) {
+                EventLocation(null, null, "Error: ${e.message}")
+            }
+        }
+    }
+
+
+
 
 
 

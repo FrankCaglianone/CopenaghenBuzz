@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
+import dk.itu.moapd.copenhagenbuzz.fcag.data.EventLocation
 import io.github.cdimascio.dotenv.dotenv
 
 class CrudOperations {
@@ -165,13 +166,25 @@ class CrudOperations {
          val key = event.eventId
          var updated = false
 
+         var location = EventLocation()
+         val locationString = event.eventLocation?.address.toString()
+         if(locationString == newLocation) {
+             location = event.eventLocation!!
+         } else {
+//             location = Calculate(newLocation)
+             location.latitude = 0.0
+             location.longitude = 0.0
+             location.address = "Changed"
+         }
+
+
          key?.let {
              FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
 
                  // Creating a map to hold the updated values
                  val updateValues = mapOf(
                      "eventName" to newName,
-                     "eventLocation" to newLocation,
+                     "eventLocation" to location,
                      "eventDate" to newDate,
                      "eventType" to newType,
                      "eventDescription" to newDescription
@@ -192,20 +205,20 @@ class CrudOperations {
                      }
 
 
-                 Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
-                     .child("favorites")
-                     .child(userId)
-                     .child(it)
-                     .updateChildren(updateValues)
-
-                     .addOnSuccessListener {
-                         if(updated) {
-                             Snackbar.make(view, "Event updated successfully", Snackbar.LENGTH_SHORT).show()
-                         }
-                     }
-                     .addOnFailureListener {
-                         Snackbar.make(view, "Failed to update event", Snackbar.LENGTH_SHORT).show()
-                     }
+//                 Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
+//                     .child("favorites")
+//                     .child(userId)
+//                     .child(it)
+//                     .updateChildren(updateValues)
+//
+//                     .addOnSuccessListener {
+//                         if(updated) {
+//                             Snackbar.make(view, "Event updated successfully", Snackbar.LENGTH_SHORT).show()
+//                         }
+//                     }
+//                     .addOnFailureListener {
+//                         Snackbar.make(view, "Failed to update event", Snackbar.LENGTH_SHORT).show()
+//                     }
              }
          }
      }

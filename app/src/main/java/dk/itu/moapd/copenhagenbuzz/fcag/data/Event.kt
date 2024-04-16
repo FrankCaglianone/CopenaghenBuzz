@@ -16,7 +16,7 @@ import java.util.UUID
  * @property eventDescription A detailed description of what the event is about.
  */
 data class Event(var eventName: String? = null,
-                 var eventLocation: String? = null,
+                 var eventLocation: EventLocation? = null,
                  var eventDate: String? = null,
                  var eventType: String? = null,
                  var eventDescription: String? = null,

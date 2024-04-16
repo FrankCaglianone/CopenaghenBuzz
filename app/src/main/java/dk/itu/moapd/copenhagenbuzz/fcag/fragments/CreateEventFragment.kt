@@ -1,12 +1,14 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.fragments
 
+
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
+import dk.itu.moapd.copenhagenbuzz.fcag.data.EventLocation
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentCreateEventBinding
 
 
@@ -30,7 +32,8 @@ class CreateEventFragment : Fragment() {
 
 
     // An instance of the ‘Event' class.
-    private val event : Event = Event("", "", "", "", "")
+    private val location: EventLocation = EventLocation(0.0, 0.0, "")
+    private val event : Event = Event("", location, "", "", "")
 
 
 
@@ -88,10 +91,21 @@ class CreateEventFragment : Fragment() {
 
                     // Collect inputs
                     event.eventName = binding.editTextEventName.text.toString().trim()
-                    event.eventLocation = binding.editTextEventLocation.text.toString().trim()
                     event.eventDate = binding.editTextEventDate.text.toString().trim()
                     event.eventType = binding.autoCompleteTextViewEventType.text.toString().trim()
                     event.eventDescription = binding.editTextEventDescription.text.toString().trim()
+
+                    val locationString = binding.editTextEventLocation.text.toString().trim()
+//                    val latLng = context?.let { it1 -> getAddressLocation(it1, locationString) }
+
+//                    if (latLng != null) {
+//                        eventLocation.latitude = latLng.first!!
+//                        eventLocation.longitude = latLng.second!!
+//                    }
+                    location.latitude = 0.0
+                    location.longitude = 0.0
+                    location.address = locationString
+                    event.eventLocation = location
 
 
                     // Add the event to the firebase realtime database
@@ -110,5 +124,28 @@ class CreateEventFragment : Fragment() {
         return binding.editTextEventLocation.text.toString().isNotEmpty() &&
                 binding.editTextEventName.text.toString().isNotEmpty()
     }
+
+
+
+
+//    private fun getAddressLocation(context: Context, addressString: String): Pair<Double?, Double?> {
+//        val geocoder = Geocoder(context)
+//        try {
+//            val addresses = geocoder.getFromLocationName(addressString, 1)
+//            if (addresses != null) {
+//                if (addresses.isNotEmpty()) {
+//                    val address = addresses[0]
+//                    if (address != null) {
+//                        return Pair(address.latitude, address.longitude)
+//                    }
+//                }
+//            }
+//        } catch (e: Exception) {
+//            Log.e("GeocoderError", "Failed to get location from address", e)
+//        }
+//        return Pair(null, null)
+//    }
+
+
 
 }

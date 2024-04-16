@@ -11,8 +11,8 @@ package dk.itu.moapd.copenhagenbuzz.fcag.data
  * @property address The actual address of the location in string format.
  */
 data class EventLocation(
-    val latitude: Double,
-    val longitude: Double,
-    val address: String
+    var latitude: Double? = null,
+    var longitude: Double? = null,
+    var address: String? = null
 )
 

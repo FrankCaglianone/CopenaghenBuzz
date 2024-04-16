@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.R
@@ -92,6 +93,9 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         button.setOnClickListener {
             val inflater = LayoutInflater.from(view.context)
             val dialogView = inflater.inflate(R.layout.fragment_create_event, null)
+
+            // Hide the add_event_button in edit mode
+            dialogView.findViewById<FloatingActionButton>(R.id.add_event_button).visibility = View.GONE
 
             AlertDialog.Builder(view.context)
                 .setTitle("Edit Event")

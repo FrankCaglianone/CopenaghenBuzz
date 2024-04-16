@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
+import dk.itu.moapd.copenhagenbuzz.fcag.Geocoding
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.data.EventLocation
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentCreateEventBinding
@@ -37,13 +38,11 @@ class CreateEventFragment : Fragment() {
         }
 
 
-    private val dotenv = dotenv {
-        directory = "/assets"
-        filename = "env"
-    }
-
-
-    private val apiKey = dotenv["GEOCODING_API_KEY"]
+//    private val dotenv = dotenv {
+//        directory = "/assets"
+//        filename = "env"
+//    }
+//    private val apiKey = dotenv["GEOCODING_API_KEY"]
 
 
     // A set of private constants used in this class.
@@ -60,6 +59,7 @@ class CreateEventFragment : Fragment() {
 
     // Declaring an instance of the CrudOperations class.
     private lateinit var crud: CrudOperations
+    private lateinit var geocode: Geocoding
 
 
 
@@ -68,6 +68,7 @@ class CreateEventFragment : Fragment() {
         super.onCreate(savedInstanceState)
         // Creating an instance of the CrudOperations class.
         crud = CrudOperations()
+        geocode = Geocoding()
     }
 
 
@@ -113,7 +114,8 @@ class CreateEventFragment : Fragment() {
                     MainScope().launch {
 
                         val locationString = binding.editTextEventLocation.text.toString().trim()
-                        event.eventLocation = getLocationCoordinates(locationString)
+                        // getLocationCoordinates(locationString) uses coroutines, needs to be launched in a MainScope
+                        event.eventLocation = geocode.getLocationCoordinates(locationString)
 
                         // Collect inputs
                         event.eventName = binding.editTextEventName.text.toString().trim()
@@ -142,47 +144,47 @@ class CreateEventFragment : Fragment() {
 
 
 
-    private suspend fun getLocationCoordinates(location: String): EventLocation {
-        val baseUrl = "https://geocode.maps.co/search"
-        val encodedLocation = URLEncoder.encode(location, "UTF-8")
-        val urlString = "$baseUrl?q=$encodedLocation&api_key=$apiKey"
-
-        return withContext(Dispatchers.IO) {
-            try {
-                val url = URL(urlString)
-                val connection = url.openConnection() as HttpURLConnection
-                connection.requestMethod = "GET"
-                connection.setRequestProperty("Content-type", "application/json")
-                connection.setRequestProperty("Accept", "application/json")
-                connection.connectTimeout = 10000
-                connection.readTimeout = 10000
-
-                val reader = InputStreamReader(connection.inputStream)
-                val response = StringBuilder()
-                val bufferedReader = BufferedReader(reader)
-
-                bufferedReader.useLines { lines ->
-                    lines.forEach { line ->
-                        response.append(line.trim())
-                    }
-                }
-
-                val jsonArray = JSONArray(response.toString())
-
-                if (jsonArray.length() > 0) {
-                    val firstLocation = jsonArray.getJSONObject(0)
-                    val latitude = firstLocation.optString("lat")
-                    val longitude = firstLocation.optString("lon")
-                    Log.d(TAG, "IT WORKS lat:$latitude long:$longitude")
-                    EventLocation(latitude.toDouble(), longitude.toDouble(), location)
-                } else {
-                    EventLocation(null, null, "No location found")
-                }
-            } catch (e: Exception) {
-                EventLocation(null, null, "Error: ${e.message}")
-            }
-        }
-    }
+//    private suspend fun getLocationCoordinates(location: String): EventLocation {
+//        val baseUrl = "https://geocode.maps.co/search"
+//        val encodedLocation = URLEncoder.encode(location, "UTF-8")
+//        val urlString = "$baseUrl?q=$encodedLocation&api_key=$apiKey"
+//
+//        return withContext(Dispatchers.IO) {
+//            try {
+//                val url = URL(urlString)
+//                val connection = url.openConnection() as HttpURLConnection
+//                connection.requestMethod = "GET"
+//                connection.setRequestProperty("Content-type", "application/json")
+//                connection.setRequestProperty("Accept", "application/json")
+//                connection.connectTimeout = 10000
+//                connection.readTimeout = 10000
+//
+//                val reader = InputStreamReader(connection.inputStream)
+//                val response = StringBuilder()
+//                val bufferedReader = BufferedReader(reader)
+//
+//                bufferedReader.useLines { lines ->
+//                    lines.forEach { line ->
+//                        response.append(line.trim())
+//                    }
+//                }
+//
+//                val jsonArray = JSONArray(response.toString())
+//
+//                if (jsonArray.length() > 0) {
+//                    val firstLocation = jsonArray.getJSONObject(0)
+//                    val latitude = firstLocation.optString("lat")
+//                    val longitude = firstLocation.optString("lon")
+//                    Log.d(TAG, "IT WORKS lat:$latitude long:$longitude")
+//                    EventLocation(latitude.toDouble(), longitude.toDouble(), location)
+//                } else {
+//                    EventLocation(null, null, "No location found")
+//                }
+//            } catch (e: Exception) {
+//                EventLocation(null, null, "Error: ${e.message}")
+//            }
+//        }
+//    }
 
 
 

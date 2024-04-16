@@ -4,11 +4,16 @@ import android.util.Log
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.data.EventLocation
 import io.github.cdimascio.dotenv.dotenv
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class CrudOperations {
 
@@ -26,7 +31,7 @@ class CrudOperations {
     private val DATABASE_URL = dotenv["DATABASE_URL"]
 
 
-
+    private var geocode = Geocoding()
 
 
 
@@ -164,64 +169,83 @@ class CrudOperations {
 
      fun updateEventInFirebase(event: Event, view: View, newName: String, newLocation: String, newDate: String, newType: String, newDescription: String,) {
          val key = event.eventId
-         var updated = false
 
-         var location = EventLocation()
-         val locationString = event.eventLocation?.address.toString()
-         if(locationString == newLocation) {
-             location = event.eventLocation!!
-         } else {
-//             location = Calculate(newLocation)
-             location.latitude = 0.0
-             location.longitude = 0.0
-             location.address = "Changed"
-         }
+         MainScope().launch {
+             // Initialize location
+             var location = event.eventLocation ?: EventLocation()
 
-
-         key?.let {
-             FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
-
-                 // Creating a map to hold the updated values
-                 val updateValues = mapOf(
-                     "eventName" to newName,
-                     "eventLocation" to location,
-                     "eventDate" to newDate,
-                     "eventType" to newType,
-                     "eventDescription" to newDescription
-                 )
+             // Check if location needs to be updated
+             if (event.eventLocation?.address != newLocation) {
+                 try {
+                     location = geocode.getLocationCoordinates(newLocation)
+                 } catch (e: Exception) {
+                     Snackbar.make(view, "Failed to fetch location", Snackbar.LENGTH_SHORT).show()
+                     return@launch
+                 }
+             }
 
 
-                 Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
-                     .child("events")
-                     .child(userId)
-                     .child(it)
-                     .updateChildren(updateValues)
+             key?.let {
+                 FirebaseAuth.getInstance().currentUser?.uid?.let { userId ->
 
-                     .addOnSuccessListener {
-                         updated = true
-                     }
-                     .addOnFailureListener {
-                         Snackbar.make(view, "Failed to update event", Snackbar.LENGTH_SHORT).show()
-                     }
+                     // Creating a map to hold the updated values
+                     val updateValues = mapOf(
+                         "eventName" to newName,
+                         "eventLocation" to location,
+                         "eventDate" to newDate,
+                         "eventType" to newType,
+                         "eventDescription" to newDescription
+                     )
+
+                     // Update Events Database
+                     Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
+                         .child("events")
+                         .child(userId)
+                         .child(it)
+                         .updateChildren(updateValues)
+
+                         .addOnSuccessListener {
+                             Snackbar.make(
+                                 view,
+                                 "Event updated successfully",
+                                 Snackbar.LENGTH_SHORT
+                             ).show()
+                         }
+                         .addOnFailureListener {
+                             Snackbar.make(view, "Failed to update event", Snackbar.LENGTH_SHORT)
+                                 .show()
+                         }
 
 
-//                 Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
-//                     .child("favorites")
-//                     .child(userId)
-//                     .child(it)
-//                     .updateChildren(updateValues)
-//
-//                     .addOnSuccessListener {
-//                         if(updated) {
-//                             Snackbar.make(view, "Event updated successfully", Snackbar.LENGTH_SHORT).show()
-//                         }
-//                     }
-//                     .addOnFailureListener {
-//                         Snackbar.make(view, "Failed to update event", Snackbar.LENGTH_SHORT).show()
-//                     }
+                     // Update favorites Database, only if favorite event is present.
+                     val favoriteReference =
+                         Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
+                             .child("favorites")
+                             .child(userId)
+                             .child(it)
+
+
+                     favoriteReference.addListenerForSingleValueEvent(object : ValueEventListener {
+                         override fun onDataChange(snapshot: DataSnapshot) {
+                             if (snapshot.exists()) {
+                                 // Event exists, you can proceed with update or show confirmation
+                                 favoriteReference.updateChildren(updateValues)
+                             } else {
+                                 // Event does not exist, show a message or handle accordingly
+                                 Snackbar.make(view, "Event does not exist", Snackbar.LENGTH_SHORT)
+                                     .show()
+                             }
+                         }
+
+                         override fun onCancelled(error: DatabaseError) {
+                             Snackbar.make(view, "Error: $error", Snackbar.LENGTH_SHORT).show()
+                         }
+                     })
+                 }
              }
          }
      }
+
 
 
 }

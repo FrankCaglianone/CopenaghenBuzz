@@ -2,7 +2,6 @@ package dk.itu.moapd.copenhagenbuzz.fcag.fragments
 
 
 import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.content.Intent
 
 import android.net.Uri
@@ -11,36 +10,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
-import com.squareup.picasso.Picasso
 import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.Geocoding
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.data.EventLocation
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentCreateEventBinding
 import io.github.cdimascio.dotenv.dotenv
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import org.json.JSONArray
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
-import java.net.URLEncoder
-import java.util.UUID
+
 
 
 class CreateEventFragment : Fragment() {
@@ -85,6 +68,8 @@ class CreateEventFragment : Fragment() {
     // TODO
     private var imageUri: Uri? = null
     private lateinit var auth: FirebaseAuth
+    // TODO Fix this UGLINESS
+    private var fileName = "Ciao"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -147,6 +132,8 @@ class CreateEventFragment : Fragment() {
                         event.eventDate = binding.editTextEventDate.text.toString().trim()
                         event.eventType = binding.autoCompleteTextViewEventType.text.toString().trim()
                         event.eventDescription = binding.editTextEventDescription.text.toString().trim()
+                        // TODO Fix this UGLINESS
+                        event.eventPhotoUrl = fileName
 
                         // Add the event to the firebase realtime database
                         crud.addEventToFirebase(event, it)
@@ -206,7 +193,8 @@ class CreateEventFragment : Fragment() {
     }
 
     private fun uploadImageToFirebase(fileUri: Uri) {
-        val fileName = "${System.currentTimeMillis()}.jpg"
+        // TODO Fix this UGLINESS
+        fileName += "${System.currentTimeMillis()}.jpg"
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         val storageReference = Firebase.storage(STORAGE_URL).reference.child("event")
 
@@ -220,10 +208,8 @@ class CreateEventFragment : Fragment() {
                 }
         }
 
-
-
-
-
+        // TODO Fix this UGLINESS
+        fileName = ""
     }
 
 

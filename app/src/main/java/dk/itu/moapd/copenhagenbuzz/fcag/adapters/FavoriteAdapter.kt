@@ -48,15 +48,19 @@ class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecycle
 //            favoriteImage.setImageResource(R.drawable.ic_launcher_foreground)
             userImage.setImageResource(R.drawable.baseline_person)
 
-            event.eventPhotoUrl?.let { photoUrl ->
-                Firebase.storage(BUCKET_URL).reference.child(photoUrl).downloadUrl
-                    .addOnSuccessListener { url ->
-                        Picasso.get().load(url).into(favoriteImage)
-                    }
-                    .addOnFailureListener {
-                        Log.e("Firebase", "Error getting photo URL", it)
+            val userId = event.userId
 
-                    }
+            event.eventPhotoUrl?.let { photoUrl ->
+                if (userId != null) {
+                    Firebase.storage(BUCKET_URL).reference.child("event").child(userId).child(photoUrl).downloadUrl
+                        .addOnSuccessListener { url ->
+                            Picasso.get().load(url).into(favoriteImage)
+                        }
+                        .addOnFailureListener {
+                            Log.e("Firebase", "Error getting photo URL", it)
+
+                        }
+                }
             }
         }
 

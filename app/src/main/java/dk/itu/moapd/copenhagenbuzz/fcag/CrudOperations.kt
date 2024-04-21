@@ -1,5 +1,6 @@
 package dk.itu.moapd.copenhagenbuzz.fcag
 
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import com.google.android.material.snackbar.Snackbar
@@ -9,6 +10,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.data.EventLocation
 import io.github.cdimascio.dotenv.dotenv

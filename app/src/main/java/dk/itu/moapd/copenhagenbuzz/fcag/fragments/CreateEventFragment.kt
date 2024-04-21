@@ -1,12 +1,29 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.fragments
 
 
+import android.app.Activity
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
 import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.Geocoding
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
@@ -23,9 +40,18 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.net.URLEncoder
+import java.util.UUID
 
 
 class CreateEventFragment : Fragment() {
+
+
+    // Enviroment Variables
+    private val dotenv = dotenv {
+        directory = "/assets"
+        filename = "env"
+    }
+    private val STORAGE_URL = dotenv["STORAGE_URL"]
 
 
     // Binding
@@ -56,6 +82,9 @@ class CreateEventFragment : Fragment() {
     private lateinit var geocode: Geocoding
 
 
+    // TODO
+    private var imageUri: Uri? = null
+    private lateinit var auth: FirebaseAuth
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +92,7 @@ class CreateEventFragment : Fragment() {
         // Creating an instance of the CrudOperations class.
         crud = CrudOperations()
         geocode = Geocoding()
+        auth = FirebaseAuth.getInstance()
     }
 
 
@@ -80,6 +110,7 @@ class CreateEventFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // Adding the Event Listener to Create a new Event
         createEventListener()
+        addImageEventListener()
     }
 
 
@@ -133,6 +164,61 @@ class CreateEventFragment : Fragment() {
         // Simple validation for example purposes
         return binding.editTextEventLocation.text.toString().isNotEmpty() && binding.editTextEventName.text.toString().isNotEmpty()
     }
+
+
+
+    private fun addImageEventListener() {
+       binding.addImageButton.setOnClickListener {
+           AlertDialog.Builder(it.context)
+               .setTitle("Add Image")
+               .setMessage("Would you like to?")
+               .setPositiveButton("Upload a photo") { dialog, which ->
+                   if (auth.currentUser != null) {
+                       selectImage()
+                   }
+               }
+               .setNegativeButton("Take a photo") { dialog, which ->
+
+               }
+               .show()
+        }
+    }
+
+
+
+
+
+
+    private fun selectImage() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, 100)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+            imageUri = data?.data
+            imageUri?.let { uri ->
+                uploadImageToFirebase(uri)
+            }
+        }
+    }
+
+    private fun uploadImageToFirebase(fileUri: Uri) {
+        val fileName = "images/${System.currentTimeMillis()}.jpg"
+        val storageReference = Firebase.storage(STORAGE_URL).reference.child("event")
+
+        storageReference.putFile(fileUri)
+            .addOnSuccessListener {
+                Log.d(TAG, "SUCCESS")
+            }
+            .addOnFailureListener {
+                Log.d(TAG, "FAIL")
+            }
+    }
+
+
 
 
 }

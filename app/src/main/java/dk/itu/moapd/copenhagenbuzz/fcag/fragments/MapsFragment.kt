@@ -2,12 +2,16 @@ package dk.itu.moapd.copenhagenbuzz.fcag.fragments
 
 import android.content.pm.PackageManager
 import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentMapsBinding
 
@@ -97,6 +101,8 @@ class MapsFragment : Fragment() {
         }
 
         addMarkers(googleMap)
+
+        context?.let { openGoogleMaps(googleMap, it) }
     }
 
 
@@ -162,5 +168,31 @@ class MapsFragment : Fragment() {
         }
     }
 
+
+
+
+
+
+
+    private fun openGoogleMaps(map: GoogleMap, context: Context) {
+        map.setOnMarkerClickListener { marker ->
+            // Show an alert dialog to ask if the user wants directions
+            AlertDialog.Builder(context)
+                .setTitle("Open Google Maps")
+                .setMessage("Do you want to get directions to ${marker.title}?")
+                .setPositiveButton("Yes") { dialog, which ->
+                    // User clicked yes, open Google Maps with directions
+                    val gmmIntentUri = Uri.parse("google.navigation:q=${marker.position.latitude},${marker.position.longitude}")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    if (mapIntent.resolveActivity(requireActivity().packageManager) != null) {
+                        startActivity(mapIntent)
+                    }
+                }
+                .setNegativeButton("No", null) // User clicked no, just dismiss the dialog
+                .show()
+            true // Return true to indicate we've handled this event
+        }
+    }
 
 }

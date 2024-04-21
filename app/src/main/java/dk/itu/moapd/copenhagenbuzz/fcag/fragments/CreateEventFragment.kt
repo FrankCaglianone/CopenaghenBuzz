@@ -206,16 +206,24 @@ class CreateEventFragment : Fragment() {
     }
 
     private fun uploadImageToFirebase(fileUri: Uri) {
-        val fileName = "images/${System.currentTimeMillis()}.jpg"
+        val fileName = "${System.currentTimeMillis()}.jpg"
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
         val storageReference = Firebase.storage(STORAGE_URL).reference.child("event")
 
-        storageReference.putFile(fileUri)
-            .addOnSuccessListener {
-                Log.d(TAG, "SUCCESS")
-            }
-            .addOnFailureListener {
-                Log.d(TAG, "FAIL")
-            }
+        userId?.let {
+            storageReference.child(it).child(fileName).putFile(fileUri)
+                .addOnSuccessListener {
+                    Log.d(TAG, "SUCCESS")
+                }
+                .addOnFailureListener {
+                    Log.d(TAG, "FAIL")
+                }
+        }
+
+
+
+
+
     }
 
 

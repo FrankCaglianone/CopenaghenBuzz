@@ -2,6 +2,7 @@ package dk.itu.moapd.copenhagenbuzz.fcag.adapters
 
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,10 @@ import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
+import io.github.cdimascio.dotenv.dotenv
 
 
 class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecyclerAdapter<Event, FavoriteAdapter.ViewHolder>(options) {
@@ -24,6 +29,14 @@ class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecycle
     // Custom ViewHolder
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+        // Enviroment Variables
+        private val dotenv = dotenv {
+            directory = "/assets"
+            filename = "env"
+        }
+        private val BUCKET_URL = dotenv["STORAGE_URL"]
+
+
         private var favoriteName: TextView = view.findViewById(R.id.favorite_event_name)
         private val favoriteType: TextView = view.findViewById(R.id.favorite_event_type)
         private val favoriteImage: ImageView = view.findViewById(R.id.favorite_event_image)
@@ -32,9 +45,21 @@ class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecycle
         fun bind(event: Event) {
             favoriteName.text = event.eventName
             favoriteType.text = event.eventDescription
-            favoriteImage.setImageResource(R.drawable.ic_launcher_foreground)
+//            favoriteImage.setImageResource(R.drawable.ic_launcher_foreground)
             userImage.setImageResource(R.drawable.baseline_person)
+
+            event.eventPhotoUrl?.let { photoUrl ->
+                Firebase.storage(BUCKET_URL).reference.child(photoUrl).downloadUrl
+                    .addOnSuccessListener { url ->
+                        Picasso.get().load(url).into(favoriteImage)
+                    }
+                    .addOnFailureListener {
+                        Log.e("Firebase", "Error getting photo URL", it)
+
+                    }
+            }
         }
+
     }
 
 

@@ -21,5 +21,6 @@ data class Event(var eventName: String? = null,
                  var eventType: String? = null,
                  var eventDescription: String? = null,
                  var eventId: String? = null,
-                 var userId: String? = null
+                 var userId: String? = null,
+                 var eventPhotoUrl: String? = null,
 )

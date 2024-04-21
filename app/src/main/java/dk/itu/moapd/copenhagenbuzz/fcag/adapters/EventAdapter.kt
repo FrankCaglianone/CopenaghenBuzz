@@ -61,7 +61,6 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         userImage.setImageResource(R.drawable.baseline_person)
         favouriteButton.setImageResource(R.drawable.baseline_favorite)
         eventType.text = dummy.eventType
-//        eventImage.setImageResource(R.drawable.ic_launcher_foreground)
         eventLocation.text = dummy.eventLocation?.address.toString()
         eventDate.text = dummy.eventDate
         eventDescription.text = dummy.eventDescription

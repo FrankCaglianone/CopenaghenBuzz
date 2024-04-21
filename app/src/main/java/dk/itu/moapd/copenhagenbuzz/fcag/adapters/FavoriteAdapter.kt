@@ -45,7 +45,6 @@ class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecycle
         fun bind(event: Event) {
             favoriteName.text = event.eventName
             favoriteType.text = event.eventDescription
-//            favoriteImage.setImageResource(R.drawable.ic_launcher_foreground)
             userImage.setImageResource(R.drawable.baseline_person)
 
             val userId = event.userId

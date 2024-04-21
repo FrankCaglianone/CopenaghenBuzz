@@ -1,6 +1,7 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.adapters
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AutoCompleteTextView
@@ -13,9 +14,13 @@ import androidx.appcompat.app.AlertDialog
 import com.firebase.ui.database.FirebaseListAdapter
 import com.firebase.ui.database.FirebaseListOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
 import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.R
+import io.github.cdimascio.dotenv.dotenv
 
 
 class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Event>(options) {
@@ -26,6 +31,14 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
 
     // Declaring an instance of the CrudOperations class.
     private lateinit var crud: CrudOperations
+
+
+    // Enviroment Variables
+    private val dotenv = dotenv {
+        directory = "/assets"
+        filename = "env"
+    }
+    private val BUCKET_URL = dotenv["STORAGE_URL"]
 
 
     override fun populateView(view: View, dummy: Event, position: Int) {
@@ -48,10 +61,31 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         userImage.setImageResource(R.drawable.baseline_person)
         favouriteButton.setImageResource(R.drawable.baseline_favorite)
         eventType.text = dummy.eventType
-        eventImage.setImageResource(R.drawable.ic_launcher_foreground)
+//        eventImage.setImageResource(R.drawable.ic_launcher_foreground)
         eventLocation.text = dummy.eventLocation?.address.toString()
         eventDate.text = dummy.eventDate
         eventDescription.text = dummy.eventDescription
+
+
+        // Getting photo from Firebase Storage
+        val userId = dummy.userId
+        dummy.eventPhotoUrl?.let { photoUrl ->
+            if (userId != null) {
+                Firebase.storage(BUCKET_URL).reference.child("event").child(userId).child(photoUrl).downloadUrl
+                    .addOnSuccessListener { url ->
+                        Picasso.get().load(url).into(eventImage)
+                    }
+                    .addOnFailureListener {
+                        Log.e("Firebase", "Error getting photo URL", it)
+
+                    }
+            }
+        }
+
+
+
+
+
 
 
         // Creating an instance of the CrudOperations class.

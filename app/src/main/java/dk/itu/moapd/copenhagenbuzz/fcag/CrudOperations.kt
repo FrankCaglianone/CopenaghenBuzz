@@ -11,6 +11,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
+import com.squareup.picasso.Picasso
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.data.EventLocation
 import io.github.cdimascio.dotenv.dotenv
@@ -31,6 +33,7 @@ class CrudOperations {
         filename = "env"
     }
     private val DATABASE_URL = dotenv["DATABASE_URL"]
+    private val BUCKET_URL = dotenv["STORAGE_URL"]
 
 
     private var geocode = Geocoding()
@@ -159,6 +162,20 @@ class CrudOperations {
                     .addOnFailureListener { e ->
                         Log.w(TAG, "Failed to delete event.", e)
                     }
+
+
+                // Delete Image
+                event.eventPhotoUrl?.let { it ->
+                    Firebase.storage(BUCKET_URL).reference.child("event").child(userId).child(it).delete()
+                        .addOnSuccessListener {
+                            Log.d(TAG, "Photo deletion successful")
+
+                        }
+                        .addOnFailureListener {
+                            Log.e(TAG, "Error getting photo URL", it)
+
+                        }
+                }
 
 
             }

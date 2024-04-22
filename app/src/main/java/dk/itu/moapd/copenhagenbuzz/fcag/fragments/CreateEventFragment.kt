@@ -65,11 +65,9 @@ class CreateEventFragment : Fragment() {
     private lateinit var geocode: Geocoding
 
 
-    // TODO
+    // Declaring variables for Firebase Storage
     private var imageUri: Uri? = null
     private lateinit var auth: FirebaseAuth
-    // TODO Fix this UGLINESS
-    private var fileName = "Ciao"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,10 +131,14 @@ class CreateEventFragment : Fragment() {
                         event.eventType = binding.autoCompleteTextViewEventType.text.toString().trim()
                         event.eventDescription = binding.editTextEventDescription.text.toString().trim()
                         // TODO Fix this UGLINESS
-                        event.eventPhotoUrl = fileName
+                        val tmp = "${System.currentTimeMillis()}.jpg"
+                        event.eventPhotoUrl = tmp
 
                         // Add the event to the firebase realtime database
                         crud.addEventToFirebase(event, it)
+                        imageUri?.let { uri ->
+                            uploadImageToFirebase(uri, tmp)
+                        }
                     }
                 }
             }
@@ -186,20 +188,21 @@ class CreateEventFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
             imageUri = data?.data
-            imageUri?.let { uri ->
-                uploadImageToFirebase(uri)
-            }
+//            imageUri?.let { uri ->
+//                uploadImageToFirebase(uri)
+//            }
         }
     }
 
-    private fun uploadImageToFirebase(fileUri: Uri) {
-        // TODO Fix this UGLINESS
-        fileName += "${System.currentTimeMillis()}.jpg"
+
+
+
+    private fun uploadImageToFirebase(fileUri: Uri, photoUrl: String) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         val storageReference = Firebase.storage(STORAGE_URL).reference.child("event")
 
         userId?.let {
-            storageReference.child(it).child(fileName).putFile(fileUri)
+            storageReference.child(it).child(photoUrl).putFile(fileUri)
                 .addOnSuccessListener {
                     Log.d(TAG, "SUCCESS")
                 }
@@ -207,9 +210,6 @@ class CreateEventFragment : Fragment() {
                     Log.d(TAG, "FAIL")
                 }
         }
-
-        // TODO Fix this UGLINESS
-        fileName = ""
     }
 
 

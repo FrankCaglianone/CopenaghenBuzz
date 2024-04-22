@@ -3,7 +3,6 @@ package dk.itu.moapd.copenhagenbuzz.fcag.fragments
 
 import android.app.Activity
 import android.content.Intent
-
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -15,8 +14,10 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import dk.itu.moapd.copenhagenbuzz.fcag.CameraX
 import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.Geocoding
+import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.data.EventLocation
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentCreateEventBinding
@@ -167,13 +168,11 @@ class CreateEventFragment : Fragment() {
                    }
                }
                .setNegativeButton("Take a photo") { dialog, which ->
-
+                  openCameraFragment()
                }
                .show()
         }
     }
-
-
 
 
 
@@ -209,6 +208,18 @@ class CreateEventFragment : Fragment() {
                 .addOnFailureListener {
                     Log.d(TAG, "FAIL")
                 }
+        }
+    }
+
+
+
+    // TODO FIX IT
+    private fun openCameraFragment() {
+        val newFragment = CameraX()  // Assuming CameraFragment is your fragment class
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container_view, newFragment)  // Ensure you have a container to place the fragment
+            addToBackStack(null)  // Add the transaction to the back stack if needed
+            commit()
         }
     }
 

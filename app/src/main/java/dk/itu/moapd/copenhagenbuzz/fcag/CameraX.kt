@@ -46,16 +46,19 @@ class CameraX : Fragment()  {
                 "Cannot access binding because it is null. Is the view visible?"
             }
 
+
         /**
          * A view model to manage the data access to the database. Using lazy initialization to create
          * the view model instance when the user access the object for the first time.
          */
         private val viewModel: DataViewModel by activityViewModels()
 
+
         /**
          * The camera selector allows to select a camera or return a filtered set of cameras.
          */
         private var cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+
 
         /**
          * This instance provides `takePicture()` functions to take a picture to memory or save to a
@@ -63,10 +66,12 @@ class CameraX : Fragment()  {
          */
         private var imageCapture: ImageCapture? = null
 
+
         /**
          * The latest image taken by the video device stream.
          */
         private var imageUri: Uri? = null
+
 
         /**
          * A set of static attributes used in this activity class.
@@ -74,6 +79,7 @@ class CameraX : Fragment()  {
         companion object {
             private const val FILENAME_FORMAT = "yyyyMMdd_HHmmss"
         }
+
 
         /**
          * This object launches a new permission dialog and receives back the user's permission.
@@ -84,28 +90,7 @@ class CameraX : Fragment()  {
             cameraPermissionResult(result)
         }
 
-        /**
-         * Called to have the fragment instantiate its user interface view. This is optional, and
-         * non-graphical fragments can return null. This will be called between `onCreate(Bundle)` and
-         * `onViewCreated(View, Bundle)`. A default `View` can be returned by calling `Fragment(int)` in
-         * your constructor. Otherwise, this method returns null.
-         *
-         * It is recommended to <strong>only</strong> inflate the layout in this method and move logic
-         * that operates on the returned View to `onViewCreated(View, Bundle)`.
-         *
-         * If you return a `View` from here, you will later be called in `onDestroyView()` when the view
-         * is being released.
-         *
-         * @param inflater The LayoutInflater object that can be used to inflate any views in the
-         *      fragment.
-         * @param container If non-null, this is the parent view that the fragment's UI should be
-         *      attached to. The fragment should not add the view itself, but this can be used to
-         *      generate the `LayoutParams` of the view.
-         * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-         *      saved state as given here.
-         *
-         * @return Return the View for the fragment's UI, or null.
-         */
+
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -113,16 +98,8 @@ class CameraX : Fragment()  {
             _binding = it
         }.root
 
-        /**
-         * Called immediately after `onCreateView(LayoutInflater, ViewGroup, Bundle)` has returned, but
-         * before any saved state has been restored in to the view. This gives subclasses a chance to
-         * initialize themselves once they know their view hierarchy has been completely created. The
-         * fragment's view hierarchy is not however attached to its parent at this point.
-         *
-         * @param view The View returned by `onCreateView(LayoutInflater, ViewGroup, Bundle)`.
-         * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous
-         *      saved state as given here.
-         */
+
+
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
@@ -177,13 +154,9 @@ class CameraX : Fragment()  {
             }
         }
 
-        /**
-         * Called when the view previously created by `onCreateView()` has been detached from the
-         * fragment. The next time the fragment needs to be displayed, a new view will be created. This
-         * is called after `onStop()` and before `onDestroy()`. It is called <em>regardless</em> of
-         * whether `onCreateView()` returned a non-null view. Internally it is called after the view's
-         * state has been saved but before it has been removed from its parent.
-         */
+
+
+
         override fun onDestroyView() {
             super.onDestroyView()
             _binding = null
@@ -336,14 +309,7 @@ class CameraX : Fragment()  {
             )
         }
 
-        /**
-         * Displays a SnackBar to show a brief message about the clicked button.
-         *
-         * The SnackBar is created using the clicked button's information and is shown at the bottom of
-         * the screen.
-         *
-         * @param message The message to be displayed in the SnackBar.
-         */
+
         private fun showSnackBar(message: String) {
             Snackbar.make(
                 binding.root, message, Snackbar.LENGTH_SHORT

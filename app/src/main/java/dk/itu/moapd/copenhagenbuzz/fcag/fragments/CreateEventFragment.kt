@@ -131,14 +131,15 @@ class CreateEventFragment : Fragment() {
                         event.eventDate = binding.editTextEventDate.text.toString().trim()
                         event.eventType = binding.autoCompleteTextViewEventType.text.toString().trim()
                         event.eventDescription = binding.editTextEventDescription.text.toString().trim()
-                        // TODO Fix this UGLINESS
-                        val tmp = "${System.currentTimeMillis()}.jpg"
-                        event.eventPhotoUrl = tmp
+
+
+                        val photoFilename = "${System.currentTimeMillis()}.jpg"
+                        event.eventPhotoUrl = photoFilename
 
                         // Add the event to the firebase realtime database
                         crud.addEventToFirebase(event, it)
                         imageUri?.let { uri ->
-                            uploadImageToFirebase(uri, tmp)
+                            uploadImageToFirebase(uri, photoFilename)
                         }
                     }
                 }

@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.CameraxBinding
 import android.Manifest
 import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -143,12 +145,13 @@ class CameraX : Fragment()  {
 
                 // Set up the listener for the photo view button.
                 buttonImageViewer.setOnClickListener {
-                    imageUri?.let { uri ->
-                        val bundle = bundleOf("ARG_IMAGE" to uri.toString())
+                    val intent = Intent(Intent.ACTION_PICK)
+                    intent.type = "image/*"
+                    startActivityForResult(intent, 100)
 
-                        // Navigate to the `ImageFragment` passing the `Image` instance as an argument.
-                        requireActivity().findNavController(R.id.fragment_container_view)
-//                            .navigate(R.id.action_main_to_image, bundle)
+                    imageUri?.let { uri ->
+                        // TODO
+                        showSnackBar("HELLO WORLD")
                     }
                 }
             }

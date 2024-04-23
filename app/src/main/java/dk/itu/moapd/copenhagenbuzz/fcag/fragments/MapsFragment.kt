@@ -11,6 +11,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentMapsBinding
@@ -23,12 +27,14 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import io.github.cdimascio.dotenv.dotenv
 
@@ -142,19 +148,18 @@ class MapsFragment : Fragment() {
                     if (snapshot.exists()) {
                         snapshot.children.forEach { child ->
                             val event = child.getValue(Event::class.java)
-                            event?.let {
-                                val location =
-                                    it.eventLocation?.latitude?.let { it1 -> it.eventLocation!!.longitude?.let { it2 ->
-                                        LatLng(it1,
-                                            it2
-                                        )
-                                    } }
-                                location?.let { it1 -> MarkerOptions().position(it1).title(it.eventName) }
-                                    ?.let { it2 ->
-                                        map.addMarker(
-                                            it2
-                                        )
+                            event?.let { event ->
+                                event.eventLocation?.latitude?.let { latitude ->
+                                    event.eventLocation?.longitude?.let { longitude ->
+                                        val location = LatLng(latitude, longitude)
+                                        val markerOptions = MarkerOptions()
+                                            .position(location)
+                                            .title(event.eventName)
+                                            .snippet("Location:${event.eventLocation!!.address} \n Date:${event.eventDate} \n Type: ${event.eventType} \n Description: ${event.eventDescription}")
+
+                                        map.addMarker(markerOptions)
                                     }
+                                }
                             }
                         }
                     }
@@ -176,10 +181,18 @@ class MapsFragment : Fragment() {
 
     private fun openGoogleMaps(map: GoogleMap, context: Context) {
         map.setOnMarkerClickListener { marker ->
-            // Show an alert dialog to ask if the user wants directions
+
+            val inflater = LayoutInflater.from(context)
+            val dialogView = inflater.inflate(R.layout.dialog_marker_map, null)
+
+            dialogView.findViewById<TextView>(R.id.marker_details).text = marker.snippet
+            dialogView.findViewById<TextView>(R.id.marker_open_maps).text = "Do you want to get directions in Google Maps?"
+
+
             AlertDialog.Builder(context)
-                .setTitle("Open Google Maps")
-                .setMessage("Do you want to get directions to ${marker.title}?")
+                .setTitle(marker.title)
+                .setView(dialogView) // Set the inflated layout as view
+
                 .setPositiveButton("Yes") { dialog, which ->
                     // User clicked yes, open Google Maps with directions
                     val gmmIntentUri = Uri.parse("google.navigation:q=${marker.position.latitude},${marker.position.longitude}")

@@ -42,4 +42,13 @@
     <string name="Delete">Delete</string>
 
 
+
+    <!-- Camerax.xml strings -->
+    <string name="button_camera_switch_description">Switch camera</string>
+    <string name="button_image_capture_description">Capture</string>
+    <string name="button_image_viewer_description">Gallery</string>
+
+<!--    <string name="button_back_description">Back</string>-->
+
+
 </resources>

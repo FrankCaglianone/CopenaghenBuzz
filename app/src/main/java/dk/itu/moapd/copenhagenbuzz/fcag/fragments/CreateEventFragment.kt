@@ -215,10 +215,9 @@ class CreateEventFragment : Fragment() {
 
     // TODO FIX IT
     private fun openCameraFragment() {
-        val newFragment = CameraX()  // Assuming CameraFragment is your fragment class
+        val newFragment = CameraX()
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container_view, newFragment)  // Ensure you have a container to place the fragment
-            addToBackStack(null)  // Add the transaction to the back stack if needed
+            replace(R.id.fragment_container_view, newFragment)
             commit()
         }
     }

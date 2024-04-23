@@ -11,13 +11,13 @@
 
 
 <!--    app:icon="@drawable/baseline_flip_camera_android_24"-->
-<!--    android:contentDescription="@string/button_camera_switch_description"-->
+
     <Button
         style="?attr/materialIconButtonOutlinedStyle"
         android:id="@+id/button_camera_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="1"
+        android:contentDescription="@string/button_camera_switch_description"
         app:iconSize="48dp"
         app:iconTint="@android:color/white"
         app:strokeColor="@android:color/white"
@@ -29,14 +29,14 @@
 
 
 <!--    android:layout_marginBottom="@dimen/margin_extra_large"-->
-<!--    android:contentDescription="@string/button_image_capture_description"-->
+
 <!--    app:icon="@drawable/baseline_circle_24"-->
     <Button
         style="?attr/materialIconButtonOutlinedStyle"
         android:id="@+id/button_image_capture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="2"
+        android:contentDescription="@string/button_image_capture_description"
         app:iconSize="80dp"
         app:iconTint="@android:color/white"
         app:strokeColor="@android:color/white"
@@ -46,14 +46,14 @@
 
 
 
-<!--    android:contentDescription="@string/button_image_viewer_description"-->
+
 <!--    app:icon="@drawable/baseline_photo_24"-->
     <Button
         style="?attr/materialIconButtonOutlinedStyle"
         android:id="@+id/button_image_viewer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="3"
+        android:contentDescription="@string/button_image_viewer_description"
         app:iconSize="48dp"
         app:iconTint="@android:color/white"
         app:strokeColor="@android:color/white"

@@ -26,6 +26,7 @@ class LocationService: Service() {
     companion object {
         const val ACTION_START = "ACTION_START"
         const val ACTION_STOP = "ACTION_STOP"
+        const val LOCATION_UPDATE_ACTION = "com.example.broadcast.LOCATION_UPDATE"
     }
 
 
@@ -67,8 +68,16 @@ class LocationService: Service() {
         locationClient.getLocationUpdates(10000L)
             .catch { e -> e.printStackTrace() }
             .onEach { location ->
-                val lat = location.latitude.toString()
-                val long = location.longitude.toString()
+                val lat = location.latitude
+                val long = location.longitude
+
+                // Send broadcast with the location data
+                val intent = Intent(LOCATION_UPDATE_ACTION)
+                intent.putExtra("latitude", lat)
+                intent.putExtra("longitude", long)
+                sendBroadcast(intent)
+
+
                 val updateNotification = notification.setContentText(
                     "Location: ($lat, $long)"
                 )

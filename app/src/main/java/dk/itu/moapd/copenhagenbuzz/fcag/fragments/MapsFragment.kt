@@ -2,8 +2,10 @@ package dk.itu.moapd.copenhagenbuzz.fcag.fragments
 
 import android.content.pm.PackageManager
 import android.Manifest
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -61,11 +63,29 @@ class MapsFragment : Fragment() {
 
     companion object {
         private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
+        private const val TAG = "MapsFragment"
     }
+
+
+    private lateinit var receiver: BroadcastReceiver
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Initialize and register the receiver
+        receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context, intent: Intent) {
+                latitude = intent.getDoubleExtra("latitude", 0.0)
+                longitude = intent.getDoubleExtra("longitude", 0.0)
+                Log.d(TAG, latitude.toString())
+                Log.d(TAG, longitude.toString())
+            }
+        }
+        val filter = IntentFilter(LocationService.LOCATION_UPDATE_ACTION)
+        requireActivity().registerReceiver(receiver, filter)
     }
 
     override fun onCreateView(
@@ -84,7 +104,13 @@ class MapsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
+        // Stop fetching the user location when fragment is destroyed
         stopLocalizationService()
+
+        // Unregister the receiver to prevent memory leaks
+        requireActivity().unregisterReceiver(receiver)
+
         _binding = null
     }
 

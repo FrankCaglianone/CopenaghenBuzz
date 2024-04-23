@@ -17,6 +17,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentMapsBinding
 
 
@@ -34,6 +35,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import dk.itu.moapd.copenhagenbuzz.fcag.LocationService
 import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import io.github.cdimascio.dotenv.dotenv
@@ -82,6 +84,7 @@ class MapsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        stopLocalizationService()
         _binding = null
     }
 
@@ -106,6 +109,9 @@ class MapsFragment : Fragment() {
             requestUserPermissions()
         }
 
+        startLocalizationService()
+
+
         addMarkers(googleMap)
 
         context?.let { openGoogleMaps(googleMap, it) }
@@ -117,7 +123,11 @@ class MapsFragment : Fragment() {
         ActivityCompat.checkSelfPermission(
             requireContext(),
             Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
 
 
 
@@ -125,11 +135,29 @@ class MapsFragment : Fragment() {
         if (!checkPermission())
             ActivityCompat.requestPermissions(
                 requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
                 REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
             )
     }
 
+
+    private fun startLocalizationService() {
+        Intent(requireContext(), LocationService::class.java).apply {
+            action = LocationService.ACTION_START
+            requireActivity().startService(this)
+        }
+    }
+
+
+    private fun stopLocalizationService() {
+        Intent(requireContext(), LocationService::class.java).apply {
+            action = LocationService.ACTION_STOP
+            requireActivity().startService(this)
+        }
+    }
 
 
 

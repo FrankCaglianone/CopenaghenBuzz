@@ -1,6 +1,9 @@
 package dk.itu.moapd.copenhagenbuzz.fcag
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.util.Log
 import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback
@@ -19,6 +22,13 @@ class MyApplication : Application(), OnMapsSdkInitializedCallback {
 
         // Initialize google maps
         MapsInitializer.initialize(this, MapsInitializer.Renderer.LATEST, this);
+
+
+        val channel = NotificationChannel(
+            "location", "location", NotificationManager.IMPORTANCE_LOW
+        )
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
 

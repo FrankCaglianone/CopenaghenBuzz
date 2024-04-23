@@ -87,4 +87,9 @@ dependencies {
     implementation("androidx.camera:camera-view:1.3.1")
 
 
+
+    // Fused location
+    implementation("com.google.android.gms:play-services-location:20.0.0")
+
+
 }

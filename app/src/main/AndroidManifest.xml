@@ -2,17 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permissions-->
+    <!-- Location Permissions-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
         tools:ignore="CoarseFineLocation" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <!-- Camera X Permissions -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera.any" />
 
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -24,6 +26,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CopenhagenBuzz"
         tools:targetApi="31">
+
+        <service android:name=".LocationService"
+            android:foregroundServiceType="location"
+            tools:ignore="ForegroundServicePermission" />
 
         <activity
             android:name=".activities.LoginActivity"

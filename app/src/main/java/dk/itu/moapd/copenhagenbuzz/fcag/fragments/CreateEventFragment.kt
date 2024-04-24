@@ -200,20 +200,7 @@ class CreateEventFragment : Fragment() {
             imageUri = fileUri
         } else if (requestCode == REQUEST_IMAGE_SELECT && resultCode == Activity.RESULT_OK) {
             imageUri = data?.data
-//            fileUri?.let {
-//                uploadImageToFirebase(it)
-//            }
         }
-
-
-
-
-//        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
-//            imageUri = data?.data
-////            imageUri?.let { uri ->
-////                uploadImageToFirebase(uri)
-////            }
-//        }
     }
 
 
@@ -238,14 +225,6 @@ class CreateEventFragment : Fragment() {
 
 
 
-    // TODO FIX IT
-//    private fun openCameraFragment() {
-//        val newFragment = CameraX()
-//        parentFragmentManager.beginTransaction().apply {
-//            replace(R.id.fragment_container_view, newFragment)
-//            commit()
-//        }
-//    }
 
 
 

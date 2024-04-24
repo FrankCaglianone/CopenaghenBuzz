@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.fcag
+package dk.itu.moapd.copenhagenbuzz.fcag.locationServices
 
 import android.util.Log
 import dk.itu.moapd.copenhagenbuzz.fcag.data.EventLocation

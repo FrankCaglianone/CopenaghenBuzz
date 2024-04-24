@@ -27,7 +27,7 @@
         android:theme="@style/Theme.CopenhagenBuzz"
         tools:targetApi="31">
 
-        <service android:name=".LocationService"
+        <service android:name=".locationServices.LocationService"
             android:foregroundServiceType="location"
             tools:ignore="ForegroundServicePermission" />
 

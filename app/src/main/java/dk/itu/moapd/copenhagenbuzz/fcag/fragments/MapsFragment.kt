@@ -2,12 +2,15 @@ package dk.itu.moapd.copenhagenbuzz.fcag.fragments
 
 import android.content.pm.PackageManager
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,6 +30,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -64,8 +68,8 @@ class MapsFragment : Fragment() {
 
 
     private lateinit var receiver: BroadcastReceiver
-    private var latitude: Double = 0.0
-    private var longitude: Double = 0.0
+    private var latitude: Double? = null
+    private var longitude: Double? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,10 +82,16 @@ class MapsFragment : Fragment() {
                 longitude = intent.getDoubleExtra("longitude", 0.0)
                 Log.d(TAG, latitude.toString())
                 Log.d(TAG, longitude.toString())
+
+                // Once the location is received, initialize the map
+                initializeMap()
             }
         }
         val filter = IntentFilter(LocationService.LOCATION_UPDATE_ACTION)
         requireActivity().registerReceiver(receiver, filter)
+
+        // Start fetching the user location when fragment is created
+        startLocalizationService()
     }
 
     override fun onCreateView(
@@ -93,9 +103,6 @@ class MapsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager
-            .findFragmentById(binding.map.id) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
     }
 
     override fun onDestroyView() {
@@ -113,13 +120,26 @@ class MapsFragment : Fragment() {
 
 
 
+    private fun initializeMap() {
+        // Check if latitude and longitude are available
+        if (latitude != null && longitude != null) {
+                val mapFragment = childFragmentManager.findFragmentById(binding.map.id) as SupportMapFragment?
+                mapFragment?.getMapAsync(callback)
+        } else {
+            Snackbar.make(requireView(), "fetching user location", Snackbar.LENGTH_LONG).show()
+        }
+    }
 
+
+
+
+    @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
 
-        // Add a marker in IT University of Copenhagen and move the camera.
-        val itu = LatLng(55.6596, 12.5910)
-        googleMap.addMarker(MarkerOptions().position(itu).title("IT University of Copenhagen"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(itu))
+        if(latitude != null && longitude != null) {
+            val userPosn = LatLng(latitude!!, longitude!!)
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(userPosn))
+        }
 
         // Move the Google Maps UI buttons under the OS top bar.
         googleMap.setPadding(0, 100, 0, 0)
@@ -130,8 +150,6 @@ class MapsFragment : Fragment() {
         } else {
             requestUserPermissions()
         }
-
-        startLocalizationService()
 
 
         addMarkers(googleMap)

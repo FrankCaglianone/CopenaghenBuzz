@@ -18,6 +18,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -141,15 +142,19 @@ class CreateEventFragment : Fragment() {
                         event.eventDescription = binding.editTextEventDescription.text.toString().trim()
 
 
-                        val photoFilename = "${System.currentTimeMillis()}.jpg"
-                        event.eventPhotoUrl = photoFilename
+                        if (imageUri != null) {
+                            val photoFilename = "${System.currentTimeMillis()}.jpg"
+                            event.eventPhotoUrl = photoFilename
 
-                        // Add the event to the firebase realtime database
-                        crud.addEventToFirebase(event, it)
+                            // Add the event to the firebase realtime database
+                            crud.addEventToFirebase(event, it)
 
-                        // Upload the image only if the event is created
-                        imageUri?.let { uri ->
-                            uploadImageToFirebase(uri, photoFilename)
+                            // Upload the image only if the event is created
+                            imageUri?.let { uri ->
+                                uploadImageToFirebase(uri, photoFilename)
+                            }
+                        } else {
+                            Snackbar.make(it, "Please add an image", Snackbar.LENGTH_SHORT).show()
                         }
                     }
                 }

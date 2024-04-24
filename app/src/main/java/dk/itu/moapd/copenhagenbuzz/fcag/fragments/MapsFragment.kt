@@ -75,6 +75,11 @@ class MapsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (!checkPermission()) {
+            requestUserPermissions()
+        }
+
+
         // Initialize and register the receiver
         receiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {

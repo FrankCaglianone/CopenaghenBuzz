@@ -130,6 +130,22 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
             // Hide the add_event_button in edit mode
             dialogView.findViewById<FloatingActionButton>(R.id.add_event_button).visibility = View.GONE
 
+            val button = dialogView.findViewById<Button>(R.id.add_image_button)
+            button.setOnClickListener {
+                AlertDialog.Builder(it.context)
+                    .setTitle("Add Image")
+                    .setMessage("Would you like to?")
+                    .setPositiveButton("Upload a photo") { dialog, which ->
+//                        if (auth.currentUser != null) {
+//                            selectImage()
+//                        }
+                    }
+                    .setNegativeButton("Take a photo") { dialog, which ->
+//                        dispatchTakePictureIntent()
+                    }
+                    .show()
+            }
+
             AlertDialog.Builder(view.context)
                 .setTitle("Edit Event")
                 .setView(dialogView) // Set the inflated layout as view

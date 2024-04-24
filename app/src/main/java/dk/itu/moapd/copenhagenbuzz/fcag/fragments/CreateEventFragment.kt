@@ -1,15 +1,22 @@
 package dk.itu.moapd.copenhagenbuzz.fcag.fragments
 
 
+import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.ktx.Firebase
@@ -24,7 +31,7 @@ import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentCreateEventBinding
 import io.github.cdimascio.dotenv.dotenv
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-
+import java.io.ByteArrayOutputStream
 
 
 class CreateEventFragment : Fragment() {
@@ -52,6 +59,9 @@ class CreateEventFragment : Fragment() {
     // A set of private constants used in this class.
     companion object {
         private var TAG = "CreateEventFragment"
+        private const val REQUEST_IMAGE_CAPTURE = 1
+        private const val REQUEST_IMAGE_SELECT = 2
+        private const val REQUEST_CAMERA_PERMISSION = 101
     }
 
 
@@ -169,7 +179,7 @@ class CreateEventFragment : Fragment() {
                    }
                }
                .setNegativeButton("Take a photo") { dialog, which ->
-                  openCameraFragment()
+                   dispatchTakePictureIntent()
                }
                .show()
         }
@@ -181,18 +191,34 @@ class CreateEventFragment : Fragment() {
     private fun selectImage() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, 100)
+        startActivityForResult(intent, REQUEST_IMAGE_SELECT)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            val fileUri = getImageUri(requireContext(), imageBitmap)
+            imageUri = fileUri
+        } else if (requestCode == REQUEST_IMAGE_SELECT && resultCode == Activity.RESULT_OK) {
             imageUri = data?.data
-//            imageUri?.let { uri ->
-//                uploadImageToFirebase(uri)
+//            fileUri?.let {
+//                uploadImageToFirebase(it)
 //            }
         }
+
+
+
+
+//        if (requestCode == 100 && resultCode == Activity.RESULT_OK) {
+//            imageUri = data?.data
+////            imageUri?.let { uri ->
+////                uploadImageToFirebase(uri)
+////            }
+//        }
     }
+
+
 
 
 
@@ -215,14 +241,60 @@ class CreateEventFragment : Fragment() {
 
 
     // TODO FIX IT
-    private fun openCameraFragment() {
-        val newFragment = CameraX()
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container_view, newFragment)
-            commit()
+//    private fun openCameraFragment() {
+//        val newFragment = CameraX()
+//        parentFragmentManager.beginTransaction().apply {
+//            replace(R.id.fragment_container_view, newFragment)
+//            commit()
+//        }
+//    }
+
+
+
+
+    private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = MediaStore.Images.Media.insertImage(
+            inContext.contentResolver,
+            inImage,
+            "Image",
+            null
+        )
+        return Uri.parse(path)
+    }
+
+
+
+    private fun dispatchTakePictureIntent() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.CAMERA),
+                REQUEST_IMAGE_CAPTURE
+            )
+        } else {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         }
     }
 
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent()
+            }
+        }
+    }
 
 
 

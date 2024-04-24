@@ -146,6 +146,8 @@ class CreateEventFragment : Fragment() {
 
                         // Add the event to the firebase realtime database
                         crud.addEventToFirebase(event, it)
+
+                        // Upload the image only if the event is created
                         imageUri?.let { uri ->
                             uploadImageToFirebase(uri, photoFilename)
                         }

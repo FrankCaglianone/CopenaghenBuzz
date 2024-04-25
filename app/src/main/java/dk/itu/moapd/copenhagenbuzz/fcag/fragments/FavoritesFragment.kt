@@ -55,7 +55,7 @@ class FavoritesFragment : Fragment() {
         // Set the layout manager
         binding.favoritesRecycleView.layoutManager = LinearLayoutManager(context)
 
-        // Fetch all the events of the logged in user from the DB and display them
+        // Fetch all the favorite events of the logged in user from the DB and display them
         initializeFavouritesList()
     }.root
 
@@ -96,6 +96,7 @@ class FavoritesFragment : Fragment() {
             // Initialize your FirebaseRecyclerAdapter "FavoriteAdapter" with the options
             val adapter = FavoriteAdapter(options)
 
+            // Set the adapter
             binding.favoritesRecycleView.layoutManager = LinearLayoutManager(context)
             binding.favoritesRecycleView.adapter = adapter
 

@@ -18,8 +18,7 @@ import io.github.cdimascio.dotenv.dotenv
 
 class TimelineFragment : Fragment() {
 
-
-    // Bindings
+    // Binding
     private var _binding: FragmentTimelineBinding? = null
 
     private val binding
@@ -29,7 +28,7 @@ class TimelineFragment : Fragment() {
 
 
 
-    // Enviroment Variables
+    // Environment Variables
     private val dotenv = dotenv {
         directory = "/assets"
         filename = "env"
@@ -38,17 +37,19 @@ class TimelineFragment : Fragment() {
 
 
 
-
+    // Called when the fragment is being created.
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
      }
 
 
+    // Called to create the layout of the fragment.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View = FragmentTimelineBinding.inflate(inflater, container, false).also {
 
         _binding = it
 
+        // Fetch all the events of the logged in user from the DB and display them
         initializeEventList()
     }.root
 
@@ -56,11 +57,13 @@ class TimelineFragment : Fragment() {
 
 
 
+    // Called after the view created by onCreateView() has been created and ensures that the view hierarchy is fully initialized.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
 
 
+    // Called when the view previously created by onCreateView() has been detached from the fragment.
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -68,13 +71,23 @@ class TimelineFragment : Fragment() {
 
 
 
+
+
+    /**
+     * This function fetches all the events of the logged in user from the Firebase db and displays
+     * them in the fragment.
+     * Note: The layout used "event_row_item" is inflated here in the options since we are using a
+     * List View and not a Recycler View.
+     */
     private fun initializeEventList() {
         FirebaseAuth.getInstance().currentUser?.let { user ->
+            // Create the query to fetch the users events
             val query = Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
                 .child("events")
                 .child(user.uid)
-                // .orderByChild("createdAt")
 
+
+            // Create the options to pass teh adapter
             val options = FirebaseListOptions.Builder<Event>()
                 .setLayout(R.layout.event_row_item)
                 .setQuery(query, Event::class.java)
@@ -84,6 +97,7 @@ class TimelineFragment : Fragment() {
             // Initialize FirebaseRecyclerAdapter with the options
             val adapter = EventAdapter(options)
 
+            // Set the adapter
             binding.listView.adapter = adapter
 
             // Important: Start listening for database changes

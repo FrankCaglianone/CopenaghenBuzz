@@ -32,7 +32,7 @@ class FavoritesFragment : Fragment() {
 
 
 
-    // Enviroment Variables
+    // Environment Variables
     private val dotenv = dotenv {
         directory = "/assets"
         filename = "env"
@@ -41,49 +41,63 @@ class FavoritesFragment : Fragment() {
 
 
 
-
+    // Called when the fragment is being created.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
+
+    // Called to create the layout of the fragment.
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View = FragmentFavoritesBinding.inflate(inflater, container, false).also {
         _binding = it
 
+        // Set the layout manager
         binding.favoritesRecycleView.layoutManager = LinearLayoutManager(context)
 
+        // Fetch all the events of the logged in user from the DB and display them
         initializeFavouritesList()
     }.root
 
+
+    // Called after the view created by onCreateView() has been created and ensures that the view hierarchy is fully initialized.
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
 
+
+    // Called when the view previously created by onCreateView() has been detached from the fragment.
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
 
-
+    /**
+     * This function fetches all the favorites events of the logged in user from the Firebase db and
+     * displays them in the fragment.
+     * Note: The layout used "favorite_row_item" is inflated in the adapter's onCreateViewHolder() "FavoriteAdapter"
+     */
     private fun initializeFavouritesList() {
         FirebaseAuth.getInstance().currentUser?.let { user ->
+            // Create the query to fetch the users events
             val query = Firebase.database(DATABASE_URL).reference.child("copenhagen_buzz")
                 .child("favorites")
                 .child(user.uid)
-                // .orderByChild("createdAt")
 
+
+            // Create the options to pass teh adapter
             val options = FirebaseRecyclerOptions.Builder<Event>()
                 .setQuery(query, Event::class.java)
                 .setLifecycleOwner(this)
                 .build()
 
-            // Initialize your FirebaseRecyclerAdapter with the options
+
+            // Initialize your FirebaseRecyclerAdapter "FavoriteAdapter" with the options
             val adapter = FavoriteAdapter(options)
 
             binding.favoritesRecycleView.layoutManager = LinearLayoutManager(context)
             binding.favoritesRecycleView.adapter = adapter
-
 
             // Setup the RecyclerView.
             setupRecyclerView(adapter)
@@ -98,6 +112,15 @@ class FavoritesFragment : Fragment() {
 
 
 
+
+
+    /**
+     * Sets up a RecyclerView with a LinearLayoutManager, disables default item animations,
+     * adds dividers between items, sets the provided adapter, and adds swipe-to-delete
+     * functionality using an ItemTouchHelper with a custom SwipeToDeleteCallback.
+     *
+     * @param adapter The adapter to be set for the RecyclerView.
+     */
     private fun setupRecyclerView(adapter: FavoriteAdapter) {
         binding.favoritesRecycleView.apply {
 
@@ -108,10 +131,10 @@ class FavoritesFragment : Fragment() {
                 DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
             )
 
-            // Set the adapter for the RecyclerView to be the CustomAdapter.
+            // Set the adapter for the RecyclerView to be the FavoriteAdapter.
             this.adapter = adapter
 
-            // Adding the swipe option.
+            // Add the Swipe to delete option
             val swipeHandler = object : SwipeToDeleteCallback() {
                 override  fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     super.onSwiped(viewHolder, direction)

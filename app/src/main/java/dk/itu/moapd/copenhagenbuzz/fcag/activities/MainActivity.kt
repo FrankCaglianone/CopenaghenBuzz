@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    // Firebase variable
+    // Firebase authentication variable
     private lateinit var auth: FirebaseAuth
 
 

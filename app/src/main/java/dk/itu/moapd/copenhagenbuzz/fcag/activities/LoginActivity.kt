@@ -3,12 +3,11 @@ package dk.itu.moapd.copenhagenbuzz.fcag.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.core.view.WindowCompat
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
 import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.material.snackbar.Snackbar
 import dk.itu.moapd.copenhagenbuzz.fcag.R
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.ActivityLoginBinding
 
@@ -35,12 +34,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
+    // This object launches a new activity and receives back some result data.
     private val signInLauncher =
         registerForActivityResult(FirebaseAuthUIActivityResultContract())
         { result -> onSignInResult(result) }
 
 
 
+    // This method uses FirebaseUI to create a login activity with the sign-in/sign-up options chose.
     private fun createSignInIntent() {
         // Choose authentication providers.
         val providers = arrayListOf(
@@ -65,23 +66,33 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
+
+
+    /**
+     * When the LoginActivity finishes it returns a result
+     * If the user sign-in the application correctly, we redirect the user to the main activity of
+     * this application and show a successful Snack bar.
+     * Otherwise we show a failure Snack bar.
+     */
     private fun onSignInResult(
         result: FirebaseAuthUIAuthenticationResult
     ) {
         when (result.resultCode) {
             RESULT_OK -> {
-                // Successfully signed in.
-//                showSnackBar("User logged in the app.")
+                // Successfully signed in, start the MainActivity
+                showSnackBar("User logged in the app.")
                 startMainActivity()
             }
             else -> {
                 // Sign in failed.
-//                showSnackBar("Authentication failed.")
+                showSnackBar("Authentication failed.")
             }
         }
     }
 
 
+
+    // Navigate and start Main Activity
     private fun startMainActivity() {
         Intent(this, MainActivity::class.java).apply {
             startActivity(this)
@@ -91,20 +102,24 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-    /**
-     * Initializes the activity. This includes:
-     * - Setting up the system window to fit system windows
-     * - Inflating the layout using View Binding
-     * - Establishing click listeners for both the login and guest buttons to navigate to the
-     *   MainActivity with appropriate login status.
-     *
-     * @param savedInstanceState If the activity is being re-initialized after previously being
-     * shut down then this Bundle contains the data it most recently supplied in onSaveInstanceState.
-     * Otherwise, it is null.
-     */
+
+
+    // Snack bar helper function
+    private fun showSnackBar(message: String) {
+        Snackbar.make(
+            window.decorView.rootView, message, Snackbar.LENGTH_SHORT
+        ).show()
+    }
+
+
+
+
+
+    // Called when the activity is starting.
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
+        // Create the Sign In intent
         createSignInIntent()
     }
 

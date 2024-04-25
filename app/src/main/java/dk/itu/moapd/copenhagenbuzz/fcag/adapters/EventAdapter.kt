@@ -25,15 +25,17 @@ import io.github.cdimascio.dotenv.dotenv
 
 class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Event>(options) {
 
+    // A set of private constants used in this class.
     companion object {
         private var TAG = "EventAdapter.kt"
     }
+
 
     // Declaring an instance of the CrudOperations class.
     private lateinit var crud: CrudOperations
 
 
-    // Enviroment Variables
+    // Environment Variables
     private val dotenv = dotenv {
         directory = "/assets"
         filename = "env"
@@ -55,7 +57,6 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         val deleteButton: Button = view.findViewById(R.id.delete_button)
 
 
-
         // Populate the data into the template view using the data object
         eventName.text = dummy.eventName
         userImage.setImageResource(R.drawable.baseline_person)
@@ -66,24 +67,23 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         eventDescription.text = dummy.eventDescription
 
 
-        // Getting photo from Firebase Storage
+        // User id needed to fetch the Photo
         val userId = dummy.userId
+
+        // Get the Photo Url of the event, if not null
         dummy.eventPhotoUrl?.let { photoUrl ->
             if (userId != null) {
+                // Navigate into the correct bucket in the Firebase Storage
                 Firebase.storage(BUCKET_URL).reference.child("event").child(userId).child(photoUrl).downloadUrl
                     .addOnSuccessListener { url ->
+                        // Load the image in eventImage: ImageView using Picasso.
                         Picasso.get().load(url).into(eventImage)
                     }
                     .addOnFailureListener {
                         Log.e("Firebase", "Error getting photo URL", it)
-
                     }
             }
         }
-
-
-
-
 
 
 
@@ -91,23 +91,27 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
         crud = CrudOperations()
 
 
-        // Add to favorites button listener
+        // Setting the click listener for the Add to Favorites Button
         favouriteButton.setOnClickListener {
+            // Add the event in the favorites directory in the Firebase Real Time db
             crud.addFavoriteToFirebase(dummy, it)
         }
 
-        // Delete event button listener
+        // Set the Delete event button listener
         deleteEventListener(view, deleteButton, dummy)
 
-        // Edit event listener
+        // Set the Edit event button listener
         editEventListener(view, editButton, dummy)
     }
 
 
 
 
-
-
+    /**
+     * This event listener pops up an Alert Dialog asking if we are sure of deleting tis event
+     * If "yes" than we call the function deleteFromFirebase from the CrudOperations class.
+     * If "no"  we simply exit the Alert Dialog
+     */
     private fun deleteEventListener(view: View, button: Button, event: Event) {
         button.setOnClickListener {
             AlertDialog.Builder(view.context)
@@ -122,6 +126,13 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
     }
 
 
+
+
+
+
+    /**
+     * TODO CREATE THE COMMENT
+     */
     private fun editEventListener(view: View, button: Button, event: Event) {
         button.setOnClickListener {
             val inflater = LayoutInflater.from(view.context)

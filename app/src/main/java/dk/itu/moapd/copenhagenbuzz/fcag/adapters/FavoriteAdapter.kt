@@ -21,6 +21,7 @@ import io.github.cdimascio.dotenv.dotenv
 
 class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecyclerAdapter<Event, FavoriteAdapter.ViewHolder>(options) {
 
+    // A set of private constants used in this class.
     companion object {
         private var TAG = "FavoriteAdapter.kt"
     }
@@ -29,7 +30,7 @@ class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecycle
     // Custom ViewHolder
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        // Enviroment Variables
+        // Environment Variables
         private val dotenv = dotenv {
             directory = "/assets"
             filename = "env"
@@ -37,22 +38,28 @@ class FavoriteAdapter(options: FirebaseRecyclerOptions<Event>) : FirebaseRecycle
         private val BUCKET_URL = dotenv["STORAGE_URL"]
 
 
+        // Find the views to populate
         private var favoriteName: TextView = view.findViewById(R.id.favorite_event_name)
         private val favoriteType: TextView = view.findViewById(R.id.favorite_event_type)
         private val favoriteImage: ImageView = view.findViewById(R.id.favorite_event_image)
         private val userImage: ImageView = view.findViewById(R.id.favorite_user_image)
 
         fun bind(event: Event) {
+            // Populate the data
             favoriteName.text = event.eventName
             favoriteType.text = event.eventDescription
             userImage.setImageResource(R.drawable.baseline_person)
 
+            // User id needed to fetch the Photo
             val userId = event.userId
 
+            // Get the Photo Url of the event, if not null
             event.eventPhotoUrl?.let { photoUrl ->
                 if (userId != null) {
+                    // Navigate into the correct bucket in the Firebase Storage
                     Firebase.storage(BUCKET_URL).reference.child("event").child(userId).child(photoUrl).downloadUrl
                         .addOnSuccessListener { url ->
+                            // Load the image in favoriteImage: ImageView using Picasso.
                             Picasso.get().load(url).into(favoriteImage)
                         }
                         .addOnFailureListener {

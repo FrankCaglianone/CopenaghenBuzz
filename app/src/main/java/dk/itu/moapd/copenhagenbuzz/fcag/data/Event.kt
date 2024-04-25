@@ -14,6 +14,9 @@ import java.util.UUID
  * @property eventDate The date on which the event is scheduled, in a string format.
  * @property eventType The type of the event.
  * @property eventDescription A detailed description of what the event is about.
+ * @property eventId The unique identifier for the event
+ * @property userId The unique identifier for the user
+ * @property eventPhotoUrl The URL of the photo stored in the Firebase Storage
  */
 data class Event(var eventName: String? = null,
                  var eventLocation: EventLocation? = null,

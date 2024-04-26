@@ -33,11 +33,26 @@ class LocationService: Service() {
 
 
 
+
+    /**
+     * This method is a binder callback that returns `null` because this service is not meant to be
+     * bound to any components.
+     *
+     * @param intent The Intent that was used to bind to this service.
+     * @return null as binding is not supported by this service.
+     */
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
 
+
+
+    /**
+     * Initializes the service by creating and initializing the location client.
+     * This method is called when the service is being created for the first time, before it starts
+     * handling intents that start or stop location updates.
+     */
     override fun onCreate() {
         super.onCreate()
         locationClient = DefaultLocationClient(
@@ -47,6 +62,20 @@ class LocationService: Service() {
     }
 
 
+
+
+
+    /**
+     * Handles the start requests for the service, responding to intents with specific actions.
+     * The service handles two actions:
+     *      - ACTION_START to start location tracking
+     *      - ACTION_STOP to stop the service.
+     *
+     * @param intent The Intent supplied to `startService(Intent)`, containing the action to be performed.
+     * @param flags Additional data about this start request.
+     * @param startId A unique integer representing this specific request to start.
+     * @return The return value indicates what semantics the system should use for the service's current started state.
+     */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when(intent?.action) {
             ACTION_START -> start()
@@ -57,6 +86,14 @@ class LocationService: Service() {
 
 
 
+
+
+
+    /**
+     * Starts the location tracking process by posting an ongoing notification and subscribing to
+     * location updates. The location is updated in the notification and broadcasted to the MapsFragment
+     * through a custom action defined by LOCATION_UPDATE_ACTION.
+     */
     private fun start() {
         val notification = NotificationCompat.Builder(this, "location")
             .setContentTitle("Tracking location....")
@@ -93,6 +130,13 @@ class LocationService: Service() {
 
 
 
+
+
+    /**
+     * Stops the service by stopping the foreground notification and self-stopping the service.
+     * This method is intended to stop all ongoing operations and clean up resources when location
+     * updates are no longer needed.
+     */
     private fun stop() {
         stopForeground(true)
         stopSelf()
@@ -100,7 +144,13 @@ class LocationService: Service() {
 
 
 
-    // When the service is destroyed we stop fetching the location
+
+
+    /**
+     * Cleans up resources when the service is destroyed. This includes cancelling any ongoing
+     * operations or coroutines associated with this service. It ensures that the service does not
+     * leave any tasks running in the background when it is no longer needed.
+     */
     override fun onDestroy() {
         super.onDestroy()
         serviceScope.cancel()

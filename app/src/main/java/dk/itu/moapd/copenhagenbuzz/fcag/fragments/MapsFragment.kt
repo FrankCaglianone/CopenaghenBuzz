@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -60,7 +62,7 @@ class MapsFragment : Fragment() {
 
     // A set of private constants used in this class.
     companion object {
-        private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
+        private const val LOCATION_PERMISSIONS_REQUEST_CODE = 34
         private const val TAG = "MapsFragment"
     }
 
@@ -134,6 +136,12 @@ class MapsFragment : Fragment() {
 
 
     // Called when the view previously created by onCreateView() has been detached from the fragment.
+    /**
+     * This function stops the localization services that fetch the user's current location.
+     * This is done purposely to minimize battery usage during the app utilization if the user
+     * is not looking at the map.
+     * Furthermore it unregisters the receiver to prevent memory leaks.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
 
@@ -170,16 +178,19 @@ class MapsFragment : Fragment() {
 
 
 
-
     /**
-     * This is the callback passed to getMapAsync in initializeMap().
-     * This callback:
-     *      - sets up the CameraUpdate to focus on the user's current position
-     *      - sets the padding of the map
+     * Manipulates the map once available. This callback is triggered when the map is ready to be
+     * used. This is where we:
+     *      - set up the CameraUpdate to focus on the user's current position
+     *      - set up the padding of the map
      *      - double checks if the location permissions are enabled
      *      - add the markers for all the events in the database
-     *      - creates the dialogs with the information of each event and the possibility to get
-     *          directions to the location of such event in google maps
+     *      - create the dialogs with the information of each event and the possibility to get
+     *        directions to the location of such event in google maps
+     *
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
      */
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
@@ -207,10 +218,13 @@ class MapsFragment : Fragment() {
     }
 
 
+
+
     /**
-     * This function simply checks for location permissions and returns a boolean
-     *      - true: if both of them are granted
-     *      - false: if one of them or both are not grated
+     * This method checks if the user allows the application uses all location-aware resources to
+     * monitor the user's location.
+     *
+     * @return A boolean value with the user permission agreement.
      */
     private fun checkPermission() =
         ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
@@ -221,6 +235,9 @@ class MapsFragment : Fragment() {
     /**
      * This function request the user to enable location permissions.
      * It gets called in case location permissions were not previously enabled by the user
+     *
+     * Create a set of dialogs to show to the users and ask them for permissions to get the device's
+     * resources.
      */
     private fun requestUserPermissions() {
         if (!checkPermission())
@@ -230,7 +247,7 @@ class MapsFragment : Fragment() {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                 ),
-                REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
+                LOCATION_PERMISSIONS_REQUEST_CODE
             )
     }
 
@@ -257,7 +274,7 @@ class MapsFragment : Fragment() {
     /**
      * This function is called on fragment destruction to stop fetching the current user position.
      * This is done purposely to minimize battery usage during the app utilization if the user
-     * is not looking at the map
+     * is not looking at the map.
      */
     private fun stopLocalizationService() {
         Intent(requireContext(), LocationService::class.java).apply {
@@ -281,7 +298,6 @@ class MapsFragment : Fragment() {
      *      - date
      *      - type
      *      - description
-     *
      */
     private fun addMarkers(map: GoogleMap) {
         FirebaseAuth.getInstance().currentUser?.let { user ->
@@ -336,9 +352,11 @@ class MapsFragment : Fragment() {
     private fun openGoogleMaps(map: GoogleMap, context: Context) {
         map.setOnMarkerClickListener { marker ->
 
+            // Inflate the layout for the dialog
             val inflater = LayoutInflater.from(context)
             val dialogView = inflater.inflate(R.layout.dialog_marker_map, null)
 
+            // Pass the data for the TextViews
             dialogView.findViewById<TextView>(R.id.marker_details).text = marker.snippet
             dialogView.findViewById<TextView>(R.id.marker_open_maps).text = "Do you want to get directions in Google Maps?"
 

@@ -124,18 +124,25 @@ class CreateEventFragment : Fragment() {
 
 
 
+
     /**
-     * This method adds on click listener to the "Add Event" button.
-     * It calls validateInputs() to verify that at least the name and the location of the event
-     * where inserted avoiding the creation of null events.
-     * It than fetches all the information added in a coroutine, needed for the geocoding services
-     * to calculate the latitude and longitude of the address of the event.
-     * If the user did not add an image for the event it displays a message asking to add an image
-     * insuring that the user adds an image for each event (mandatory ex. 09).
-     * If the user selected an image, the filename for that image gets created using
-     * System.currentTimeMillis().
-     * The event is than added to the Firebase Realtime Database and the image is added to the
-     * Firebase Storage.
+     * Configures the onClick listener for the "Add Event" button to create an event.
+     * This method first validates the critical inputs (event name and location) to ensure they are
+     * not empty.
+     * If validated, it fetches additional event details asynchronously using coroutines.
+     * This includes geocoding the location string to get latitude and longitude.
+     * It checks if an image has been added for the event. If not, it prompts the user to add one (mandatory ex. 09).
+     * If an image is selected, it generates a unique filename using System.currentTimeMillis(),
+     * creates the event in Firebase Realtime Database,and uploads the image to Firebase Storage.
+     *
+     * Pre-conditions:
+     * - Event name and location must be provided.
+     * - User must be authenticated as this function interacts with Firebase.
+     *
+     * Post-conditions:
+     * - Creates an event entry in Firebase Realtime Database.
+     * - Uploads an associated image to Firebase Storage, if provided.
+     * - Displays an error message if an image is not provided.
      */
     private fun createEventListener() {
         with(binding) {
@@ -180,11 +187,12 @@ class CreateEventFragment : Fragment() {
 
 
     /**
-     * Validate the inputs inserted in creating the event, to make sure is Name are location are
-     * inserted
+     * Validates that the basic inputs for creating an event (event name and location) are not empty.
+     * This is essential to avoid creating null events.
+     *
+     * @return Boolean true if both name and location inputs are filled, false otherwise.
      */
     private fun validateInputs(): Boolean {
-        // Simple validation for example purposes
         return binding.editTextEventLocation.text.toString().isNotEmpty() && binding.editTextEventName.text.toString().isNotEmpty()
     }
 
@@ -193,10 +201,14 @@ class CreateEventFragment : Fragment() {
 
 
 
+
     /**
-     * This method adds the click listener to the add Image button to add an image to the Event.
-     * It created an AlertDialog asking if the user would like to upload the photo from Google Photo
-     * or take a new photo from the camera.
+     * Sets up a click listener on the 'addImageButton' for adding an image to an event.
+     * When clicked, an AlertDialog is displayed asking the user whether they would like to upload a
+     * photo from Google Photo or take a new photo using the camera.
+     *
+     * - Selects an image from storage if the "Upload a photo" option is chosen.
+     * - Captures a photo with the camera if the "Take a photo" option is chosen.
      */
     private fun addImageEventListener() {
        binding.addImageButton.setOnClickListener {
@@ -204,13 +216,13 @@ class CreateEventFragment : Fragment() {
                .setTitle("Add Image")
                .setMessage("Would you like to?")
                .setPositiveButton("Upload a photo") { _, _ ->
-                   // If the user choose to upload the photo we open Google Photo
+                   // Open Google Photo for image selection if the user is authenticated
                    if (auth.currentUser != null) {
                        selectImage()
                    }
                }
                .setNegativeButton("Take a photo") { _, _ ->
-                   // If the user choose to upload the photo we open the device camera
+                   // Open the device camera to take a new photo
                    dispatchTakePictureIntent()
                }
                .show()
@@ -223,7 +235,13 @@ class CreateEventFragment : Fragment() {
 
 
 
-
+    /**
+     * Initiates an intent to select an image from the external storage (Google photos).
+     * Checks if the permission to read external storage is granted.
+     * If permission is not granted, it requests the necessary permission.
+     * Otherwise, it opens the image picker where a user can select an image.
+     * Uses `REQUEST_IMAGE_SELECT` as the request code to handle the result in `onActivityResult`.
+     */
     private fun selectImage() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -249,6 +267,13 @@ class CreateEventFragment : Fragment() {
 
 
 
+    /**
+     * Initiates an intent to capture an image using the device's camera.
+     * Checks if the camera permission is granted.
+     * If permission is not granted, it requests the necessary permission.
+     * Otherwise, it opens the camera to take a photo.
+     * Uses `REQUEST_IMAGE_CAPTURE` as the request code to handle the result in `onActivityResult`.
+     */
     private fun dispatchTakePictureIntent() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -273,6 +298,16 @@ class CreateEventFragment : Fragment() {
 
 
 
+    /**
+     * Handles the result from either selecting an image from storage or capturing an image with the camera.
+     * Updates the `imageUri` with the URI of the selected or captured image.
+     * This method is triggered by the `onActivityResult` callback after image selection or capture.
+     *
+     * @param requestCode The integer request code originally supplied to `startActivityForResult()`,
+     * allowing you to identify who this result came from.
+     * @param resultCode The integer result code returned by the child activity through its setResult().
+     * @param data An Intent, which can return result data to the caller (various data can be attached to Intent "extras").
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
@@ -289,8 +324,16 @@ class CreateEventFragment : Fragment() {
 
 
 
+
     /**
-     * This method is used to upload the image, once selected or taken, to the Firebase Storage.
+     * Uploads the image of the event to Firebase Storage.
+     * The image is stored within a child directory named after the user's unique ID, and under a
+     * specific file name.
+     * On successful upload, a success log is recorded; on failure, a failure log is recorded.
+     *
+     * @param fileUri The URI of the file to upload. This should be a content URI pointing to the image.
+     * @param photoUrl The destination path within the storage where the image will be stored.
+     *
      * Notes: It gets called in createEventListener().
      */
     private fun uploadImageToFirebase(fileUri: Uri, photoUrl: String) {
@@ -314,6 +357,14 @@ class CreateEventFragment : Fragment() {
 
 
 
+    /**
+     * Converts a Bitmap image into a content URI by inserting the image into the system Media Store.
+     * The image is first compressed to JPEG format at the highest quality.
+     *
+     * @param inContext The context from which the content resolver is accessed.
+     * @param inImage The Bitmap image to be converted into a URI.
+     * @return Uri representing the location of the image in the Media Store.
+     */
     private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
@@ -331,11 +382,18 @@ class CreateEventFragment : Fragment() {
 
 
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
+    /**
+     * Handles the result of the permission request for using the camera.
+     * If the camera permission is granted, it initiates the intent to take a picture.
+     * This method is triggered by the system when the user responds to a permission request.
+     *
+     * @param requestCode The integer request code associated with the permission request.
+     * @param permissions The array of permissions that were requested.
+     * @param grantResults The array containing the results of the permission requests.
+     * This array contains PackageManager.PERMISSION_GRANTED or PackageManager.PERMISSION_DENIED.
+     * It matches the order of the 'permissions' array.
+     */
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 dispatchTakePictureIntent()

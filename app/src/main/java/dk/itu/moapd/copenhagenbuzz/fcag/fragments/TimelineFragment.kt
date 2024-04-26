@@ -20,7 +20,6 @@ class TimelineFragment : Fragment() {
 
     // Binding
     private var _binding: FragmentTimelineBinding? = null
-
     private val binding
         get() = requireNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
@@ -78,6 +77,15 @@ class TimelineFragment : Fragment() {
      * them in the fragment.
      * Note: The layout used "event_row_item" is inflated here in the options since we are using a
      * List View and not a Recycler View.
+     */
+    /**
+     * Initializes and configures the list adapter to display events associated with the currently
+     * logged-in user from Firebase.
+     * This function constructs a Firebase query to retrieve events, sets up a Firebase list adapter
+     * using custom options, and binds this adapter to a ListView.
+     *
+     * The layout for individual rows in the list is defined by "event_row_item".
+     * It also starts listening for real-time updates to the events, reflecting any changes immediately.
      */
     private fun initializeEventList() {
         FirebaseAuth.getInstance().currentUser?.let { user ->

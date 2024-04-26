@@ -86,6 +86,9 @@ class TimelineFragment : Fragment() {
      *
      * The layout for individual rows in the list is defined by "event_row_item".
      * It also starts listening for real-time updates to the events, reflecting any changes immediately.
+     *
+     * Note: The layout used "event_row_item" is inflated here in the options since we are using a
+     * List View and not a Recycler View.
      */
     private fun initializeEventList() {
         FirebaseAuth.getInstance().currentUser?.let { user ->

@@ -73,10 +73,17 @@ class FavoritesFragment : Fragment() {
     }
 
 
+
+
     /**
-     * This function fetches all the favorites events of the logged in user from the Firebase db and
-     * displays them in the fragment.
-     * Note: The layout used "favorite_row_item" is inflated in the adapter's onCreateViewHolder() "FavoriteAdapter"
+     * Initializes and configures the RecyclerView adapter to display the favorite events of the
+     * currently logged-in user from Firebase.
+     * It constructs a Firebase query to retrieve favorite events, sets up a FirebaseRecyclerAdapter
+     * using specified options, and binds this adapter to a RecyclerView.
+     * * It also starts listening for real-time updates to the favorites, reflecting any changes immediately.
+     *
+     * Notes: The individual row layout is specified by "favorite_row_item" and is inflated in the
+     * adapter's onCreateViewHolder method of the "FavoriteAdapter".
      */
     private fun initializeFavouritesList() {
         FirebaseAuth.getInstance().currentUser?.let { user ->

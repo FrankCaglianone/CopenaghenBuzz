@@ -364,7 +364,7 @@ class MapsFragment : Fragment() {
                 .setTitle(marker.title)
                 .setView(dialogView) // Set the inflated layout as view
 
-                .setPositiveButton("Yes") { dialog, which ->
+                .setPositiveButton("Yes") { _, _ ->
                     // User clicked yes, open Google Maps with directions
                     val gmmIntentUri = Uri.parse("google.navigation:q=${marker.position.latitude},${marker.position.longitude}")
                     val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)

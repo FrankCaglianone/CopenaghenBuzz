@@ -73,13 +73,14 @@ class MapsFragment : Fragment() {
 
 
 
-    // Called when the fragment is being created.
+
     /**
+     * Called when the fragment is being created.
      * As soon as the fragment is created it checks if location permissions are enabled.
-     * If not it asks the user to enable them, this is done because upon fragment creation we start
+     * If not it asks the user to enable them, this is done because upon fragment creation it starts
      * fetching the user location to than set up the CameraUpdate to focus on the user's current
      * location calling the method startLocalizationService().
-     * Once the current location of the user is fetched we call initializeMap() to initialize
+     * Once the current location of the user is fetched it calls initializeMap() to initialize
      * Google map's Map.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -133,8 +134,9 @@ class MapsFragment : Fragment() {
 
 
 
-    // Called when the view previously created by onCreateView() has been detached from the fragment.
+
     /**
+     * Called when the view previously created by onCreateView() has been detached from the fragment.
      * This function stops the localization services that fetch the user's current location.
      * This is done purposely to minimize battery usage during the app utilization if the user
      * is not looking at the map.
@@ -156,10 +158,19 @@ class MapsFragment : Fragment() {
 
 
 
+
     /**
-     * This function initializes Google's Map using the callback.
-     * The function gets called only after the Broadcast Receiver received the user location
+     * Initializes Google Maps within a fragment by using a callback to set up the map once it's ready.
+     * This function is called nly after the Broadcast Receiver received the user location
      * to set up the CameraUpdate to focus on the current user's location.
+     *
+     * If the latitude and longitude are not yet available, a Snack bar message is displayed to inform the user that their location
+     * is still being fetched.
+     *
+     * The map is loaded asynchronously through `getMapAsync` once the user's coordinates are known.
+     *
+     * @throws NullPointerException if `mapFragment` is null because the fragment does not exist
+     *                              or is not a `SupportMapFragment`.
      */
     private fun initializeMap() {
         // Check if latitude and longitude are available
@@ -253,7 +264,10 @@ class MapsFragment : Fragment() {
 
 
 
+
     /**
+     * Starts the location service to continuously fetch and update the user's current location.
+     * It sends an intent to start the LocationService with an action to begin location tracking.
      * This function is called on fragment creation to start fetching the user location to than
      * set up the CameraUpdate to focus on the user's current position.
      * The process continues in background until the fragment gets destroyed.
@@ -269,10 +283,14 @@ class MapsFragment : Fragment() {
 
 
 
+
+
     /**
+     * Stops the location service that has been fetching the user's current location.
      * This function is called on fragment destruction to stop fetching the current user position.
      * This is done purposely to minimize battery usage during the app utilization if the user
-     * is not looking at the map.
+     * is not using the map fragment.
+     * It sends an intent to the LocationService with an action to stop location tracking.
      */
     private fun stopLocalizationService() {
         Intent(requireContext(), LocationService::class.java).apply {
@@ -286,16 +304,16 @@ class MapsFragment : Fragment() {
 
 
 
+
     /**
-     * This function fetches all the events created from the Firebase realtime database and sets up
-     * a marker for it on the map.
-     * It also saves all the useful information of that event to than display them in a dialog when
-     * the marker is clicked; such as:
-     *      - name
-     *      - location (Address)
-     *      - date
-     *      - type
-     *      - description
+     * Retrieves all events associated with the logged-in user from Firebase Realtime Database
+     * and places markers on a Google Map for each event.
+     *
+     * Each marker is configured with detailed information about the event, which is displayed in a
+     * dialog upon clicking the marker. The information includes the event's name, location, date,
+     * type, and description.
+     *
+     * @param map The GoogleMap instance on which the markers are to be placed.
      */
     private fun addMarkers(map: GoogleMap) {
         FirebaseAuth.getInstance().currentUser?.let { user ->
@@ -340,12 +358,20 @@ class MapsFragment : Fragment() {
 
 
 
+
+
     /**
-     * This function sets the click listeners for the markers in the map.
-     * It creates an AlertDialog displaying the Event name and all useful info about that event.
-     * It also asks if we would like to get the directions to that event in google maps and if
-     * clicking yes, it automatically opens goggle maps fetching the user location and calculating
-     * the shortest path to get to that event.
+     * Configures click listeners for map markers to display an AlertDialog with event details
+     * and an option to navigate to the event using Google Maps.
+     * When a marker is clicked, the AlertDialog shows the event name and additional information
+     * about the event.
+     *
+     * The dialog also prompts the user to choose whether to get directions to the event location.
+     * If the user chooses "Yes," the function automatically opens Google Maps and calculates
+     * the route from the user's current location to the event.
+     *
+     * @param map The GoogleMap instance on which markers are placed.
+     * @param context The context from which resources and layouts are accessed.
      */
     private fun openGoogleMaps(map: GoogleMap, context: Context) {
         map.setOnMarkerClickListener { marker ->

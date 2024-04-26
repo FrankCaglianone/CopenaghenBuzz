@@ -18,26 +18,47 @@ import kotlinx.coroutines.launch
 import android.Manifest
 
 
-class DefaultLocationClient (
-    private val context: Context,
-    private val client: FusedLocationProviderClient
-): LocationClient {
+class DefaultLocationClient (private val context: Context, private val client: FusedLocationProviderClient): LocationClient {
 
 
 
+
+    /**
+     * This method checks if the user allows the application uses all location-aware resources to
+     * monitor the user's location.
+     *
+     * @return A boolean value with the user permission agreement.
+     */
     private fun Context.hasLocationPermissions(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            this, Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(
-                    this, Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
 
 
 
 
 
+
+
+    /**
+     * Provides real-time location updates as a Kotlin Flow. This method sets up and manages
+     * location updates based on the given interval. It checks for required location and GPS
+     * permissions and ensures that the GPS or network providers are enabled. If any conditions are
+     * not met, it throws a LocationClient.LocationException.
+     * It continuously receives location updates at the specified interval until the coroutine that
+     * collects the Flow is cancelled or until the Flow collector is disposed of using `awaitClose`.
+     *
+     * Implementation Details:
+     * - The method subscribes to location updates from the Android LocationManager via a specified LocationRequest.
+     * - It adjusts the update interval to the specified value and sets the same value as the fastest interval.
+     * - The method properly handles cancellation of the Flow via `awaitClose`, which unsubscribes
+     *   from the location updates to conserve resources.
+     *
+     * @param interval The time interval in milliseconds between successive location updates.
+     * @return A Flow emitting Location objects whenever a new location is fetched.
+     * @throws LocationClient.LocationException if location permissions are missing or if both GPS
+     *                                          and network providers are disabled.
+     */
     @SuppressLint("MissingPermission")
     override fun getLocationUpdates(interval: Long): Flow<Location> {
         return callbackFlow {

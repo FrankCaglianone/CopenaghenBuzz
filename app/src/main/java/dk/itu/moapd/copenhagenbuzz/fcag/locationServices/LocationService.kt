@@ -19,11 +19,12 @@ import kotlinx.coroutines.flow.onEach
 
 class LocationService: Service() {
 
+    // A set of private variables used in this class.
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private lateinit var locationClient: LocationClient
 
 
-
+    // A set of private constants used in this class.
     companion object {
         const val ACTION_START = "ACTION_START"
         const val ACTION_STOP = "ACTION_STOP"

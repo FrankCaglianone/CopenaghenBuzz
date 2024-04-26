@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.fcag
+package dk.itu.moapd.copenhagenbuzz.fcag.dbOperations
 
 import android.util.Log
 import android.view.View
@@ -249,8 +249,9 @@ class CrudOperations {
                                  favoriteReference.updateChildren(updateValues)
                              } else {
                                  // Event does not exist, show a message or handle accordingly
-                                 Snackbar.make(view, "Event does not exist", Snackbar.LENGTH_SHORT)
-                                     .show()
+                                 Log.d(TAG, "Event does not exist")
+//                                 Snackbar.make(view, "Event does not exist", Snackbar.LENGTH_SHORT)
+//                                     .show()
                              }
                          }
 

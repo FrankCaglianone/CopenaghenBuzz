@@ -13,7 +13,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import dk.itu.moapd.copenhagenbuzz.fcag.SwipeToDeleteCallback
+import dk.itu.moapd.copenhagenbuzz.fcag.dbOperations.SwipeToDeleteCallback
 import dk.itu.moapd.copenhagenbuzz.fcag.adapters.FavoriteAdapter
 import dk.itu.moapd.copenhagenbuzz.fcag.databinding.FragmentFavoritesBinding
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event

@@ -17,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.squareup.picasso.Picasso
-import dk.itu.moapd.copenhagenbuzz.fcag.CrudOperations
+import dk.itu.moapd.copenhagenbuzz.fcag.dbOperations.CrudOperations
 import dk.itu.moapd.copenhagenbuzz.fcag.data.Event
 import dk.itu.moapd.copenhagenbuzz.fcag.R
 import io.github.cdimascio.dotenv.dotenv

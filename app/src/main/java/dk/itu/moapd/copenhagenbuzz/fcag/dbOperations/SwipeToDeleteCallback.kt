@@ -1,4 +1,4 @@
-package dk.itu.moapd.copenhagenbuzz.fcag
+package dk.itu.moapd.copenhagenbuzz.fcag.dbOperations
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView

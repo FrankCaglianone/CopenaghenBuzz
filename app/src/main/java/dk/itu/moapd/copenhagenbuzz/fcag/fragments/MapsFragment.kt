@@ -164,8 +164,8 @@ class MapsFragment : Fragment() {
      * This function is called nly after the Broadcast Receiver received the user location
      * to set up the CameraUpdate to focus on the current user's location.
      *
-     * If the latitude and longitude are not yet available, a Snack bar message is displayed to inform the user that their location
-     * is still being fetched.
+     * If the latitude and longitude are not yet available, a Snack bar message is displayed to
+     * inform the user that their location is still being fetched.
      *
      * The map is loaded asynchronously through `getMapAsync` once the user's coordinates are known.
      *

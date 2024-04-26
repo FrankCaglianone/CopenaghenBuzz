@@ -48,7 +48,10 @@
     <string name="button_image_capture_description">Capture</string>
     <string name="button_image_viewer_description">Gallery</string>
 
-<!--    <string name="button_back_description">Back</string>-->
+
+    <!-- Marker Dialog strings -->
+    <string name="dialog_directions_prompt">Do you want to get directions in Google Maps?</string>
+
 
 
 </resources>

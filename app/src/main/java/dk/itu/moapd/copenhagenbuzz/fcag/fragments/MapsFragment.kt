@@ -8,7 +8,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -16,7 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -358,7 +356,8 @@ class MapsFragment : Fragment() {
 
             // Pass the data for the TextViews
             dialogView.findViewById<TextView>(R.id.marker_details).text = marker.snippet
-            dialogView.findViewById<TextView>(R.id.marker_open_maps).text = "Do you want to get directions in Google Maps?"
+            dialogView.findViewById<TextView>(R.id.marker_open_maps).text = getString(R.string.dialog_directions_prompt)
+
 
 
             AlertDialog.Builder(context)

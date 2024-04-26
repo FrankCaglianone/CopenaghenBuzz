@@ -14,12 +14,13 @@ import java.net.URLEncoder
 
 class Geocoding {
 
+    // A set of private constants used in this class.
     companion object {
         var TAG = "Geocoding"
     }
 
 
-
+    // Environment Variables
     private val dotenv = dotenv {
         directory = "/assets"
         filename = "env"
@@ -28,6 +29,19 @@ class Geocoding {
 
 
 
+
+    /**
+     * Retrieves geographic coordinates for a given location string by querying an external
+     * geocoding API. This function sends an HTTP GET request to the geocoding service, processes
+     * the JSON response, and returns an `EventLocation` object containing the address, latitude and
+     * longitude of the queried location.
+     *
+     * @param location The location name (e.g., "New York") to be geocoded.
+     * @return An `EventLocation` object containing the address, latitude and longitude of the
+     *         location. If the geocoding fails or no location is found, the latitude and
+     *         longitude fields in the returned `EventLocation` will be null, and the address field
+     *         will contain an error message or "No location found".
+     */
     suspend fun getLocationCoordinates(location: String): EventLocation {
         val baseUrl = "https://geocode.maps.co/search"
         val encodedLocation = URLEncoder.encode(location, "UTF-8")

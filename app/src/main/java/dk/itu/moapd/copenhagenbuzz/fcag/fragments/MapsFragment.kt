@@ -44,16 +44,15 @@ import io.github.cdimascio.dotenv.dotenv
 
 class MapsFragment : Fragment() {
 
-
+    // Binding
     private var _binding: FragmentMapsBinding? = null
-
     private val binding
         get() = requireNotNull(_binding) {
             "Cannot access binding because it is null. Is the view visible?"
         }
 
 
-    // Enviroment Variables
+    // Environment Variables
     private val dotenv = dotenv {
         directory = "/assets"
         filename = "env"
@@ -61,6 +60,7 @@ class MapsFragment : Fragment() {
     private val DATABASE_URL = dotenv["DATABASE_URL"]
 
 
+    // A set of private constants used in this class.
     companion object {
         private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
         private const val TAG = "MapsFragment"
@@ -99,6 +99,8 @@ class MapsFragment : Fragment() {
         startLocalizationService()
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View = FragmentMapsBinding.inflate(inflater, container, false).also {
@@ -106,9 +108,16 @@ class MapsFragment : Fragment() {
     }.root
 
 
+
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
+
+
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -125,6 +134,11 @@ class MapsFragment : Fragment() {
 
 
 
+
+
+
+
+
     private fun initializeMap() {
         // Check if latitude and longitude are available
         if (latitude != null && longitude != null) {
@@ -134,6 +148,10 @@ class MapsFragment : Fragment() {
             Snackbar.make(requireView(), "fetching user location", Snackbar.LENGTH_LONG).show()
         }
     }
+
+
+
+
 
 
 
@@ -164,15 +182,19 @@ class MapsFragment : Fragment() {
 
 
 
+
+
+
+
+
     private fun checkPermission() =
-        ActivityCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
+        ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+
+
+
+
 
 
 
@@ -182,11 +204,14 @@ class MapsFragment : Fragment() {
                 requireActivity(),
                 arrayOf(
                     Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
                 ),
                 REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
             )
     }
+
+
+
 
 
     private fun startLocalizationService() {
@@ -195,6 +220,9 @@ class MapsFragment : Fragment() {
             requireActivity().startService(this)
         }
     }
+
+
+
 
 
     private fun stopLocalizationService() {

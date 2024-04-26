@@ -142,7 +142,7 @@ class FavoritesFragment : Fragment() {
             // Set the adapter for the RecyclerView to be the FavoriteAdapter.
             this.adapter = adapter
 
-            // Add the Swipe to delete option
+            // Add the Swipe to delete callback option
             val swipeHandler = object : SwipeToDeleteCallback() {
                 override  fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                     super.onSwiped(viewHolder, direction)

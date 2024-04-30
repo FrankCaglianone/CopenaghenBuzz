@@ -138,8 +138,25 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
             val inflater = LayoutInflater.from(view.context)
             val dialogView = inflater.inflate(R.layout.fragment_create_event, null)
 
+            // Find all views
+            val name = dialogView.findViewById<EditText>(R.id.edit_text_event_name)
+            val location = dialogView.findViewById<EditText>(R.id.edit_text_event_location)
+            val date = dialogView.findViewById<EditText>(R.id.edit_text_event_date)
+            val type = dialogView.findViewById<AutoCompleteTextView>(R.id.auto_complete_text_view_event_type)
+            val description = dialogView.findViewById<EditText>(R.id.edit_text_event_description)
+            val addButton: FloatingActionButton = dialogView.findViewById(R.id.add_event_button)
+
             // Hide the add_event_button in edit mode
-            dialogView.findViewById<FloatingActionButton>(R.id.add_event_button).visibility = View.GONE
+            addButton.visibility = View.GONE
+
+            // Populate the data into the template view using the data object
+            name.setText(event.eventName)
+            location.setText(event.eventLocation?.address.toString())
+            date.setText(event.eventDate)
+            type.setText(event.eventType)
+            description.setText(event.eventDescription)
+
+
 
             val button = dialogView.findViewById<Button>(R.id.add_image_button)
             button.setOnClickListener {
@@ -161,23 +178,23 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
                 .setTitle("Edit Event")
                 .setView(dialogView) // Set the inflated layout as view
 
-                .setPositiveButton("Yes") { dialog, which ->
+                .setPositiveButton("Yes") { _, _ ->
 
-                    var name = dialogView.findViewById<EditText>(R.id.edit_text_event_name).text.toString().trim()
-                    var location = dialogView.findViewById<EditText>(R.id.edit_text_event_location).text.toString().trim()
-                    var date = dialogView.findViewById<EditText>(R.id.edit_text_event_date).text.toString().trim()
-                    var type = dialogView.findViewById<AutoCompleteTextView>(R.id.auto_complete_text_view_event_type).text.toString().trim()
-                    var description = dialogView.findViewById<EditText>(R.id.edit_text_event_description).text.toString().trim()
+                    val newName = name.text.toString().trim()
+                    val newLocation = location.text.toString().trim()
+                    val newDate = date.text.toString().trim()
+                    val newType = type.text.toString().trim()
+                    val newDescription = description.text.toString().trim()
 
-                    when {
-                        name.isEmpty() -> name = event.eventName.toString()
-                        location.isEmpty() -> location = event.eventLocation?.address.toString()
-                        date.isEmpty() -> date = event.eventDate.toString()
-                        type.isEmpty() -> type = event.eventType.toString()
-                        description.isEmpty() -> description = event.eventDescription.toString()
-                    }
+//                    when {
+//                        name.isEmpty() -> name = event.eventName.toString()
+//                        location.isEmpty() -> location = event.eventLocation?.address.toString()
+//                        date.isEmpty() -> date = event.eventDate.toString()
+//                        type.isEmpty() -> type = event.eventType.toString()
+//                        description.isEmpty() -> description = event.eventDescription.toString()
+//                    }
 
-                    crud.updateEventInFirebase(event, view, name, location, date, type, description)
+                    crud.updateEventInFirebase(event, view, newName, newLocation, newDate, newType, newDescription)
                 }
                 .setNegativeButton("No", null)
                 .show()

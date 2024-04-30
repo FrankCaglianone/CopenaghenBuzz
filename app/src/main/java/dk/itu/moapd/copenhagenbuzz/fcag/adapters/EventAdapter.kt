@@ -186,14 +186,6 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
                     val newType = type.text.toString().trim()
                     val newDescription = description.text.toString().trim()
 
-//                    when {
-//                        name.isEmpty() -> name = event.eventName.toString()
-//                        location.isEmpty() -> location = event.eventLocation?.address.toString()
-//                        date.isEmpty() -> date = event.eventDate.toString()
-//                        type.isEmpty() -> type = event.eventType.toString()
-//                        description.isEmpty() -> description = event.eventDescription.toString()
-//                    }
-
                     crud.updateEventInFirebase(event, view, newName, newLocation, newDate, newType, newDescription)
                 }
                 .setNegativeButton("No", null)

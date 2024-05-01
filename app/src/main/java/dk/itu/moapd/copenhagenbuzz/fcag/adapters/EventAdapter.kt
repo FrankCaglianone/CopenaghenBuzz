@@ -43,6 +43,23 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
     private val BUCKET_URL = dotenv["STORAGE_URL"]
 
 
+
+    /**
+     * Populates the details of an event into the specified view layout.
+     *
+     * This function sets up a view with the details from a provided `Event` object.
+     * It sets text fields and images such as event name, type, location, date, description, and
+     * user image. It handles image loading for the event from Firebase using the Picasso library
+     * if the image URL is available.
+     *
+     * It also sets up button functionalities for favorite, edit, and delete actions which interact
+     * with Firebase based on the event data.
+     *
+     * @param view The parent view in which event details are displayed.
+     * @param dummy The `Event` object containing the event details to populate.
+     * @param position The position of the item within the adapter's data set,
+     *                 used for handling item-specific operations if necessary.
+     */
     override fun populateView(view: View, dummy: Event, position: Int) {
         // Find the views to populate in inflated template
         val eventName: TextView = view.findViewById(R.id.event_name)
@@ -108,16 +125,23 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
 
 
     /**
-     * This event listener pops up an Alert Dialog asking if we are sure of deleting tis event
-     * If "yes" than we call the function deleteFromFirebase from the CrudOperations class.
-     * If "no"  we simply exit the Alert Dialog
+     * Sets up a click listener on the given button to delete an event from teh Firebase database.
+     *
+     * When the button is clicked, it displays an AlertDialog to confirm the deletion of the event.
+     * If "Yes" is clicked in the dialog, it triggers the deletion of the event from Firebase using
+     * the `CrudOperations` class. The deletion is confirmed or canceled based on the user's response
+     * in the dialog.
+     *
+     * @param view The view that will be used to provide context for the AlertDialog.
+     * @param button The button that, when clicked, will trigger the deletion confirmation dialog.
+     * @param event The `Event` object that is to be potentially deleted.
      */
     private fun deleteEventListener(view: View, button: Button, event: Event) {
         button.setOnClickListener {
             AlertDialog.Builder(view.context)
                 .setTitle("Delete Event")
                 .setMessage("Are you sure you want to delete this event?")
-                .setPositiveButton("Yes") { dialog, which ->
+                .setPositiveButton("Yes") { _, _ ->
                     crud.deleteFromFirebase(event, view)
                 }
                 .setNegativeButton("No", null)
@@ -163,12 +187,12 @@ class EventAdapter(options: FirebaseListOptions<Event>) : FirebaseListAdapter<Ev
                 AlertDialog.Builder(it.context)
                     .setTitle("Add Image")
                     .setMessage("Would you like to?")
-                    .setPositiveButton("Upload a photo") { dialog, which ->
+                    .setPositiveButton("Upload a photo") { _, _ ->
 //                        if (auth.currentUser != null) {
 //                            selectImage()
 //                        }
                     }
-                    .setNegativeButton("Take a photo") { dialog, which ->
+                    .setNegativeButton("Take a photo") { _, _ ->
 //                        dispatchTakePictureIntent()
                     }
                     .show()

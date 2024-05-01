@@ -221,7 +221,30 @@ class CrudOperations {
 
 
 
-     fun updateEventInFirebase(event: Event, view: View, newName: String, newLocation: String, newDate: String, newType: String, newDescription: String) {
+    /**
+     * Updates the details of an existing event in Firebase based on provided new details.
+     *
+     * This function takes an `Event` object and updates its details such as name, location, date,
+     * type, and description in the Firebase database.
+     *
+     * The location is updated based on the geocoding of a new address if it differs from the
+     * existing one. If the location fetching fails, it displays a snack-bar message on the
+     * provided `View`.
+     *
+     * The event details are updated in both the main events database and the favorites section if
+     * the event is marked as a favorite.
+     *
+     * Successful and error states are communicated via snack-bar messages.
+     *
+     * @param event An instance of `Event` containing the current event details including a unique event ID.
+     * @param view The `View` used to show snack-bar messages for success or failure notifications.
+     * @param newName The new name for the event.
+     * @param newLocation The new location for the event as a plain address string, which will be geocoded to get location coordinates.
+     * @param newDate The new date for the event.
+     * @param newType The new type of the event.
+     * @param newDescription The new description of the event.
+     */
+    fun updateEventInFirebase(event: Event, view: View, newName: String, newLocation: String, newDate: String, newType: String, newDescription: String) {
          val key = event.eventId
 
          MainScope().launch {

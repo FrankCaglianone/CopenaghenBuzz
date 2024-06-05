@@ -1,4 +1,4 @@
-# CopenaghenBuzz
+# CopenaghenBuzz ![Android SDK](https://img.shields.io/badge/-Android_SDK-3DDC84?style=flat-square&logo=android&logoColor=white) ![Kotlin](https://img.shields.io/badge/-Kotlin-7F52FF?style=flat-square&logo=kotlin&logoColor=white)
 CopenhagenBuzz is an Android app developed as part of the Mobile App Development course at the IT University of Copenhagen. This app serves as a platform for sharing and exploring local events in the Copenhagen area, such as festivals and concerts. Users can view upcoming events, manage their favorite events, and interact with the app by adding, editing, or deleting events.
 
 <br>
@@ -29,8 +29,8 @@ CopenhagenBuzz aims to connect locals and visitors with events around Copenhagen
 <br>
 
 ## Requirements 📋
-- Android Studio
-- Gradle
+- Android Studio: The official IDE for Android development, used for coding, building, and testing the app.
+- Gradle: A powerful build tool used to manage dependencies and build configurations.
 
 <br>
 
@@ -43,56 +43,34 @@ CopenhagenBuzz aims to connect locals and visitors with events around Copenhagen
 
 <br>
 
+## Usage 🛠️
+#### To set up the project locally:
+To successfully run the CopenhagenBuzz application on an Android emulator or physical device, you will need the `google-services.json` file and environmental `.env` files, which are not included in the repository for security reasons. Additionally, your Hash SHA-1 Fingerprints must be registered on Google Firebase and Google Cloud to enable the execution of the project on your device. If you need to set up the project, please contact me to obtain the necessary files and permissions. Afterward, proceed with the following steps:
 
-
-
-
-
-
-
-
-
-
-
-
-
-To set up the project locally, follow these steps:
 1. Ensure you have Android Studio and Git installed.
-2. Clone the repository:
-   ```bash
-   git clone https://github.com/YOUR_GITHUB/CopenhagenBuzz.git
-   ```
+2. Clone the repository.
 3. Open the project in Android Studio.
 4. Install all dependencies listed in the `build.gradle` files.
 5. Sync the project with Gradle.
 6. Run the app on an Android emulator or a physical device.
 
-
-
-## Usage 🛠️
-To use CopenhagenBuzz:
+#### To use CopenhagenBuzz:
 - **Login/Signup**: Access the app using your credentials or create a new account.
 - **Viewing Events**: Navigate through the list or map view to find upcoming events.
 - **Managing Events**: Add new events, or edit/delete existing ones from your listings.
 - **Favorites**: Bookmark events you are interested in for future reference.
 
-
-
-
-
-
-
+<br>
 
 ## Contributions 👥
-This project was developed by students of the IT University of Copenhagen, under the guidance of the course instructors. For specific contributor details, refer to the commit history.
+This project was developed entirely by me under the guidance of the course instructors and TA's of the IT University of Copenhagen. 
+
+<br>
 
 ## License 📄
 [MIT License](LICENSE)
 
-## Credits 💳
-Inspiration for some UI elements and functionalities was drawn from:
-- [Material Design Guidelines](https://material.io/design)
-- [Android Official Documentation](https://developer.android.com/docs)
+
 
 
 
